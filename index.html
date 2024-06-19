@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCooked</title>
+
+    <!-- Google Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap" rel="stylesheet">
+
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="styles.css" type="text/css">
+
+    <!-- Link to the external JS file -->
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="Links Directed to/Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="#home" onclick="scrollToTop()"><img src="images/NutriCooked Logo.png" alt="Logo"></a>
+        <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+        <div class="dropdown">
+            <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="Links Directed to/Health Report/health-report-index.html">Health Report</a>
+                <a href="Links Directed to/Food Diary/food-diary-index.html">Food Diary</a>
+                <a href="Links Directed to/Points/points-index.html">Points</a>
+                <a href="logout.html">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="home reveal">
+        <div class="intro reveal">
+            <img src="Images/home page background image 1.png" class="parallax-img">
+            <p id="welcome-text" class="reveal">WELCOME TO </p>
+            <p id="NutriCooked" class="reveal">NutriCooked</p>
+            <p id="welcome-paragraph" class="reveal">We're your one-stop destination for food 
+                and nutrition. With personalized health analysis, meal tracking, a vast recipe database, 
+                and a motivating point system, we've got everything you need to achieve your health goals. 
+                Eating well has never been easier or more rewarding.</p>
+        </div>
+
+        <div class="food-diary-hp">
+            <img src="Images/home page background image 2.jpeg">
+            <div class="food-diary-text-container">
+                <p id="food-diary-header" class="reveal">START YOUR FOOD DIARY JOURNEY</p>
+                <p id="food-diary-para" class="reveal">Craft your food diary, earn points and win vouchers! Easily track meals, 
+                    snacks, and drinks, foster dietary awareness, and monitor calories. <br>Start your healthy eating 
+                    journey now!</p>
+                <button type="button" class="start-now">START NOW</button>
+            </div>
+            <img src="Images/home page food diary image.png" class="food-diary-img">
+            <img src="Images/arrow.png" class="arrow">
+            <img src="Images/voucher image.png" class="voucher-img">
+            <img src="Images/footsteps.png" class="footsteps1">
+            <img src="Images/footsteps.png" class="footsteps2">
+        </div>        
+        
+
+        <div class="recipes-hp">
+            <img src="Images/home page background image 3.jpeg">
+            <div class="recipes-text-container">
+                <p id="recipes-header" class="reveal">CAN'T DECIDE WHAT TO EAT?</p>
+                <p id="recipes-para" class="reveal">Explore our recipes! Discover a vast array of recipes tailored to your 
+                    preferences and dietary needs. Each recipe comes complete with essential nutritional information, 
+                    including calorie count, macro-nutrient breakdown, and serving sizes. Let us help you find your next 
+                    delicious and nutritious meal!</p>
+                    <a href="Links Directed to/Recipes/recipes-index.html"> <!-- Replace with your actual explore page URL -->
+                        <button type="button" class="explore">EXPLORE</button>
+                    </a>
+            </div>
+        </div>
+
+        <div class="health-report-hp">
+            <img src="Images/home page background image 4.jpeg">
+            <div class="health-report-text-container">
+                <img src="Images/body.png" class="body-img">
+                <div class="health-report-text-content">
+                    <p id="health-report-header" class="reveal">PERSONALISED NUTRITION ANALYSIS</p>
+                    <p id="health-report-para" class="reveal">Explore our recipes! Discover a vast array of recipes tailored to your 
+                    preferences and dietary needs. Each recipe comes complete with essential nutritional information, 
+                    including calorie count, macro-nutrient breakdown, and serving sizes. Let us help you find your next 
+                    delicious and nutritious meal!</p>
+                    <button type="button" class="analyse-now">ANALYSE NOW</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="aboutUs" class="aboutUs-hp">
+            <img src="Images/home page background image 5.jpeg">
+            <div class="aboutUs-text-container">
+                <img src="Images/about us border.png" class="about-us-border-img">
+                <p id="aboutUs-header" class="reveal">About Us</p>
+                <p id="aboutUs-para" class="reveal">Our mission is to provide you with personalized recommendations for a 
+                    healthier lifestyle, guiding you towards optimal well-being. Whether you're seeking to manage dietary 
+                    requirements, or simply lead a healthier life, we're here to support you every step of the way. Join us in 
+                    your quest for wellness and embark on a transformative journey towards a happier, healthier you!</p>
+            </div>
+        </div>
+
+        <div id="contact" class="contactUs-hp">
+            <img src="Images/home page background image 6.jpeg">
+            <p id="contactUs-header" class="reveal">Contact Us</p>
+            <div class="contactUs-content">
+                <div class="handles-container">
+                    <div class="social-handle">
+                        <a href="https://www.instagram.com/ngeeannpoly" target="_blank">
+                            <img src="Images/instagram icon.jpeg" alt="Instagram Icon">
+                            <p class="nutriCooked-handle">@nutriCooked</p>
+                        </a>
+                    </div>
+                    <div class="social-handle">
+                        <a href="https://www.facebook.com/ngeeannpoly" target="_blank">
+                            <img src="Images/facebook icon.png" alt="Facebook Icon">
+                            <p class="nutriCooked-handle">@nutriCooked</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="feedback-container">
+                    <h2>Discover an Issue?</h2>
+                    <form action="#" method="POST" class="feedback-form">
+                        <label for="issue">Describe the issue:</label>
+                        <input type="text" id="issue" name="issue" placeholder="Type your feedback here">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

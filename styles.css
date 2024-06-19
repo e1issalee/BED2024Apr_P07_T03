@@ -1,0 +1,739 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0; 
+    background-color: whitesmoke;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* -------------------------- Navigation Bar --------------------------*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 120%;
+    padding: 35px;
+    position: fixed;
+    z-index: 1000;
+    margin-top: 0px;
+    font-weight: bold;
+    margin-left: -50px;
+}
+
+/* Link styles */
+.navbar a {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 13px; /* Consistent padding */
+    color: black;
+    text-decoration: none;
+}
+
+.navbar img {
+    height: 130px;
+    width: auto;
+}
+
+.navbar a:nth-child(1) { /* HOME */
+    margin-left: 185px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(2),
+.navbar a:nth-child(3) { /* ABOUT US, RECIPES */
+    margin-left: -50px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(4) { /* LOGO */
+    margin-left: -50px;
+    height: 120px;
+    width: auto;
+}
+
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: -55px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+/* Hover effect */
+.navbar a.active,
+.navbar a:hover {
+    background-color: rgba(187, 187, 187, 0.652);
+    color: white; /* Change text color to contrast with background */
+    border-radius: 25px; /* Add rounded corners */
+    width: auto;
+    height: fit-content;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Reset hover effect for image links */
+.navbar a:has(img):hover {
+    background-color: transparent;
+}
+
+/* Dropdown container */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin-right: 420px; /* Adjusted to fit within the navbar */
+    margin-top: 50px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9d7;
+    width: 150px; 
+    max-height: 198px;
+    margin-top: 10px;
+    margin-left: 180px; /* Adjusted left margin */
+    padding: 10px; /* Added padding to the container */
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    overflow: hidden ; /* Ensure content does not overflow */
+}
+
+/* Show dropdown on hover over the .dropbtn */
+.dropdown:hover > .dropdown-content {
+    display: block;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    color: black;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect on dropdown links */
+.dropdown-content a:hover {
+    background-color: #cbcbcb;
+}
+
+/* Adjust spacing between elements */
+.navbar > a,
+.navbar > .dropdown {
+    margin-left: -260px;
+}
+
+/* Style individual links */
+.dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
+    margin-top: 10px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Food Diary/food-diary-index.html"] {
+    margin-top: 8px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Points/points-index.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="logout.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+
+
+/* -------------------------- Home Page --------------------------*/
+.intro {
+    width: 98.93vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide the overflowing parts of the image */
+}
+
+.intro img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+/* Keyframes for animation of welcome-text */
+@keyframes slideInLeftWelcome {
+    0% {
+        transform: translateX(-100%) translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) translateY(-50%);
+        opacity: 1;
+    }
+}
+
+/* Keyframes for animation of NutriCooked */
+@keyframes slideInLeftNutriCooked {
+    0% {
+        transform: translateX(-100%) translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) translateY(-50%);
+        opacity: 1;
+    }
+}
+
+/* Apply animation to elements */
+#welcome-text.reveal {
+    animation: slideInLeftWelcome 2s ease forwards;
+}
+
+#NutriCooked.reveal {
+    animation: slideInLeftNutriCooked 2s ease forwards;
+}
+
+/* Initial hidden state */
+#welcome-text.reveal,
+#NutriCooked.reveal {
+    opacity: 0;
+}
+
+/* Position adjustments */
+#welcome-text {
+    position: absolute;
+    top: 46%; 
+    left: 24%; 
+    color: black;
+    font-size: 24px; 
+    font-weight: bold; 
+}
+
+#NutriCooked {
+    position: absolute;
+    top: 50%; 
+    left: 30%;
+    font-family: "Lobster", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40px; 
+}   
+  
+#welcome-paragraph {
+    position: absolute;
+    top: 38%; 
+    left: 55%;
+    width: 35%;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* ------------------------ Food Diary Section ------------------------ */
+.food-diary-hp {
+    position: relative;
+    width: 98.93vw; 
+    height: 100vh; 
+    overflow: hidden; /* Hide the overflowing parts of the image */
+    border-top: 20px solid rgb(239, 239, 225); /* Add a white border at the top */
+}
+
+.food-diary-hp img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+.food-diary-text-container {
+    position: absolute;
+    top: 48%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 500px;
+    z-index: 1; /* Ensure the text container is above the image */
+}
+
+#food-diary-header {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 15px;
+}
+
+#food-diary-para {
+    font-size: 18px;
+    color: white;
+}
+
+/* Style for the "START NOW" button */
+.start-now {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 12px 20px; /* Padding inside the button */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 5px; /* Space above the button */
+}
+
+/* Hover effect for the button */
+.start-now:hover {
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Focus effect for accessibility */
+.start-now:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.food-diary-img {
+    position: absolute; /* Position the image absolutely */
+    margin-top: 270px;
+    margin-left: -660px;
+    max-width: 200px; /* Ensure it does not exceed this size */
+    max-height: 200px; /* Ensure it does not exceed this size */
+    z-index: 1; /* Ensure it overlays the background image */
+}
+
+.arrow {
+    position: absolute; /* Position the image absolutely */
+    margin-top: 355px;
+    left: 70%;
+    max-width: 80px; /* Ensure it does not exceed this size */
+    max-height: 30px; /* Ensure it does not exceed this size */
+    z-index: 1; /* Ensure it overlays the background image */
+}
+
+.voucher-img {
+    position: absolute; /* Position the image absolutely */
+    margin-top: 295px;
+    left: 78%;
+    max-width: 180px; /* Ensure it does not exceed this size */
+    max-height: 120px; /* Ensure it does not exceed this size */
+    z-index: 1; /* Ensure it overlays the background image */
+}
+
+
+.footsteps1 {
+    position: absolute; /* Position the image absolutely */
+    margin-top: 570px;
+    left: 74%; /* Position from the left */
+    width: 50px; /* Adjust the size to make it smaller */
+    max-width: 150px; /* Ensure it does not exceed this size */
+    max-height: 150px; /* Ensure it does not exceed this size */
+    z-index: 1; /* Ensure it overlays the background image */
+}
+
+.footsteps2 {
+    position: absolute; /* Position the image absolutely */
+    margin-top: 500px;
+    left: 67.5%; /* Position from the left */
+    width: 50px; /* Adjust the size to make it smaller */
+    max-width: 150px; /* Ensure it does not exceed this size */
+    max-height: 150px; /* Ensure it does not exceed this size */
+    z-index: 1; /* Ensure it overlays the background image */
+}
+
+
+/* ------------------------ Recipes Section ------------------------ */
+.recipes-hp {
+    position: relative;
+    width: 98.93vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide the overflowing parts of the image */
+    border-top: 20px solid rgb(239, 239, 225); /* Add a white border at the top */
+}
+
+.recipes-hp img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+.recipes-text-container {
+    position: absolute;
+    top: 52%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 700px;
+    z-index: 1; /* Ensure the text container is above the image */
+}
+
+#recipes-header {
+    font-size: 25px;
+    font-weight: bold;  
+    margin-bottom: 15px;
+}
+
+#recipes-para {
+    font-size: 18px;
+}
+
+.explore {
+    background-color: #6DCFF6; /* Light blue background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 12px 20px; /* Padding inside the button */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 5px; /* Space above the button */
+}
+
+/* Hover effect for the button */
+.explore:hover {
+    background-color: #4CA6B7; /* Darker shade of blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Focus effect for accessibility */
+.start-now:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* ------------------------ Health Report Section ------------------------ */
+.health-report-hp {
+    position: relative;
+    width: 98.93vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide the overflowing parts of the image */
+    border-top: 20px solid rgb(239, 239, 225); /* Add a white border at the top */
+}
+
+.health-report-hp img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+#health-report-header {
+    font-size: 25px;
+    font-weight: bold;  
+    margin-bottom: 15px;
+}
+
+#health-report-para {
+    font-size: 18px;
+}
+
+.analyse-now {
+    background-color: #6DCFF6; /* Light blue background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 5px; /* Space above the button */
+}
+
+/* Hover effect for the button */
+.analyse-now:hover {
+    background-color: #4CA6B7; /* Darker shade of blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+.health-report-text-container {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    color: white;
+    z-index: 1;
+    width: 100vw;
+    height: 500px;
+    box-sizing: border-box;
+}
+
+.health-report-text-content {
+    text-align: center;
+    overflow: hidden; /* Clear float */
+    margin-top: 6%;
+    margin-left: 7%;
+    width: 35%; /* Or any specific width */
+}
+
+.body-img {
+    float: right;
+    margin-top: 70px;
+    margin-right: 250px; /* Adjust margin as needed */
+    max-width: 300px;
+    max-height: 300px; /* Limit the maximum height */
+}
+
+
+/* ------------------------ About Us Section ------------------------ */
+.aboutUs-hp {
+    width: 98.93vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide the overflowing parts of the image */
+    border-top: 20px solid rgb(239, 239, 225); /* Add a white border at the top */
+    position: relative; /* Establish a positioning context for the text */
+}
+
+.aboutUs-hp img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+.aboutUs-text-container {
+    position: absolute; /* Position the text container absolutely */
+    top: 60%; /* Center vertically */
+    left: 70%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by 50% to center accurately */
+    width: 40%;
+    z-index: 1;
+}
+
+#aboutUs-header {
+    font-size: 40px;
+    font-family: "Lobster", sans-serif;
+    font-weight: bold;  
+    margin-bottom: 15px;
+}
+
+#aboutUs-para {
+    font-size: 20px;
+}
+
+.about-us-border-img {
+    float: right;
+    margin-top: 220px;
+    margin-left: -100px; 
+    max-width: 200px;
+    max-height: 200px; /* Limit the maximum height */
+}
+
+/* ------------------------ Contact Us Section ------------------------ */
+.contactUs-hp {
+    width: 98.93vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Hide the overflowing parts of the image */
+    border-top: 20px solid rgb(239, 239, 225); /* Add a white border at the top */
+    position: relative; /* Establish a positioning context for the text */
+}
+
+.contactUs-hp img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to cover the container */
+}
+
+#contactUs-header {
+    position: absolute; /* Position the text container absolutely */
+    top: 30%; 
+    left: 67%;
+    transform: translate(-50%, -50%); /* Offset by 50% to center accurately */
+    width: 40%;
+    z-index: 1;
+    font-size: 30px;
+    font-family: "Lobster", sans-serif;
+    font-weight: bold;  
+}
+
+.contactUs-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; /* Use flexbox to align items horizontally */
+    flex-direction: row; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+    justify-content: space-around; /* Space items evenly */
+    z-index: 1;
+    width: 80%; 
+}
+
+.handles-container {
+    margin-top: 150px;
+    margin-left: 300px;
+    display: flex;
+    flex-direction: column; /* Stack handles vertically */
+    align-items: flex-start; /* Align items to the start */
+}
+
+.social-handle a {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    margin: 10px 0; /* Add some margin between handles */
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Transition for color change over 0.3 seconds with ease */
+}
+
+.social-handle a:hover {
+    color: whitesmoke;
+}
+
+.social-handle img {
+    width: 30px; /* Set a specific size for icons */
+    height: 30px; /* Maintain aspect ratio */
+    margin-right: 20px; /* Add some space between icon and handle */
+}
+
+.nutriCooked-handle {
+    font-size: 20px;
+    margin: 0; /* Remove default margin */
+}
+
+.feedback-container {
+    background-color: rgba(255, 255, 255, 0.434); /* Slightly transparent background */
+    padding: 20px 40px;
+    border-radius: 10px;
+    margin-top: 170px;
+    margin-left: -10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px; /* Increase the maximum width */
+    width: 100%; /* Set the width to 100% */
+    flex: 1; /* Allow it to grow and fill available space */
+}
+
+.feedback-container h2 {
+    margin-bottom: 20px;
+    color: rgb(255, 99, 99);
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feedback-form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.feedback-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.feedback-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.feedback-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Parallax background image *//* Parallax background image */
+.parallax-img {
+    position: absolute;
+    top: 0;
+    left: 0; /* Start at the left edge */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crop the image to cover the container */
+    z-index: -1; /* Place it behind other content */
+    will-change: transform; /* Optimize for performance */
+}
+
+/* Initial hidden state */
+.reveal {
+    position: relative;
+    transform: translateY(1px);
+    opacity: 0;
+    transition: all 2s ease;
+}
+
+.reveal.active {
+    transform: translateY(0px);
+    opacity: 1;
+}
+
+/* --------------------------- Media Queries --------------------------- */
+@media only screen and (max-width: 768px) {
+
+    .navbar {
+        padding: 10px; 
+        font-size: 12px;
+    }
+
+    
+    .navbar img {
+        height: 110px; 
+        width: auto;  
+        margin-left: 50px; /* Center horizontally */
+        margin-right: 50px; /* Center horizontally */
+    }
+
+    .navbar a:nth-child(1) { /* HOME */
+        margin-left: 30px; 
+        margin-top: 20px;
+    }
+
+    .navbar a:nth-child(2) { /* ABOUT US */ 
+        margin-top: 50px;
+    }
+
+    .navbar a:nth-child(4) { /* LOGO */
+        margin-left: -20px;
+        height: 100px; 
+        width: auto;  
+        position: relative;
+    }
+
+    /* Add more adjustments as needed */
+}
