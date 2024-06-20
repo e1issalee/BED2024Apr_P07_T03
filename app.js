@@ -1,9 +1,19 @@
 const express = require("express");
+const usersController = require("./controllers/usersController");
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
+const validateUser = require("./middlewares/validateUser");
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
+
+// Routes for GET requests (replace with appropriate routes for update and delete later)
+app.get("/users", usersController.getAllUsers);
+app.get("/users/:id", usersController.getUserById);
+
+// To be used soon
+//app.post("/books", validateBook, booksController.createBook); // POST for creating books (can handle JSON data)
+//app.put("/books/:id", validateBook, booksController.updateBook);
 
 app.listen(port, async () => {
   try {
