@@ -7,6 +7,8 @@ const validateUser = require("./middlewares/validateUser");
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
+const staticMiddleware = express.static("Links Directed to"); // Path to the Links Directed to folder
+
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
@@ -18,6 +20,7 @@ app.post("/users", validateUser, usersController.createUser); // POST for creati
 app.put("/users/:id", validateUser, usersController.updateUser); // PUT for updating users
 app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
+app.use(staticMiddleware); // Mount the static middleware
 
 app.listen(port, async () => {
   try {
