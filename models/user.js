@@ -44,6 +44,56 @@ class User {
         )
       : null; // Handle user not found
   }
+
+  static async createUser(newUserData) {
+    const connection = await sql.connect(dbConfig);
+
+    const sqlQuery = `INSERT INTO Users (name, email, password) VALUES (@name, @email, @password); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
+
+    const request = connection.request();
+    request.input("name", newUserData.name);
+    request.input("email", newUserData.email);
+    request.input("password", newUserData.password)
+
+    const result = await request.query(sqlQuery);
+
+    connection.close();
+
+    // Retrieve the newly created user using its ID
+    return this.getUserById(result.recordset[0].id);
+  }
+
+  static async updateUser(id, newUserData) {
+    const connection = await sql.connect(dbConfig);
+
+    const sqlQuery = `UPDATE Users SET name = @name, email = @email, password = @password WHERE id = @id`; // Parameterized query
+
+    const request = connection.request();
+    request.input("id", id);
+    request.input("name", newUserData.name || null); // Handle optional fields
+    request.input("email", newUserData.email || null);
+    request.input("password", newUserData.password || null);
+
+    await request.query(sqlQuery);
+
+    connection.close();
+
+    return this.getUserById(id); // returning the updated user data
+  }
+
+  static async deleteUser(id) {
+    const connection = await sql.connect(dbConfig);
+
+    const sqlQuery = `DELETE FROM Users WHERE id = @id`; // Parameterized query
+
+    const request = connection.request();
+    request.input("id", id);
+    const result = await request.query(sqlQuery);
+
+    connection.close();
+
+    return result.rowsAffected > 0; // Indicate success based on affected rows
+  }
 }
 
 module.exports = User;
