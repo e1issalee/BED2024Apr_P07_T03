@@ -7,13 +7,17 @@ const validateUser = require("./middlewares/validateUser");
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
+// Include body-parser middleware to handle JSON data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
+
 // Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);
 app.get("/users/:id", usersController.getUserById);
+app.post("/users", validateUser, usersController.createUser); // POST for creating user (can handle JSON data)
+app.put("/users/:id", validateUser, usersController.updateUser); // PUT for updating users
+app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
-// To be used soon
-//app.post("/books", validateBook, booksController.createBook); // POST for creating books (can handle JSON data)
-//app.put("/books/:id", validateBook, booksController.updateBook);
 
 app.listen(port, async () => {
   try {
