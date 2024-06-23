@@ -3,6 +3,7 @@ const usersController = require("./controllers/usersController");
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
+const bodyParser = require("body-parser"); // Import body-parser
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
