@@ -280,6 +280,39 @@ html {
     text-decoration: underline;
 }
 
+/* Sign Up */
+.signup-box {
+    border: 3px solid rgb(17, 7, 72);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    border-radius: 10px;
+}
+
+#contact-submit {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#contact-submit:hover {
+    background-color: #0056b3;
+}
+
 /* -------------------------- Home Page --------------------------*/
 .intro {
     width: 98.93vw; /* Full width of the viewport */
