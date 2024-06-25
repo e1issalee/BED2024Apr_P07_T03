@@ -49,6 +49,195 @@ tabBtns.forEach((tabBtn, index) => {
     });
 });
 
+// ======================= Search Bar  =======================
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content-item');
+  let currentTab = 'breakfast';
+
+  // Handle tab switching
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        currentTab = button.getAttribute('data-tab');
+        document.getElementById(currentTab).classList.add('active');
+        fetchFoodItems(currentTab);
+    });
+  });
+
+  const currentTabContent  = document.getElementById(currentTab); // Represents the currently active tab's content
+
+  currentTabContent.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-button')) {
+        const iconElement = event.target;
+        const foodItem = iconElement.closest('.food-item');
+
+        if (foodItem) {
+            const itemId = foodItem.getAttribute('data-item-id');
+            removeFoodItem(itemId); // Pass itemId to removeFoodItem function
+        }
+    }
+});
+
+
+  const resultsBox = document.querySelector(".result-box");
+  const inputBox = document.getElementById("input-box");
+  
+
+  inputBox.addEventListener('keyup', () => {
+      let input = inputBox.value.trim().toLowerCase();
+      if (input.length) {
+          // Clear results box and show a loading state
+          resultsBox.innerHTML = '<div class="loading">Loading...</div>';
+          resultsBox.style.display = 'block';
+
+          fetch(`http://localhost:3000/nutrition?query=${encodeURIComponent(input)}`)
+              .then(response => response.json())
+              .then(data => {
+                  let apiResults = data.items.map(item => ({
+                      name: titleCase(item.name),
+                      calories: item.calories !== undefined ? item.calories.toFixed(2) : 'N/A',
+                      servingSize: item.serving_size_g !== undefined ? item.serving_size_g + 'g' : 'N/A',
+                      carbs: item.carbohydrates_total_g !== undefined ? item.carbohydrates_total_g + 'g' : 'N/A',
+                      protein: item.protein_g !== undefined ? item.protein_g + 'g' : 'N/A',
+                      fat: item.fat_total_g !== undefined ? item.fat_total_g + 'g' : 'N/A'
+                  }));
+                  display(apiResults);
+              });
+      } else {
+          resultsBox.innerHTML = '';
+          resultsBox.style.display = 'none';
+      }
+  });
+
+  function titleCase(str) {
+      return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
+  function display(results) {
+      if (results.length === 0) {
+          resultsBox.innerHTML = '<div class="no-results">No results found</div>';
+      } else {
+          const content = results.map(item => {
+              return `
+                  <li onclick="selectInput(this)" data-item='${JSON.stringify(item)}'>
+                      <div class="food-name">${item.name}</div>
+                      <div class="nutrients">
+                          ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> ${item.calories} cal` : ''}
+                          ${item.servingSize ? ` &nbsp; &bull; &nbsp; Serving Size: ${item.servingSize}` : ''} 
+                      </div>
+                      <div class="add-button" onclick="addItemToList('${item.name}', ${item.calories})">
+                        <i class="fa-solid fa-circle-plus"></i>
+                      </div>
+                  </li>
+              `;
+          }).join('');
+
+          resultsBox.innerHTML = "<ul>" + content + "</ul>";
+      }
+  }
+
+  window.selectInput = function(listItem) {
+      const foodItem = JSON.parse(listItem.getAttribute('data-item'));
+      addFoodToTab(foodItem);
+      resultsBox.innerHTML = '';
+      resultsBox.style.display = 'none';
+  };
+
+  async function addFoodToTab(item) {
+    try {
+        // Make a POST request to save the food item and get back the generated itemId
+        const response = await fetch('http://localhost:3000/food', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tabName: currentTab,
+                name: item.name,
+                calories: item.calories,
+                servingSize: item.servingSize,
+                carbs: item.carbs,
+                protein: item.protein,
+                fat: item.fat
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add food item');
+        }
+
+        const responseData = await response.json();
+        const itemId = responseData.id; // Assuming the server returns the generated ID in the response
+
+        const foodHtml = `
+            <div class="food-item" data-item-id="${itemId}">
+                <div class="food-info">
+                    <div class="food-name">${item.name}</div>
+                    <div class="nutrients">
+                        ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> ${item.calories} cal` : ''}
+                        ${item.servingSize ? ` &nbsp; &bull; &nbsp; Serving Size: ${item.servingSize}` : ''}
+                    </div>
+                    <div class="nutrients2">
+                        ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> ${item.carbs}` : ''}
+                        ${item.protein ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> ${item.protein}` : ''}
+                        ${item.fat ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> ${item.fat}` : ''}
+                        <button class="delete-button" data-item-id="${itemId}"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const foodContainer = document.createElement('div');
+        foodContainer.innerHTML = foodHtml;
+
+        const tabContent = document.getElementById(currentTab);
+        tabContent.appendChild(foodContainer); // Append the new food container to the tab content
+
+        alert('Food item added successfully!');
+    } catch (error) {
+        console.error('Error adding food item:', error);
+        alert('Error adding food item');
+    }
+  }
+
+  async function removeFoodItem(itemId) {
+      if (itemId) {
+        try {
+            const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete food item');
+            }
+
+            const foodItem = document.querySelector(`.food-item[data-item-id="${itemId}"]`);
+            if (foodItem) {
+                foodItem.remove();
+                alert('Food item deleted successfully!');
+            } else {
+                console.error('Food item not found in UI');
+                alert('Error deleting food item');
+            }
+        } catch (error) {
+            console.error('Error deleting food item:', error);
+            alert('Error deleting food item');
+        }
+    } else {
+        console.error('Cannot delete item: itemId is undefined');
+        alert('Cannot delete item: itemId is undefined');
+    }
+  }
+});
+
+
 // ======================= Calendar  =======================
 const calendar = document.querySelector(".calendar"),
   date = document.querySelector(".date"),
@@ -311,10 +500,13 @@ function updateEvents(date) {
       });
     }
   });
+
   if (events === "") {
-    events = `<div class="no-event">
-            <h3>No Events</h3>
-        </div>`;
+    events = `
+      <div class="no-event">
+        <h6>You have not logged any food yet.</h6>
+      </div>
+    `;
   }
   eventsContainer.innerHTML = events;
   saveEvents();

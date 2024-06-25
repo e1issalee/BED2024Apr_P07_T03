@@ -50,4 +50,3 @@ window.addEventListener('scroll', debounce(function() {
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For mobile or negative scrolling
 }));
-

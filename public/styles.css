@@ -168,13 +168,156 @@ html {
     margin-left: 2px; 
 }
 
-.dropdown-content a[href="logout.html"] {
+.dropdown-content a[href="login.html"] {
     margin-top: 5px;
     margin-left: 2px; 
     margin-bottom: 13px;
 }
 
+.dropdown-content a[href="signup.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
 
+/* Container for the form */
+.login-box {
+    border: 3px solid black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    border-radius: 10px;
+}
+
+/* Styling for the form to center items */
+#login-contact-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Input group container */
+.input-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* General styling for all input boxes */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Specific styling for email input box */
+.email-box {
+    background-color: #f9f9f9;
+}
+
+/* Specific styling for password input box */
+.password-box {
+    background-color: #f9f9f9;
+}
+
+/* Focus state for input boxes */
+.input-group input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0,123,255,0.5);
+    outline: none;
+}
+
+/* Placeholder styling */
+.input-group input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Styling for the form-check */
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the remember me checkbox and label */
+.form-check-input {
+    margin-right: 5px;
+}
+
+/* Styling for the login button */
+#login-submit {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#login-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for the sign up link */
+.row {
+    text-align: center;
+}
+
+.row a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.row a:hover {
+    text-decoration: underline;
+}
+
+/* Sign Up */
+.signup-box {
+    border: 3px solid rgb(17, 7, 72);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    border-radius: 10px;
+}
+
+#contact-submit {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#contact-submit:hover {
+    background-color: #0056b3;
+}
 
 /* -------------------------- Home Page --------------------------*/
 .intro {
