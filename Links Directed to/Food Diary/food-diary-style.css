@@ -161,7 +161,7 @@
         margin-left: 2px; 
     }
 
-    .dropdown-content a[href="logout.html"] {
+    .dropdown-content a[href="../../login.html"] {
         margin-top: 5px;
         margin-left: 2px; 
         margin-bottom: 13px;

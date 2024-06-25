@@ -1,8 +1,8 @@
 module.exports = {
-    user: "username", // Replace with your SQL Server login username
-    password: "password", // Replace with your SQL Server login password
+    user: "NutriCooked", // Replace with your SQL Server login username
+    password: "NutriCooked12345", // Replace with your SQL Server login password
     server: "localhost",
-    database: "bed_db", // Replace with our db name
+    database: "NutriCooked_DB", // Replace with our db name
     trustServerCertificate: true,
     options: {
       port: 1433, // Default SQL Server port
