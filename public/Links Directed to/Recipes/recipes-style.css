@@ -1,0 +1,303 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0; 
+    background-color: whitesmoke;
+}
+
+/* -------------------------- Navigation Bar --------------------------*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 120%;
+    padding: 35px;
+    position: fixed;
+    z-index: 1000;
+    margin-top: 0px;
+    font-weight: bold;
+    margin-left: -50px;
+}
+
+/* Link styles */
+.navbar a {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 13px; /* Consistent padding */
+    color: black;
+    text-decoration: none;
+}
+
+.navbar img {
+    height: 130px;
+    width: auto;
+}
+
+.navbar a:nth-child(1) { /* HOME */
+    margin-left: 185px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(2),
+.navbar a:nth-child(3) { /* ABOUT US, RECIPES */
+    margin-left: -50px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(4) { /* LOGO */
+    margin-left: -50px;
+    height: 120px;
+    width: auto;
+}
+
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: -55px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+/* Hover effect */
+.navbar a.active,
+.navbar a:hover {
+    background-color: rgba(187, 187, 187, 0.652);
+    color: white; /* Change text color to contrast with background */
+    border-radius: 25px; /* Add rounded corners */
+    width: auto;
+    height: fit-content;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Reset hover effect for image links */
+.navbar a:has(img):hover {
+    background-color: transparent;
+}
+
+/* Dropdown container */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin-right: 420px; /* Adjusted to fit within the navbar */
+    margin-top: 50px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9d7;
+    width: 150px; 
+    max-height: 198px;
+    margin-top: 10px;
+    margin-left: 180px; /* Adjusted left margin */
+    padding: 10px; /* Added padding to the container */
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    overflow: hidden ; /* Ensure content does not overflow */
+}
+
+/* Show dropdown on hover over the .dropbtn */
+.dropdown:hover > .dropdown-content {
+    display: block;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    color: black;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect on dropdown links */
+.dropdown-content a:hover {
+    background-color: #cbcbcb;
+}
+
+/* Adjust spacing between elements */
+.navbar > a,
+.navbar > .dropdown {
+    margin-left: -260px;
+}
+
+/* Style individual links */
+.dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
+    margin-top: 10px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Food Diary/food-diary-index.html"] {
+    margin-top: 8px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Points/points-index.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="logout.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+/* Recipe Page */
+.btn{
+    font-family: inherit;
+    cursor: pointer;
+    outline: 0;
+    font-size: 1.05rem;
+}
+.text{
+    opacity: 0.8;
+}
+.title{
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.recipes-container{
+    min-height: 100vh;
+}
+.recipe-wrapper{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 15rem;
+    background: #fff;
+    text-align: center;
+}
+.recipe-search{
+    margin: 2rem 0;
+}
+.recipe-search cite{
+    font-size: 1rem;
+}
+.recipe-search-box{
+    margin: 1.2rem 0;
+    display: flex;
+    align-items: stretch;
+}
+.search-control,
+.search-btn{
+    width: 100%;
+}
+.search-control{
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    outline: 0;
+    border: 1px solid var(#000000);
+    color:#fff;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+}
+.search-control::placeholder{
+    color: #000000;
+}
+.search-btn{
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+    background: var(#fff);
+    color: #000000;
+    border: none;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    transition: all 0.4s linear;
+}
+.search-btn:hover{
+    background: var(#cbcbcb);
+}
+.recipe-result{
+    margin-top: 4rem;
+}
+#recipe{
+    margin: 2.4rem 0;
+}
+.recipe-item{
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.79);
+    margin: 2rem 0;
+}
+.recipe-img img{
+    width: 100%;
+    display: black;
+}
+.recipe-name{
+    padding: 1.5rem 0.5rem;
+}
+.recipe-name h3{
+    font-size: 1.4rem;
+}
+.recipe-btn{
+    text-decoration: none;
+    color:#000000;
+    background: var(#f9f9f9d7);
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    display: block;
+    width: 175px;
+    margin: 1rem auto;
+    border-radius: 2rem;
+    transition: all 0.4s linear;
+}
+.recipe-btn:hover{
+background: var(#cbcbcb);
+}
+
+/* Media Queries */
+@media screen and (min-width: 600px) {
+    .recipe-search-box{
+        width: 540px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (min-width: 768px){
+    #recipe{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    .recipe-item{
+        margin: 0;
+    }
+}
+
+@media screen and (min-width: 992px){
+    #recipe{
+        grid-template-columns: repeat(3, 1fr);
+        
+    }
+}
