@@ -4,14 +4,31 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class Food {
-    constructor(id, name, calories, servingSize, carbs, protein, fat) {
-      this.id = id;
-      this.name = name;
-      this.calories = calories;
-      this.servingSize = servingSize;
-      this.carbs = carbs;
-      this.protein = protein;
-      this.fat = fat;
+  constructor(id, tabName, name, calories, servingSize, carbs, protein, fat) {
+    this.id = id;
+    this.tabName = tabName;
+    this.name = name;
+    this.calories = calories;
+    this.servingSize = servingSize;
+    this.carbs = carbs;
+    this.protein = protein;
+    this.fat = fat;
+    }
+
+    static async saveTabContent(tabName) {
+      try {
+        const connection = await sql.connect(dbConfig);
+  
+        // SQL query to insert tabName into Tabs table (adjust as per your schema)
+        const sqlQuery = 'INSERT INTO tabName (tabName) VALUES (@tabName)';
+        const result = await connection.query(sqlQuery, { tabName });
+  
+        connection.close();
+        return result; // Return any relevant data if needed
+      } catch (error) {
+        console.error('Error saving tab name:', error);
+        throw error; // Propagate the error to be handled by the caller
+      }
     }
   
     static async getAllFoodItems() {
@@ -27,6 +44,7 @@ class Food {
       return result.recordset.map(
         (row) => new Food(
           row.id,
+          row.tabName,
           row.name,
           row.calories,
           row.servingSize,
@@ -51,6 +69,7 @@ class Food {
       return result.recordset[0]
         ? new Food(
             result.recordset[0].id,
+            result.recordset[0].tabName,
             result.recordset[0].name,
             result.recordset[0].calories,
             result.recordset[0].servingSize,
@@ -115,6 +134,22 @@ class Food {
     } catch (error) {
         console.error("Error creating food item:", error);
         res.status(500).send("Error creating food item");
+    }
+
+    static async fetchFoodItems() {
+      try {
+        const connection = await sql.connect(dbConfig);
+        
+        const sqlQuery = 'SELECT * FROM FoodItems'; // SQL query to fetch all records from FoodItems table
+        
+        const result = await connection.query(sqlQuery);
+        connection.close();
+    
+        return result.recordset; // Return the fetched records as an array of objects
+      } catch (error) {
+        console.error('Error fetching food items:', error);
+        throw new Error('Failed to fetch food items');
+      }
     }
     
     static async deleteFoodItem(id) {

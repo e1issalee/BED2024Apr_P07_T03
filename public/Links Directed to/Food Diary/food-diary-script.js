@@ -19,35 +19,268 @@ window.addEventListener('scroll', function() {
 });
 
 // ======================= Tab Navigation Bar  =======================
+const tabBtns = document.querySelectorAll(".tab-btn"); 
+const tabs = document.querySelectorAll(".tab-menu li"); 
 
-const tabBtns = document.querySelectorAll(".tab-btn"); // Corrected selector for tab buttons
-const tabs = document.querySelectorAll(".tab-menu li"); // Corrected selector for tabs
+// Function to save tab data to the database
+  function saveTabData(tabIndex) {
+    const tabName = tabs[tabIndex].innerText.toLowerCase(); 
 
-// Function to handle tab navigation
+    // Example of data saving logic (replace with your actual implementation)
+    fetch('http://localhost:3000/tabNames', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tabName: tabName,
+            // Include any other relevant data you need to save
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save tab data');
+        }
+        console.log('Tab data saved successfully!');
+    })
+    .catch(error => {
+        console.error('Error saving tab data:', error);
+        alert('Error saving tab data');
+    });
+  }
+
 const tab_Nav = function(tabBtnClick) {
-    tabBtns.forEach((tabBtn, index) => {
-        if (index === tabBtnClick) {
-            tabBtn.classList.add("active");
-        } else {
-            tabBtn.classList.remove("active");
-        }
-    });
+  tabBtns.forEach((tabBtn, index) => {
+      if (index === tabBtnClick) {
+          tabBtn.classList.add("active");
+      } else {
+          tabBtn.classList.remove("active");
+      }
+  });
 
-    tabs.forEach((tab, index) => {
-        if (index === tabBtnClick) {
-            tab.classList.add("active");
-        } else {
-            tab.classList.remove("active");
-        }
-    });
+  tabs.forEach((tab, index) => {
+    if (index === tabBtnClick) {
+        tab.classList.add("active");
+    } else {
+        tab.classList.remove("active");
+    }
+  });
+  // Call function to save tab data to the database
+  saveTabData(tabBtnClick);
 }
+// ======================= Search Bar  =======================
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content-item');
+  let currentTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
 
-// Adding click event listeners to tab buttons
-tabBtns.forEach((tabBtn, index) => {
-    tabBtn.addEventListener("click", () => {
+  // Function to handle tab switching and save tab data
+  const tab_Nav = function(tabBtnClick) {
+    const tabName = tabButtons[tabBtnClick].getAttribute('data-tab'); // Get the data-tab attribute value
+    saveTabData(tabBtnClick, tabName); // Call function to save tab data
+  }
+  
+  // Handle tab switching
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        currentTab = button.getAttribute('data-tab');
+        document.getElementById(currentTab).classList.add('active');
+
+        // Call tab_Nav function to save tab data to the database
         tab_Nav(index);
+
+        fetchFoodItems(currentTab);
     });
+  });
+
+
+  const currentTabContent  = document.getElementById(currentTab); // Represents the currently active tab's content
+
+  currentTabContent.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-button')) {
+        const iconElement = event.target;
+        const foodItem = iconElement.closest('.food-item');
+
+        if (foodItem) {
+            const itemId = foodItem.getAttribute('data-item-id');
+            removeFoodItem(itemId); // Pass itemId to removeFoodItem function
+        }
+    }
 });
+
+
+  const resultsBox = document.querySelector(".result-box");
+  const inputBox = document.getElementById("input-box");
+  
+  inputBox.addEventListener('keyup', () => {
+      let input = inputBox.value.trim().toLowerCase();
+      if (input.length) {
+          // Clear results box and show a loading state
+          resultsBox.innerHTML = '<div class="loading">Loading...</div>';
+          resultsBox.style.display = 'block';
+
+          fetch(`http://localhost:3000/nutrition?query=${encodeURIComponent(input)}`)
+              .then(response => response.json())
+              .then(data => {
+                  let apiResults = data.items.map(item => ({
+                      name: titleCase(item.name),
+                      calories: item.calories !== undefined ? item.calories.toFixed(2) : 'N/A',
+                      servingSize: item.serving_size_g !== undefined ? item.serving_size_g + 'g' : 'N/A',
+                      carbs: item.carbohydrates_total_g !== undefined ? item.carbohydrates_total_g + 'g' : 'N/A',
+                      protein: item.protein_g !== undefined ? item.protein_g + 'g' : 'N/A',
+                      fat: item.fat_total_g !== undefined ? item.fat_total_g + 'g' : 'N/A'
+                  }));
+                  display(apiResults);
+              });
+      } else {
+          resultsBox.innerHTML = '';
+          resultsBox.style.display = 'none';
+      }
+  });
+
+  function titleCase(str) {
+      return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
+  function display(results) {
+      if (results.length === 0) {
+          resultsBox.innerHTML = '<div class="no-results">No results found</div>';
+      } else {
+          const content = results.map(item => {
+              return `
+                  <li onclick="selectInput(this)" data-item='${JSON.stringify(item)}'>
+                      <div class="food-name">${item.name}</div>
+                      <div class="nutrients">
+                          ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> ${item.calories} cal` : ''}
+                          ${item.servingSize ? ` &nbsp; &bull; &nbsp; Serving Size: ${item.servingSize}` : ''} 
+                      </div>
+                      <div class="add-button" onclick="addItemToList('${item.name}', ${item.calories})">
+                        <i class="fa-solid fa-circle-plus"></i>
+                      </div>
+                  </li>
+              `;
+          }).join('');
+
+          resultsBox.innerHTML = "<ul>" + content + "</ul>";
+      }
+  }
+
+  window.selectInput = function(listItem) {
+      const foodItem = JSON.parse(listItem.getAttribute('data-item'));
+      addFoodToTab(foodItem);
+      resultsBox.innerHTML = '';
+      resultsBox.style.display = 'none';
+  };
+
+  async function addFoodToTab(item) {
+    try {
+        // Make a POST request to save the food item and get back the generated itemId
+        const response = await fetch('http://localhost:3000/food', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tabName: currentTab,
+                name: item.name,
+                calories: item.calories,
+                servingSize: item.servingSize,
+                carbs: item.carbs,
+                protein: item.protein,
+                fat: item.fat
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add food item');
+        }
+
+        const responseData = await response.json();
+        const itemId = responseData.id; // Assuming the server returns the generated ID in the response
+
+        const foodHtml = `
+            <div class="food-item" data-item-id="${itemId}">
+                <div class="food-info">
+                    <div class="food-name">${item.name}</div>
+                    <div class="nutrients">
+                        ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> ${item.calories} cal` : ''}
+                        ${item.servingSize ? ` &nbsp; &bull; &nbsp; Serving Size: ${item.servingSize}` : ''}
+                    </div>
+                    <div class="nutrients2">
+                        ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> ${item.carbs}` : ''}
+                        ${item.protein ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> ${item.protein}` : ''}
+                        ${item.fat ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> ${item.fat}` : ''}
+                        <button class="delete-button" data-item-id="${itemId}"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const foodContainer = document.createElement('div');
+        foodContainer.innerHTML = foodHtml;
+
+        const tabContent = document.getElementById(currentTab);
+        tabContent.appendChild(foodContainer); // Append the new food container to the tab content
+
+        alert(`Food item added successfully for ${currentTab}!`);
+    } catch (error) {
+        console.error('Error adding food item:', error);
+        alert('Error adding food item');
+    }
+  }
+
+  async function removeFoodItem(itemId) {
+      if (itemId && currentTab) {
+        try {
+            const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete food item');
+            }
+
+            const foodItem = document.querySelector(`.food-item[data-item-id="${itemId}"]`);
+            if (foodItem) {
+                foodItem.remove();
+                alert('Food item deleted successfully!');
+            } else {
+                console.error('Food item not found in UI');
+                alert('Error deleting food item');
+            }
+        } catch (error) {
+            console.error('Error deleting food item:', error);
+            alert('Error deleting food item');
+        }
+    } else {
+        console.error('Cannot delete item: itemId is undefined');
+        alert('Cannot delete item: itemId is undefined');
+    }
+  }
+
+  async function fetchFoodItems(currentTab) {
+    try {
+        const response = await fetch(`http://localhost:3000/foodItems?tab=${currentTab}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch food items');
+        }
+        const data = await response.json();
+        // Process data and update UI with fetched items
+        console.log('Fetched food items:', data);
+    } catch (error) {
+        console.error('Error fetching food items:', error);
+        // Handle error, possibly show user-friendly message
+    }
+  }
+});
+
 
 // ======================= Calendar  =======================
 const calendar = document.querySelector(".calendar"),

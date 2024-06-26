@@ -32,15 +32,17 @@ app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE fo
 app.use(staticMiddleware); // Mount the static middleware
 
 // [FOOD] ======================================================
+app.post('/tabNames', foodItemsController.saveTabContent);
 app.post('/food', foodItemsController.createFoodItem);
 app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
 app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 app.get('/nutrition', foodItemsController.getNutritionData);
+app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
 
 app.listen(port, async () => {
   try {
-    // Connect to the database
+    // Connect to the datsabase
     await sql.connect(dbConfig);
     console.log("Database connection established successfully");
     console.log(`Server is running on http://localhost:${port}`);
