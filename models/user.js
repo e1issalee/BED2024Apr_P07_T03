@@ -59,6 +59,34 @@ class User {
 
   }
 
+  static async getUserByEmailAndPassword(email, password) {
+    let connection;
+    try {
+        connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `
+            SELECT * FROM Users 
+            WHERE email = @Email 
+            AND password = @Password
+        `;
+        
+        const request = connection.request();
+        request.input('Email', email);
+        request.input('Password', password);
+        
+        const result = await request.query(sqlQuery);
+
+        return result.recordset[0];
+    } catch (error) {
+        console.error('SQL error', error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.close();
+        }
+    }
+  }
+
   static async createUser(newUserData) {
     
     let connection;

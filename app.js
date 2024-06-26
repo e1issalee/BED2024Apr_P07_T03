@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.post('/users/login', usersController.getUserByEmailAndPassword)
 app.post('/users/create', validateUser, usersController.createUser)
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)

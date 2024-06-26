@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles.css" type="text/css">
 
     <!-- Link to the external JS file -->
-    <script src="script.js"></script>
+    <script src="login-script.js"></script>
 </head>
 <body>
     <div class="navbar">
@@ -29,7 +29,7 @@
         <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
         <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
         <div class="dropdown">
-            <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+            <a href="#signUp-Login" class="dropbtn" id="login-dropdown" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="Links Directed to/Health Report/health-report-index.html">Health Report</a>
                 <a href="Links Directed to/Food Diary/food-diary-index.html">Food Diary</a>
@@ -45,10 +45,10 @@
         <h2> Login </h2>
         <form id="login-contact-form">
         <div class="input-group mb-3">
-            <input type="email" id="user-email" class="email-box" placeholder="Email address">
+            <input type="email" id="login-user-email" class="email-box" placeholder="Email address">
         </div>
         <div class="input-group mb-3">
-            <input type="password" id="user-pwd" class="password-box" placeholder="Password">
+            <input type="password" id="login-user-pwd" class="password-box" placeholder="Password">
         </div>
         <!-- Remember Me & Forgot Password -->
         <div class="input-group mb-5 d-flex justify-content-between">
