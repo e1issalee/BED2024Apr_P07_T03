@@ -1,0 +1,216 @@
+
+/* -------------------------- HR Home Page --------------------------*/
+body.health-report-page {
+    background-image: url('../../Images/healthReportPage.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Ensures the background image remains fixed as the content scrolls */
+    font-family: 'Inter', sans-serif; /* Example: Applying a Google Font to the entire page */
+    color: #333; /* Example: Setting text color */
+}
+
+/* -------------------------- Navigation Bar --------------------------*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 120%;
+    padding: 35px;
+    position: fixed;
+    z-index: 1000;
+    margin-top: -120px;
+    font-weight: bold;
+    margin-left: -58px;
+}
+
+/* Link styles */
+.navbar a {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 13px; /* Consistent padding */
+    color: black;
+    text-decoration: none;
+}
+
+.navbar img {
+    height: 130px;
+    width: auto;
+}
+
+.navbar a:nth-child(1) { /* HOME */
+    margin-left: 185px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(2),
+.navbar a:nth-child(3) { /* ABOUT US, RECIPES */
+    margin-left: -50px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(4) { /* LOGO */
+    margin-left: -50px;
+    height: 120px;
+    width: auto;
+}
+
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: -55px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+/* Hover effect */
+.navbar a.active,
+.navbar a:hover {
+    background-color: rgba(187, 187, 187, 0.652);
+    color: white; /* Change text color to contrast with background */
+    border-radius: 25px; /* Add rounded corners */
+    width: auto;
+    height: fit-content;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Reset hover effect for image links */
+.navbar a:has(img):hover {
+    background-color: transparent;
+}
+
+/* Dropdown container */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin-right: 420px; /* Adjusted to fit within the navbar */
+    margin-top: 50px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9d7;
+    width: 150px; 
+    max-height: 198px;
+    margin-top: 10px;
+    margin-left: 180px; /* Adjusted left margin */
+    padding: 10px; /* Added padding to the container */
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    overflow: hidden ; /* Ensure content does not overflow */
+}
+
+/* Show dropdown on hover over the .dropbtn */
+.dropdown:hover > .dropdown-content {
+    display: block;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    color: black;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect on dropdown links */
+.dropdown-content a:hover {
+    background-color: #cbcbcb;
+}
+
+/* Adjust spacing between elements */
+.navbar > a,
+.navbar > .dropdown {
+    margin-left: -260px;
+}
+
+/* Style individual links */
+.dropdown-content a[href="healthReport.html"] {
+    margin-top: 10px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="foodDiary.html"] {
+    margin-top: 8px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="points.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="logout.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+
+.container {
+    max-width: 100%;
+    margin: 120px auto 20px; /* Adjusted margin */
+    padding-top: 70px;
+    padding-bottom: 300px;
+    background-color: rgba(255, 255, 255, 0.477);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center align content */
+}
+
+h1 {
+    font-size: 30px; /* Adjusted font size */
+    margin-bottom: 20px; /* Added margin bottom */
+}
+
+/* health report form */
+.healthReportForm button {
+    background-color: #242424; /* Light blue background */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 5px; /* Space above the button */
+}
+
+/* Style for error messages */
+.error {
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+

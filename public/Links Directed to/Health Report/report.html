@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCooked</title>
+
+    <!-- Google Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap" rel="stylesheet">
+
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="reportStyle.css" type="text/css">
+
+    <!-- Link to the external JS file -->
+    <script src="reportScript.js"></script>
+    <script src="../../../middlewares/reportValidate.js"></script>
+</head>
+<body class="report-page"> <!-- Added class for background image -->
+    <div class="navbar">
+        <a href="index.html#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="recipes.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="index.html#home" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
+        <a href="index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <a href="index.html#credit" onclick="toggleActive(this)">CREDIT</a>
+        <div class="dropdown">
+            <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="healthReport.html">Health Report</a>
+                <a href="foodDiary.html">Food Diary</a>
+                <a href="points.html">Points</a>
+                <a href="logout.html">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="report-container">
+      <div id="dataContainer" class="report-details-container">
+          <h2>Here’s your generated report!</h2>
+          <p><strong>UserName:</strong> <span id="userName"></span></p>
+          <p><strong>Age:</strong> <span id="userAge"></span></p>
+          <p><strong>Height (in m):</strong> <span id="userHeight"></span></p>
+          <p><strong>Weight (in kg):</strong> <span id="userWeight"></span></p>
+          <p><strong>Gender:</strong> <span id="userGender"></span></p>
+          <p><strong>Activity Level:</strong> <span id="userActivityLevel"></span></p>
+          <p><strong>BMI:</strong> <span id="userBMI"></span></p>
+          <p><strong>Daily Caloric Intake:</strong> <span id="userDailyCaloricIntake"></span></p>
+          <p><strong>Body Fat Percentage:</strong> <span id="userBodyFatPercentage"></span></p>
+          <p><strong>BMI Range:</strong> <span id="userBMIRange"></span></p>
+          <p><strong>BFP Range:</strong> <span id="userBFPRange"></span></p>
+      </div>
+  </div>
+</body>
+</html>
