@@ -58,42 +58,37 @@ window.onclick = function(event) {
         }
     }
 }
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Find the "Create" button by its id
-    const createButton = document.getElementById('contact-submit');
+    // Find the "Login" button by its id
+    const loginButton = document.getElementById('login-submit');
     
-    createButton.addEventListener('click', async function(event) {
+    loginButton.addEventListener('click', async function(event) {
         event.preventDefault(); // Prevent the default form submission behavior
-        const name = document.getElementById('user-name').value;
-        const email = document.getElementById('user-email').value;
-        const password = document.getElementById('user-pwd').value;
-        const newUser = {
-            name: name,
-            email: email,
-            password: password,
-            points: 0, // Preset to 0
-            numberOfVouchers: 0 // Preset to 0
-        };
-    
+        const email = document.getElementById('login-user-email').value;
+        const password = document.getElementById('login-user-pwd').value;
+
         try {
-            const response = await fetch('http://localhost:3000/users/create', {
+            const response = await fetch('http://localhost:3000/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(newUser)
+                body: JSON.stringify({ email, password })
             });
+
             if (response.ok) {
-                const createdUser = await response.json();
-                alert('User created successfully!');
-                console.log('Created User:', createdUser);
+                const user = await response.json();
+                alert('Login successful!');
+                localStorage.setItem('user', JSON.stringify(user));
+                document.getElementById('login-dropdown').innerText = user.name;
             } else {
-                alert('Error creating user');
-                console.error('Error:', response.statusText);
+                const errorData = await response.json();
+                alert('Error logging in: ' + (errorData.message || 'Invalid credentials'));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error creating user');
+            alert('Error logging in');
         }
     });
 });
