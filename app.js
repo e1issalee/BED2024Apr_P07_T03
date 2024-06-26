@@ -37,11 +37,13 @@ app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE fo
 
 
 // [FOOD] ======================================================
+app.post('/tabNames', foodItemsController.saveTabContent);
 app.post('/food', foodItemsController.createFoodItem);
 app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
 app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 app.get('/nutrition', foodItemsController.getNutritionData);
+app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
 
 // [health report] 
 app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
@@ -50,7 +52,7 @@ app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUse
 
 app.listen(port, async () => {
   try {
-    // Connect to the database
+    // Connect to the datsabase
     await sql.connect(dbConfig);
     console.log("Database connection established successfully");
     console.log(`Server is running on http://localhost:${port}`);

@@ -19,42 +19,67 @@ window.addEventListener('scroll', function() {
 });
 
 // ======================= Tab Navigation Bar  =======================
+const tabBtns = document.querySelectorAll(".tab-btn"); 
+const tabs = document.querySelectorAll(".tab-menu li"); 
 
-const tabBtns = document.querySelectorAll(".tab-btn"); // Corrected selector for tab buttons
-const tabs = document.querySelectorAll(".tab-menu li"); // Corrected selector for tabs
+// Function to save tab data to the database
+  function saveTabData(tabIndex) {
+    const tabName = tabs[tabIndex].innerText.toLowerCase(); 
 
-// Function to handle tab navigation
+    // Example of data saving logic (replace with your actual implementation)
+    fetch('http://localhost:3000/tabNames', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tabName: tabName,
+            // Include any other relevant data you need to save
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save tab data');
+        }
+        console.log('Tab data saved successfully!');
+    })
+    .catch(error => {
+        console.error('Error saving tab data:', error);
+        alert('Error saving tab data');
+    });
+  }
+
 const tab_Nav = function(tabBtnClick) {
-    tabBtns.forEach((tabBtn, index) => {
-        if (index === tabBtnClick) {
-            tabBtn.classList.add("active");
-        } else {
-            tabBtn.classList.remove("active");
-        }
-    });
+  tabBtns.forEach((tabBtn, index) => {
+      if (index === tabBtnClick) {
+          tabBtn.classList.add("active");
+      } else {
+          tabBtn.classList.remove("active");
+      }
+  });
 
-    tabs.forEach((tab, index) => {
-        if (index === tabBtnClick) {
-            tab.classList.add("active");
-        } else {
-            tab.classList.remove("active");
-        }
-    });
+  tabs.forEach((tab, index) => {
+    if (index === tabBtnClick) {
+        tab.classList.add("active");
+    } else {
+        tab.classList.remove("active");
+    }
+  });
+  // Call function to save tab data to the database
+  saveTabData(tabBtnClick);
 }
-
-// Adding click event listeners to tab buttons
-tabBtns.forEach((tabBtn, index) => {
-    tabBtn.addEventListener("click", () => {
-        tab_Nav(index);
-    });
-});
-
 // ======================= Search Bar  =======================
 document.addEventListener("DOMContentLoaded", () => {
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content-item');
-  let currentTab = 'breakfast';
+  let currentTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
 
+  // Function to handle tab switching and save tab data
+  const tab_Nav = function(tabBtnClick) {
+    const tabName = tabButtons[tabBtnClick].getAttribute('data-tab'); // Get the data-tab attribute value
+    saveTabData(tabBtnClick, tabName); // Call function to save tab data
+  }
+  
   // Handle tab switching
   tabButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -64,9 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.add('active');
         currentTab = button.getAttribute('data-tab');
         document.getElementById(currentTab).classList.add('active');
+
+        // Call tab_Nav function to save tab data to the database
+        tab_Nav(index);
+
         fetchFoodItems(currentTab);
     });
   });
+
 
   const currentTabContent  = document.getElementById(currentTab); // Represents the currently active tab's content
 
@@ -86,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsBox = document.querySelector(".result-box");
   const inputBox = document.getElementById("input-box");
   
-
   inputBox.addEventListener('keyup', () => {
       let input = inputBox.value.trim().toLowerCase();
       if (input.length) {
@@ -197,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tabContent = document.getElementById(currentTab);
         tabContent.appendChild(foodContainer); // Append the new food container to the tab content
 
-        alert('Food item added successfully!');
+        alert(`Food item added successfully for ${currentTab}!`);
     } catch (error) {
         console.error('Error adding food item:', error);
         alert('Error adding food item');
@@ -205,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function removeFoodItem(itemId) {
-      if (itemId) {
+      if (itemId && currentTab) {
         try {
             const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
                 method: 'DELETE',
@@ -233,6 +262,21 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error('Cannot delete item: itemId is undefined');
         alert('Cannot delete item: itemId is undefined');
+    }
+  }
+
+  async function fetchFoodItems(currentTab) {
+    try {
+        const response = await fetch(`http://localhost:3000/foodItems?tab=${currentTab}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch food items');
+        }
+        const data = await response.json();
+        // Process data and update UI with fetched items
+        console.log('Fetched food items:', data);
+    } catch (error) {
+        console.error('Error fetching food items:', error);
+        // Handle error, possibly show user-friendly message
     }
   }
 });
