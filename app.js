@@ -23,11 +23,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-// Route to serve reportValidate.js
-app.get('/middlewares/reportValidate.js', (req, res) => {
-  res.type('text/javascript'); // Set content type to text/javascript
-  res.sendFile(path.join(__dirname, 'middlewares', 'reportValidate.js')); // Send the JavaScript file
-});
+
 
 app.post('/users/login', usersController.getUserByEmailAndPassword)
 app.post('/users/create', validateUser, usersController.createUser)
