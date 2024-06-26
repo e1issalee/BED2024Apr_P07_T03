@@ -6,21 +6,26 @@ const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
 const bodyParser = require("body-parser"); // Import body-parser
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
-const staticMiddleware = express.static("Links Directed to"); // Path to the Links Directed to folder
+const staticMiddleware = express.static("public/Links Directed to"); // Path to the Links Directed to folder
 
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
+
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.post('/users/create', validateUser, usersController.createUser)
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);

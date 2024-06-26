@@ -58,3 +58,42 @@ window.onclick = function(event) {
         }
     }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    // Find the "Create" button by its id
+    const createButton = document.getElementById('contact-submit');
+    
+    createButton.addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        const name = document.getElementById('user-name').value;
+        const email = document.getElementById('user-email').value;
+        const password = document.getElementById('user-pwd').value;
+        const newUser = {
+            name: name,
+            email: email,
+            password: password,
+            points: 0, // Preset to 0
+            numberOfVouchers: 0 // Preset to 0
+        };
+    
+        try {
+            const response = await fetch('http://localhost:3000/users/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            });
+            if (response.ok) {
+                const createdUser = await response.json();
+                alert('User created successfully!');
+                console.log('Created User:', createdUser);
+            } else {
+                alert('Error creating user');
+                console.error('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error creating user');
+        }
+    });
+    });
