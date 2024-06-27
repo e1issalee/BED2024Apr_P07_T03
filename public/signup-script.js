@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const createdUser = await response.json();
                 alert('User created successfully!');
+                
+                // Redirect to a different page if needed
+                window.location.href = 'login.html';
+
                 console.log('Created User:', createdUser);
             } else {
                 alert('Error creating user');
@@ -97,4 +101,17 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error creating user');
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+        // Change the SIGN UP/LOGIN text to the user's name
+        const dropbtn = document.querySelector('.dropbtn');
+        dropbtn.textContent = user.name;
+    } else {
+        // If user data is not available, you might want to redirect to the login page
+        window.location.href = 'login.html';
+    }
 });

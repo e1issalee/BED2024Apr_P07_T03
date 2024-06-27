@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Login successful!');
                 localStorage.setItem('user', JSON.stringify(user));
                 document.getElementById('login-dropdown').innerText = user.name;
+
+                // Redirect to a different page if needed
+                window.location.href = 'index.html';
+
             } else {
                 const errorData = await response.json();
                 alert('Error logging in: ' + (errorData.message || 'Invalid credentials'));
@@ -91,4 +95,17 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error logging in');
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+        // Change the SIGN UP/LOGIN text to the user's name
+        const dropbtn = document.querySelector('.dropbtn');
+        dropbtn.textContent = user.name;
+    } else {
+        // If user data is not available, you might want to redirect to the login page
+        window.location.href = 'login.html';
+    }
 });
