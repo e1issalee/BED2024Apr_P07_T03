@@ -22,12 +22,12 @@
 </head>
 <body>
     <div class="navbar">
+        <a href="#home" onclick="scrollToTop()"><img src="images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
         <a href="#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
         <a href="Links Directed to/Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
-        <a href="#home" onclick="scrollToTop()"><img src="images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
-        <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+        <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
         <div class="dropdown">
             <a href="#signUp-Login" class="dropbtn" id="login-dropdown" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
             <div class="dropdown-content" id="dropdownContent">
@@ -35,6 +35,7 @@
                 <a href="Links Directed to/Food Diary/food-diary-index.html">Food Diary</a>
                 <a href="Links Directed to/Points/points-index.html">Points</a>
                 <a href="signup.html">Sign Up</a>
+                <button id="logout-button">Logout</button>
             </div>
         </div>
     </div>

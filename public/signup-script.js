@@ -110,8 +110,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Change the SIGN UP/LOGIN text to the user's name
         const dropbtn = document.querySelector('.dropbtn');
         dropbtn.textContent = user.name;
+
+        // Hide Login Link
+        const loginLink = document.getElementById('login-link')
+        // Show logout button
+        const logoutButton = document.getElementById('logout-button');
+        if (loginLink && logoutButton) {
+            loginLink.style.display = 'none'
+            logoutButton.style.display = 'block';
+        }
     } else {
-        // If user data is not available, you might want to redirect to the login page
-        window.location.href = 'login.html';
+        // Hide logout button if user is not logged in and show login button when logged out
+        const loginLink = document.getElementById('login-link')
+        const logoutButton = document.getElementById('logout-button');
+        if (loginLink && logoutButton) {
+            loginLink.style.display = 'block'
+            logoutButton.style.display = 'none';
+        }
+    }
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton){
+        logoutButton.addEventListener('click', function() {
+            // Clear user data from localStorage
+            localStorage.removeItem('user');
+
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        });
     }
 });
