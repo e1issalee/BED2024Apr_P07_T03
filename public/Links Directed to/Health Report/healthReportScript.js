@@ -103,8 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Success:', responseData);
 
       if (responseData.success) {
+        const reportID = responseData.reportID;
         // Redirect to report.html on success
-        window.location.href = 'http://localhost:3000/Links%20Directed%20to/Health%20Report/report.html';
+        window.location.href = `http://localhost:3000/Links%20Directed%20to/Health%20Report/report.html?reportID=${reportID}`;
       } else {
         console.error('Error in response:', responseData);
         // Handle error in response if necessary
