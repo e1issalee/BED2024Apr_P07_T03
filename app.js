@@ -14,6 +14,7 @@ const publicstaticMiddleware = express.static("public");
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
+
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
@@ -48,7 +49,8 @@ app.get('/fetchFoodItems', foodItemsController.fetchFoodItems);
 // [health report] 
 app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
 // Add the GET endpoint to fetch generated report data by userName
-//app.get('/generatedReportData/:userName', healthReportController.getGeneratedUserReport);
+app.get('/healthReport/:reportID', healthReportController.getReportByID);
+
 
 app.listen(port, async () => {
   try {

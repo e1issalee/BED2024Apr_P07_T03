@@ -158,12 +158,12 @@ body.health-report-page {
     margin-left: 2px; 
 }
 
-.dropdown-content a[href="foodDiary.html"] {
+.dropdown-content a[href="../Food Diary/food-diary-index.html"] {
     margin-top: 8px;
     margin-left: 2px; 
 }
 
-.dropdown-content a[href="points.html"] {
+.dropdown-content a[href="../Points/points-index.html"] {
     margin-top: 5px;
     margin-left: 2px; 
 }

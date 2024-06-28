@@ -2,12 +2,18 @@ const sql = require('mssql');
 const dbConfig = require('../dbConfig');
 
 class HealthReport {
-  constructor(userAge, userHeight, userWeight, userGender, userActivityLevel) {
+  constructor(reportID, userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange) {
+    this.reportID = reportID;
     this.userAge = userAge;
     this.userHeight = userHeight;
     this.userWeight = userWeight;
     this.userGender = userGender;
     this.userActivityLevel = userActivityLevel;
+    this.userBMI = userBMI;
+    this.userDailyCaloricIntake = userDailyCaloricIntake;
+    this.userBodyFatPercentage = userBodyFatPercentage;
+    this.userBMIRange = userBMIRange;
+    this.userBFPRange = userBFPRange;
   }
 
   static async create(userDetails) {
@@ -85,9 +91,8 @@ class HealthReport {
         userBFPRange = 'Extremely low body fat, may pose health risks.';
       }
     }
-
     try {
-      let pool = await sql.connect(dbConfig);
+      const pool = await sql.connect(dbConfig);
 
       const result = await pool.request()
         .input('userAge', sql.Int, userAge)
@@ -101,13 +106,93 @@ class HealthReport {
         .input('userBMIRange', sql.VarChar(50), userBMIRange)
         .input('userBFPRange', sql.VarChar(50), userBFPRange)
         .query(`INSERT INTO userDetails (userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange)
+                OUTPUT INSERTED.reportID
                 VALUES (@userAge, @userHeight, @userWeight, @userGender, @userActivityLevel, @userBMI, @userDailyCaloricIntake, @userBodyFatPercentage, @userBMIRange, @userBFPRange)`);
-      
-      return result.recordset; // Assuming you want to return the inserted record, adjust as per your needs
+
+      return result.recordset[0]; // Return the inserted record with the reportID
     } catch (error) {
       throw error;
+    } finally {
+      sql.close(); // Ensure the connection is closed
+    }
+  }
+
+/*
+  static async getReportByID(reportID) {
+    try {
+      const pool = await sql.connect(dbConfig);
+
+      const result = await pool.request()
+        .input('reportID', sql.Int, reportID)
+        .query('SELECT * FROM userDetails WHERE reportID = @reportID');
+
+      sql.close(); // Close the connection
+
+      const report = result.recordset[0]; // Assuming only one report will be found
+      if (!report) {
+        throw new Error(`Report with ID ${reportID} not found`);
+      }
+
+      return new HealthReport(
+        report.reportID,
+        report.userAge,
+        report.userHeight,
+        report.userWeight,
+        report.userGender,
+        report.userActivityLevel,
+        report.userBMI,
+        report.userDailyCaloricIntake,
+        report.userBodyFatPercentage,
+        report.userBMIRange,
+        report.userBFPRange
+      );
+    } catch (error) {
+      throw error;
+    } finally {
+      sql.close(); // Ensure the connection is closed
+    }
+  } */
+
+  static async getReportByID(reportID) {
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `SELECT * FROM userDetails WHERE reportID = @reportID`; // Parameterized query
+
+      const request = connection.request();
+      request.input("reportID", sql.Int, reportID); // Ensure the reportID is treated as an integer
+
+      const result = await request.query(sqlQuery);
+
+      if (result.recordset.length === 0) {
+        throw new Error(`Report with ID ${reportID} not found`);
+      }
+
+      const report = result.recordset[0];
+      return new HealthReport(
+        reportID,
+        report.userAge,
+        report.userHeight,
+        report.userWeight,
+        report.userGender,
+        report.userActivityLevel,
+        report.userBMI,
+        report.userDailyCaloricIntake,
+        report.userBodyFatPercentage,
+        report.userBMIRange,
+        report.userBFPRange
+      );
+    } catch (error) {
+      throw error;
+    } finally {
+      if (connection) {
+        connection.close(); // Ensure the connection is closed
+      }
     }
   }
 }
+
+
+
 
 module.exports = HealthReport;
