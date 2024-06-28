@@ -20,4 +20,24 @@
         <!-- Link to the external JS file -->
         <script src="points-script.js"></script>
     </head>
+    <body>
+        <div class="navbar">
+            <a class="index-logo" href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
+            <a href="../../index.html" onclick="toggleActive(this); scrollToTop()">HOME</a>
+            <a href="#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+            <a href="#points" onclick="toggleActive(this)">RECIPES</a>
+            <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+            <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
+            <div class="dropdown">
+                <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+                <div class="dropdown-content" id="dropdownContent">
+                    <a href="public/Links Directed to/Health Report/health-report-index.html">Health Report</a>
+                    <a href="public/Links Directed to/Food Diary/food-diary-index.html">Food Diary</a>
+                    <a href="public/Links Directed to/Points/points-index.html">Points</a>
+                    <a href="../../login.html" id="login-link">Login</a>
+                    <button id="logout-button">Logout</button>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
