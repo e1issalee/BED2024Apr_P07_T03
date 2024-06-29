@@ -4,17 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Stay organized with our user-friendly Calendar featuring events, reminders, and a customizable interface. Built with HTML, CSS, and JavaScript. Start scheduling today!"
-    />
-    <meta
-      name="keywords"
-      content="calendar, events, reminders, javascript, html, css, open source coding"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
       integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"/>
@@ -23,16 +13,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap" rel="stylesheet"> 
 
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="food-diary-style.css" />
+     
     <title>NutriCooked</title>
   </head>
   <body>
     <div class="navbar">
-        <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
-        <a href="#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
-        <a href="Links Directed to/Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="../../index.html" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="../../index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="../Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
         <a href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
-        <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <a href="../../index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
         <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
         <div class="dropdown">
             <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
@@ -59,8 +51,8 @@
 
     <div class="tab-content">
       <div id="breakfast" class="tab-content-item active"></div>
-      <div id="lunch" class="tab-content-item active"></div>
-      <div id="dinner" class="tab-content-item active"></div>
+      <div id="lunch" class="tab-content-item"></div>
+      <div id="dinner" class="tab-content-item"></div>
     </div>
 
     <div class="search-box">

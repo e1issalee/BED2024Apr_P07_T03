@@ -22,34 +22,61 @@ window.addEventListener('scroll', function() {
 const tabBtns = document.querySelectorAll(".tab-btn"); 
 const tabs = document.querySelectorAll(".tab-menu li"); 
 
-// Function to save tab data to the database
-  function saveTabData(tabIndex) {
-    const tabName = tabs[tabIndex].innerText.toLowerCase(); 
 
-    // Example of data saving logic (replace with your actual implementation)
-    fetch('http://localhost:3000/tabNames', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            tabName: tabName,
-            // Include any other relevant data you need to save
-        }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to save tab data');
+// Function to save tab data to the database
+async function saveTabData(tabIndex) {
+  try {
+      const tabName = tabs[tabIndex].innerText.toLowerCase(); 
+      await fetch('http://localhost:3000/tabNames', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              tabName: tabName,
+              // Include any other relevant data you need to save
+          }),
+      });
+      console.log('Tab data saved successfully!');
+  } catch (error) {
+      console.error('Error saving tab data:', error);
+      alert('Error saving tab data');
+  }
+}
+  async function removeFoodItem(itemId, currentTab) {
+      if (itemId && currentTab) {
+        try {
+            const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete food item');
+            }
+
+            const foodItem = document.querySelector(`.food-item[data-tab="${currentTab}"][data-item-id="${itemId}"]`);
+            if (foodItem) {
+                foodItem.remove();
+                alert('Food item deleted successfully!');
+            } else {
+                console.error('Food item not found in UI');
+                alert('Error deleting food item');
+            }
+        } catch (error) {
+            console.error('Error deleting food item:', error);
+            alert('Error deleting food item');
         }
-        console.log('Tab data saved successfully!');
-    })
-    .catch(error => {
-        console.error('Error saving tab data:', error);
-        alert('Error saving tab data');
-    });
+    } else {
+        console.error('Cannot delete item: itemId is undefined');
+        alert('Cannot delete item: itemId is undefined');
+    }
   }
 
-const tab_Nav = function(tabBtnClick) {
+// Function to handle tab navigation
+const handleTabNavigation = (tabBtnClick) => {
   tabBtns.forEach((tabBtn, index) => {
       if (index === tabBtnClick) {
           tabBtn.classList.add("active");
@@ -59,14 +86,57 @@ const tab_Nav = function(tabBtnClick) {
   });
 
   tabs.forEach((tab, index) => {
-    if (index === tabBtnClick) {
-        tab.classList.add("active");
-    } else {
-        tab.classList.remove("active");
-    }
+      if (index === tabBtnClick) {
+          tab.classList.add("active");
+      } else {
+          tab.classList.remove("active");
+      }
   });
-  // Call function to save tab data to the database
+
+  // Save tab data to the database
   saveTabData(tabBtnClick);
+
+  // Fetch food items for the current tab
+  const tabName = tabBtns[tabBtnClick].getAttribute('data-tab');
+  fetchFoodItems(tabName).catch(error => {
+      console.error('Error fetching food items:', error);
+  });
+}
+
+// Event listener for tab button clicks
+tabBtns.forEach((tabBtn, index) => {
+  tabBtn.addEventListener('click', () => {
+      handleTabNavigation(index);
+  });
+});
+
+// Event delegation for delete button clicks
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('delete-button')) {
+      const iconElement = event.target;
+      const foodItem = iconElement.closest('.food-item');
+
+      if (foodItem) {
+          const itemId = foodItem.getAttribute('data-item-id');
+          const currentTab = foodItem.getAttribute('data-tab');
+          console.log('Deleting item:', itemId, 'from tab:', currentTab); // Check values here
+
+          // Call function to remove item
+          await removeFoodItem(itemId, currentTab);
+      }
+  }
+});
+
+async function fetchFoodItems(currentTab) {
+  try {
+      const response = await fetch(`http://localhost:3000/fetchfoodItems?tab=${currentTab}`);
+      if (!response.ok) {
+          throw new Error('Failed to fetch food items');
+      }
+  } catch (error) {
+      console.error('Error fetching food items:', error);
+      // Handle error, possibly show user-friendly message
+  }
 }
 // ======================= Search Bar  =======================
 document.addEventListener("DOMContentLoaded", () => {
@@ -81,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // Handle tab switching
-  tabButtons.forEach(button => {
+  tabButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         tabContents.forEach(content => content.classList.remove('active'));
@@ -96,22 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchFoodItems(currentTab);
     });
   });
-
-
-  const currentTabContent  = document.getElementById(currentTab); // Represents the currently active tab's content
-
-  currentTabContent.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete-button')) {
-        const iconElement = event.target;
-        const foodItem = iconElement.closest('.food-item');
-
-        if (foodItem) {
-            const itemId = foodItem.getAttribute('data-item-id');
-            removeFoodItem(itemId); // Pass itemId to removeFoodItem function
-        }
-    }
-});
-
 
   const resultsBox = document.querySelector(".result-box");
   const inputBox = document.getElementById("input-box");
@@ -203,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const itemId = responseData.id; // Assuming the server returns the generated ID in the response
 
         const foodHtml = `
-            <div class="food-item" data-item-id="${itemId}">
+            <div class="food-item" data-item-id="${itemId}" data-tab="${currentTab}">
                 <div class="food-info">
                     <div class="food-name">${item.name}</div>
                     <div class="nutrients">
@@ -214,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> ${item.carbs}` : ''}
                         ${item.protein ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> ${item.protein}` : ''}
                         ${item.fat ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> ${item.fat}` : ''}
-                        <button class="delete-button" data-item-id="${itemId}"></i></button>
+                        <button class="delete-button" data-item-id="${itemId}" data-tab="${currentTab}"></i></button>
                     </div>
                 </div>
             </div>
@@ -230,53 +284,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
         console.error('Error adding food item:', error);
         alert('Error adding food item');
-    }
-  }
-
-  async function removeFoodItem(itemId) {
-      if (itemId && currentTab) {
-        try {
-            const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to delete food item');
-            }
-
-            const foodItem = document.querySelector(`.food-item[data-item-id="${itemId}"]`);
-            if (foodItem) {
-                foodItem.remove();
-                alert('Food item deleted successfully!');
-            } else {
-                console.error('Food item not found in UI');
-                alert('Error deleting food item');
-            }
-        } catch (error) {
-            console.error('Error deleting food item:', error);
-            alert('Error deleting food item');
-        }
-    } else {
-        console.error('Cannot delete item: itemId is undefined');
-        alert('Cannot delete item: itemId is undefined');
-    }
-  }
-
-  async function fetchFoodItems(currentTab) {
-    try {
-        const response = await fetch(`http://localhost:3000/foodItems?tab=${currentTab}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch food items');
-        }
-        const data = await response.json();
-        // Process data and update UI with fetched items
-        console.log('Fetched food items:', data);
-    } catch (error) {
-        console.error('Error fetching food items:', error);
-        // Handle error, possibly show user-friendly message
     }
   }
 });
@@ -321,24 +328,6 @@ const months = [
   "November",
   "December",
 ];
-
-// const eventsArr = [
-//   {
-//     day: 13,
-//     month: 11,
-//     year: 2022,
-//     events: [
-//       {
-//         title: "Event 1 lorem ipsun dolar sit genfa tersd dsad ",
-//         time: "10:00 AM",
-//       },
-//       {
-//         title: "Event 2",
-//         time: "11:00 AM",
-//       },
-//     ],
-//   },
-// ];
 
 const eventsArr = [];
 getEvents();
@@ -544,33 +533,7 @@ function updateEvents(date) {
       });
     }
   });
-
-  if (events === "") {
-    events = `
-      <div class="no-event">
-        <h6>You have not logged any food yet.</h6>
-      </div>
-    `;
-  }
-  eventsContainer.innerHTML = events;
-  saveEvents();
 }
-
-//function to add event
-addEventCloseBtn.addEventListener("click", () => {
-  addEventWrapper.classList.remove("active");
-});
-
-document.addEventListener("click", (e) => {
-  if (e.target !== addEventBtn && !addEventWrapper.contains(e.target)) {
-    addEventWrapper.classList.remove("active");
-  }
-});
-
-//allow 50 chars in eventtitle
-addEventTitle.addEventListener("input", (e) => {
-  addEventTitle.value = addEventTitle.value.slice(0, 60);
-});
 
 function defineProperty() {
   var osccred = document.createElement("div");
@@ -589,148 +552,6 @@ function defineProperty() {
 }
 
 defineProperty();
-
-//allow only time in eventtime from and to
-addEventFrom.addEventListener("input", (e) => {
-  addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-  if (addEventFrom.value.length === 2) {
-    addEventFrom.value += ":";
-  }
-  if (addEventFrom.value.length > 5) {
-    addEventFrom.value = addEventFrom.value.slice(0, 5);
-  }
-});
-
-addEventTo.addEventListener("input", (e) => {
-  addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-  if (addEventTo.value.length === 2) {
-    addEventTo.value += ":";
-  }
-  if (addEventTo.value.length > 5) {
-    addEventTo.value = addEventTo.value.slice(0, 5);
-  }
-});
-
-//function to add event to eventsArr
-addEventSubmit.addEventListener("click", () => {
-  const eventTitle = addEventTitle.value;
-  const eventTimeFrom = addEventFrom.value;
-  const eventTimeTo = addEventTo.value;
-  if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
-    alert("Please fill all the fields");
-    return;
-  }
-
-  //check correct time format 24 hour
-  const timeFromArr = eventTimeFrom.split(":");
-  const timeToArr = eventTimeTo.split(":");
-  if (
-    timeFromArr.length !== 2 ||
-    timeToArr.length !== 2 ||
-    timeFromArr[0] > 23 ||
-    timeFromArr[1] > 59 ||
-    timeToArr[0] > 23 ||
-    timeToArr[1] > 59
-  ) {
-    alert("Invalid Time Format");
-    return;
-  }
-
-  const timeFrom = convertTime(eventTimeFrom);
-  const timeTo = convertTime(eventTimeTo);
-
-  //check if event is already added
-  let eventExist = false;
-  eventsArr.forEach((event) => {
-    if (
-      event.day === activeDay &&
-      event.month === month + 1 &&
-      event.year === year
-    ) {
-      event.events.forEach((event) => {
-        if (event.title === eventTitle) {
-          eventExist = true;
-        }
-      });
-    }
-  });
-  if (eventExist) {
-    alert("Event already added");
-    return;
-  }
-  const newEvent = {
-    title: eventTitle,
-    time: timeFrom + " - " + timeTo,
-  };
-  console.log(newEvent);
-  console.log(activeDay);
-  let eventAdded = false;
-  if (eventsArr.length > 0) {
-    eventsArr.forEach((item) => {
-      if (
-        item.day === activeDay &&
-        item.month === month + 1 &&
-        item.year === year
-      ) {
-        item.events.push(newEvent);
-        eventAdded = true;
-      }
-    });
-  }
-
-  if (!eventAdded) {
-    eventsArr.push({
-      day: activeDay,
-      month: month + 1,
-      year: year,
-      events: [newEvent],
-    });
-  }
-
-  console.log(eventsArr);
-  addEventWrapper.classList.remove("active");
-  addEventTitle.value = "";
-  addEventFrom.value = "";
-  addEventTo.value = "";
-  updateEvents(activeDay);
-  //select active day and add event class if not added
-  const activeDayEl = document.querySelector(".day.active");
-  if (!activeDayEl.classList.contains("event")) {
-    activeDayEl.classList.add("event");
-  }
-});
-
-//function to delete event when clicked on event
-eventsContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("event")) {
-    if (confirm("Are you sure you want to delete this event?")) {
-      const eventTitle = e.target.children[0].children[1].innerHTML;
-      eventsArr.forEach((event) => {
-        if (
-          event.day === activeDay &&
-          event.month === month + 1 &&
-          event.year === year
-        ) {
-          event.events.forEach((item, index) => {
-            if (item.title === eventTitle) {
-              event.events.splice(index, 1);
-            }
-          });
-          //if no events left in a day then remove that day from eventsArr
-          if (event.events.length === 0) {
-            eventsArr.splice(eventsArr.indexOf(event), 1);
-            //remove event class from day
-            const activeDayEl = document.querySelector(".day.active");
-            if (activeDayEl.classList.contains("event")) {
-              activeDayEl.classList.remove("event");
-            }
-          }
-        }
-      });
-      updateEvents(activeDay);
-    }
-  }
-});
 
 //function to save events in local storage
 function saveEvents() {

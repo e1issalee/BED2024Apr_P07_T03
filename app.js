@@ -1,7 +1,9 @@
 const express = require("express");
 const usersController = require("./controllers/usersController");
 const foodItemsController = require("./controllers/foodItemsController");
+const tabNamesController = require('./controllers/tabNamesController');
 const healthReportController = require('./controllers/healthReportController');
+
 const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
@@ -38,13 +40,14 @@ app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE fo
 
 
 // [FOOD] ======================================================
-app.post('/tabNames', foodItemsController.saveTabContent);
 app.post('/food', foodItemsController.createFoodItem);
 app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
-app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 app.get('/nutrition', foodItemsController.getNutritionData);
 app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
+app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); 
+
+app.post('/tabNames', tabNamesController.saveTabName);
 
 // [health report] 
 app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
