@@ -50,3 +50,19 @@ window.addEventListener('scroll', debounce(function() {
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For mobile or negative scrolling
 }));
+
+
+// ======================= Recipe Homepage  ========================
+const searchBtn = document.getElementById('search-btn');
+const recipeList = document.getElementById('recipe');
+const recipeDetailsContent = document.querySelector('recipe-details-content');
+const recipeCloseBtn = document.getElementById('recipe-close-btn');
+
+//event listeners
+searchBtn.addEventListener('click', getRecipeList);
+
+//get recipe list that matches name
+function getRecipeList(){
+    let searchInputTxt = document.getElementById('search-input').value.trim();
+    console.log(searchInputTxt);
+}

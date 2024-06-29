@@ -1,9 +1,19 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root{
+    --tenny-tawny: #4d3a11;
+    --tenny-tawny-dark: #342608;
+}
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0; 
-    background-color: whitesmoke;
+    background-image: url(/public/Images/recipe\ homepage.png);
 }
+
 
 /* -------------------------- Navigation Bar --------------------------*/
 .navbar {
@@ -32,25 +42,27 @@ body {
     width: auto;
 }
 
-.navbar a:nth-child(1) { /* HOME */
-    margin-left: 185px;
+.navbar a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar a:nth-child(2) { /* HOME */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.navbar a:nth-child(3) { /* ABOUT US */
+    margin-left: 100px;
     margin-top: 50px;
 }
 
-.navbar a:nth-child(2),
-.navbar a:nth-child(3) { /* ABOUT US, RECIPES */
-    margin-left: -50px;
+.navbar a:nth-child(4) { /* RECIPES */
+    margin-left: 100px;
     margin-top: 50px;
-}
-
-.navbar a:nth-child(4) { /* LOGO */
-    margin-left: -50px;
-    height: 120px;
     width: auto;
 }
 
 .navbar a:nth-child(5) { /* CONTACT */
-    margin-left: -55px;
+    margin-left: 100px;
     margin-top: 50px;
 }
 
@@ -101,9 +113,8 @@ body {
     position: absolute;
     background-color: #f9f9f9d7;
     width: 150px; 
-    max-height: 198px;
     margin-top: 10px;
-    margin-left: 180px; /* Adjusted left margin */
+    margin-left: 95px; /* Adjusted left margin */
     padding: 10px; /* Added padding to the container */
     border-radius: 20px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -125,6 +136,7 @@ body {
     background-color: inherit;
     font-family: inherit;
     color: black;
+    margin-right: 450px;
 }
 
 /* Dropdown links */
@@ -143,10 +155,11 @@ body {
 }
 
 /* Adjust spacing between elements */
-.navbar > a,
+/* .navbar > a,
 .navbar > .dropdown {
     margin-left: -260px;
 }
+*/
 
 /* Style individual links */
 .dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
@@ -164,13 +177,34 @@ body {
     margin-left: 2px; 
 }
 
-.dropdown-content a[href="logout.html"] {
+.dropdown-content a[href="login.html"] {
     margin-top: 5px;
     margin-left: 2px; 
     margin-bottom: 13px;
 }
 
-/* Recipe Page */
+.dropdown-content a[href="signup.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+#logout-button {
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    display: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #cbcbcb;
+}
+
+/* ---------------------- Recipe Page ---------------------- */
 .btn{
     font-family: inherit;
     cursor: pointer;
@@ -185,13 +219,13 @@ body {
     margin-bottom: 1rem;
 }
 .recipes-container{
-    min-height: 100vh;
+    padding-top: 13rem;
 }
 .recipe-wrapper{
     max-width: 1280px;
     margin: 0 auto;
-    padding: 15rem;
-    background: #fff;
+    padding: 5rem;
+    background: rgba(255, 255, 255, 0.5);
     text-align: center;
 }
 .recipe-search{
@@ -214,27 +248,27 @@ body {
     font-size: 1.1rem;
     font-family: inherit;
     outline: 0;
-    border: 1px solid var(#000000);
-    color:#fff;
+    border: 1px solid var(--tenny-tawny);
+    color: var(--tenny-tawny);
     border-top-left-radius: 2rem;
     border-bottom-left-radius: 2rem;
 }
 .search-control::placeholder{
-    color: #000000;
+    color: var(--tenny-tawny);
 }
 .search-btn{
     width: 55px;
     height: 55px;
     font-size: 1.8rem;
-    background: var(#fff);
-    color: #000000;
+    background: var(--tenny-tawny);
+    color: #fff;
     border: none;
     border-top-right-radius: 2rem;
     border-bottom-right-radius: 2rem;
     transition: all 0.4s linear;
 }
 .search-btn:hover{
-    background: var(#cbcbcb);
+    background: var(--tenny-tawny-dark);
 }
 .recipe-result{
     margin-top: 4rem;
@@ -260,8 +294,8 @@ body {
 }
 .recipe-btn{
     text-decoration: none;
-    color:#000000;
-    background: var(#f9f9f9d7);
+    color:#fff;
+    background: var(--tenny-tawny);
     font-weight: 500;
     font-size: 1.1rem;
     padding: 0.75rem 0;
@@ -272,8 +306,100 @@ body {
     transition: all 0.4s linear;
 }
 .recipe-btn:hover{
-background: var(#cbcbcb);
+background: var(--tenny-tawny-dark);
 }
+
+/* recipe details */
+.recipe-details{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    background: var(--tenny-tawny);
+    border-radius: 1rem;
+    width: 90%;
+    height: 90%;
+    overflow-y: scroll;
+    display: none;
+    padding: 2rem 0;
+}
+.recipe-details::-webkit-scrollbar{
+    width: 10px;
+}
+.recipe-details::-webkit-scrollbar-thumb{
+    background: #f0f0f0;
+    border-radius: 2rem;
+}
+
+/* js related */
+.showRecipe{
+    display: block;
+}
+.recipe-details-content{
+    margin: 2rem;
+}.recipe-details-content p:not(.recipe-category){
+    padding: 1rem 0;
+}
+.recipe-close-btn{
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    font-size: 1.8rem;
+    background: #fff;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+}
+.recipe-title{
+    letter-spacing: 1px;
+    padding-bottom: 1rem;
+}
+.recipe-category{
+    background: #fff;
+    font-weight: 600;
+    color: var(--tenny-tawny);
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+}
+.recipe-category{
+    background: #fff;
+    font-weight: 600;
+    color: var(--tenny-tawny);
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+}
+.recipe-instruct{
+    padding: 1rem 0;
+}
+.recipe-meal-img img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+}
+.recipe-link{
+    margin: 1.4rem 0;
+}
+
+.recipe-link a{
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    transition: all 0.4s linear;
+}
+.recipe-link a:hover{
+    opacity: 0.8;
+}
+
 
 /* Media Queries */
 @media screen and (min-width: 600px) {
@@ -292,6 +418,9 @@ background: var(#cbcbcb);
     }
     .recipe-item{
         margin: 0;
+    }
+    .recipe-details{
+        width: 700px;
     }
 }
 
