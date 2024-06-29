@@ -1,0 +1,262 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0; 
+    background-color: whitesmoke;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* -------------------------- Navigation Bar --------------------------*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 120%;
+    padding: 35px;
+    position: fixed;
+    z-index: 1000;
+    margin-top: 0px;
+    font-weight: bold;
+    margin-left: -50px;
+}
+
+/* Link styles */
+.navbar a {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 13px; /* Consistent padding */
+    color: black;
+    text-decoration: none;
+}
+
+.navbar img {
+    height: 130px;
+    width: auto;
+}
+
+.navbar a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar a:nth-child(2) { /* HOME */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.navbar a:nth-child(3) { /* ABOUT US */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(4) { /* RECIPES */
+    margin-left: 100px;
+    margin-top: 50px;
+    width: auto;
+}
+
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+.navbar .dropdown a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(1) { /* LOGO */
+    margin-left: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(2) { /* HOME */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+.navbar .dropdown .dropdown-content a:nth-child(3) { /* ABOUT US */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(4) { /* RECIPES */
+    margin-left: 0px;
+    margin-top: 0px;
+    width: auto;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(5) { 
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+/* Hover effect */
+.navbar a.active,
+.navbar a:hover {
+    background-color: rgba(187, 187, 187, 0.652);
+    color: white; /* Change text color to contrast with background */
+    border-radius: 25px; /* Add rounded corners */
+    width: auto;
+    height: fit-content;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Reset hover effect for image links */
+.navbar a:has(img):hover {
+    background-color: transparent;
+}
+
+/* Dropdown container */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin-right: 420px; /* Adjusted to fit within the navbar */
+    margin-top: 50px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9d7;
+    width: 150px; 
+    margin-top: 10px;
+    margin-left: 95px; /* Adjusted left margin */
+    padding: 10px; /* Added padding to the container */
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    overflow: hidden ; /* Ensure content does not overflow */
+}
+
+/* Show dropdown on hover over the .dropbtn */
+.dropdown:hover > .dropdown-content {
+    display: block;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    color: black;
+    margin-right: 450px;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect on dropdown links */
+.dropdown-content a:hover {
+    background-color: #cbcbcb;
+}
+
+/* Adjust spacing between elements */
+/* .navbar > a,
+.navbar > .dropdown {
+    margin-left: -260px;
+}
+*/
+
+/* Style individual links */
+.dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
+    margin-top: 10px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Food Diary/food-diary-index.html"] {
+    margin-top: 8px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="Links Directed to/Points/points-index.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+}
+
+.dropdown-content a[href="login.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+.dropdown-content a[href="signup.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+#logout-button {
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    display: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #cbcbcb;
+}
+
+/* --------------------------- Media Queries --------------------------- */
+@media only screen and (max-width: 768px) {
+
+    .navbar {
+        padding: 10px; 
+        font-size: 12px;
+    }
+
+    
+    .navbar img {
+        height: 110px; 
+        width: auto;  
+        margin-left: 50px; /* Center horizontally */
+        margin-right: 50px; /* Center horizontally */
+    }
+
+    .navbar a:nth-child(1) { /* HOME */
+        margin-left: 30px; 
+        margin-top: 20px;
+    }
+
+    .navbar a:nth-child(2) { /* ABOUT US */ 
+        margin-top: 50px;
+    }
+
+    .navbar a:nth-child(4) { /* LOGO */
+        margin-left: -20px;
+        height: 100px; 
+        width: auto;  
+        position: relative;
+    }
+
+    /* Add more adjustments as needed */
+}

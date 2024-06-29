@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="recipes-style.css" />
+    <title>NutriCooked</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+      <a
+        href="#aboutUs"
+        onclick="toggleActive(this); scrollToSection('aboutUs')"
+        >ABOUT US</a
+      >
+      <a
+        href="Links Directed to/Recipes/recipes-index.html"
+        onclick="toggleActive(this)"
+        >RECIPES</a
+      >
+      <a href="../../index.html" onclick="scrollToTop()"
+        ><img src="../../Images/NutriCooked Logo.png" alt="Logo"
+      /></a>
+      <a
+        href="#contact"
+        onclick="toggleActive(this); scrollToSection('contact')"
+        >CONTACT</a
+      >
+      <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+      <div class="dropdown">
+        <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()"
+          >SIGN UP / LOGIN</a
+        >
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="Links Directed to/Health Report/health-report-index.html"
+            >Health Report</a
+          >
+          <a href="Links Directed to/Food Diary/food-diary-index.html"
+            >Food Diary</a
+          >
+          <a href="Links Directed to/Points/points-index.html">Points</a>
+          <a href="logout.html">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-container">
+      <div class="recipe-wrapper">
+        <div class="recipe-search">
+          <h2 class="title">Find curated recipes to fit your diet</h2>
+          <blockquote>
+            Live Laugh Love.<br /><cite>- Someone's Mother</cite>
+          </blockquote>
+
+          <div class="recipe-search-box">
+            <input
+              type="text"
+              class="search-control"
+              placeholder="Enter a recipe"
+              id="search-input"
+            />
+            <button type="submit" class="search-btn btn" id="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="recipe-result">
+          <h2 class="title">Your Search Results:</h2>
+          <div id="recipe">
+            <!-- recipe item -->
+            <div class="recipe-item">
+              <div class="recipe-img">
+                <img
+                  src="../../Images/recipe-img(chickenrice).jpg"
+                  alt="Image of recipe"
+                />
+              </div>
+              <div class="recipe-name">
+                <h3>Chicken Rice</h3>
+                <a href="#" class="recipe-btn">Click to view</a>
+              </div>
+            </div>
+            <!-- end of recipe item -->
+            <!-- recipe item -->
+            <div class="recipe-item">
+              <div class="recipe-img">
+                <img
+                  src="../../Images/recipe-img(chickenrice).jpg"
+                  alt="Image of recipe"
+                />
+              </div>
+              <div class="recipe-name">
+                <h3>Chicken Rice</h3>
+                <a href="#" class="recipe-btn">Click to view</a>
+              </div>
+            </div>
+            <!-- end of recipe item -->
+            <!-- recipe item -->
+            <div class="recipe-item">
+              <div class="recipe-img">
+                <img
+                  src="../../Images/recipe-img(chickenrice).jpg"
+                  alt="Image of recipe"
+                />
+              </div>
+              <div class="recipe-name">
+                <h3>Chicken Rice</h3>
+                <a href="#" class="recipe-btn">Click to view</a>
+              </div>
+            </div>
+            <!-- end of recipe item -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="recipes-script.js"></script>
+  </body>
+</html>

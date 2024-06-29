@@ -60,6 +60,52 @@ window.onclick = function(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Find the "Create" button by its id
+    const createButton = document.getElementById('contact-submit');
+    
+    createButton.addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        const name = document.getElementById('user-name').value;
+        const email = document.getElementById('user-email').value;
+        const password = document.getElementById('user-pwd').value;
+        const newUser = {
+            name: name,
+            email: email,
+            password: password,
+            points: 0, // Preset to 0
+            numberOfVouchers: 0 // Preset to 0
+        };
+    
+        try {
+            const response = await fetch('http://localhost:3000/users/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            });
+            if (response.ok) {
+                const createdUser = await response.json();
+                alert('User created successfully!');
+                
+                // Redirect to a different page if needed
+                window.location.href = 'login.html';
+
+                localStorage.setItem('userID', user.id); // for linking to health report
+
+                console.log('Created User:', createdUser);
+            } else {
+                alert('Error creating user');
+                console.error('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error creating user');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
@@ -67,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dropbtn = document.querySelector('.dropbtn');
         dropbtn.textContent = user.name;
 
-        // Hide Login button
+        // Hide Login Link
         const loginLink = document.getElementById('login-link')
         // Show logout button
         const logoutButton = document.getElementById('logout-button');
@@ -76,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             logoutButton.style.display = 'block';
         }
     } else {
-        // Hide logout button if user is not logged in and show login link when logged out
+        // Hide logout button if user is not logged in and show login button when logged out
         const loginLink = document.getElementById('login-link')
         const logoutButton = document.getElementById('logout-button');
         if (loginLink && logoutButton) {
@@ -91,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('user');
 
             // Redirect to the login page
-            window.location.href = '../../login.html';
+            window.location.href = 'login.html';
         });
     }
 });

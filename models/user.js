@@ -27,66 +27,98 @@ class User {
   }
 
   static async getUserById(id) {
-    const connection = await sql.connect(dbConfig);
+    let connection;
+    try{
+        const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `SELECT * FROM Users WHERE id = @id`; // Parameterized query
+        const sqlQuery = `SELECT * FROM Users WHERE id = @id`; // Parameterized query
 
-    const request = connection.request();
-    request.input("id", id);
-    const result = await request.query(sqlQuery);
+        const request = connection.request();
+        request.input("id", id);
+        
+        const result = await request.query(sqlQuery);
 
-    connection.close();
+        return result.recordset[0]
+          ? new User(
+              result.recordset[0].id,
+              result.recordset[0].name,
+              result.recordset[0].email,
+              result.recordset[0].password,
+              result.recordset[0].points,
+              result.recordset[0].numberOfVouchers
+            )
+          : null; // Handle user not found
+        } catch (error) {
+          console.error('SQL error', error);
+          throw error;
+       } finally {
+          if (connection) {
+              connection.close();
+        }
+      }
 
-    return result.recordset[0]
-      ? new User(
-          result.recordset[0].id,
-          result.recordset[0].name,
-          result.recordset[0].email,
-          result.recordset[0].password,
-          result.recordset[0].points,
-          result.recordset[0].numberOfVouchers
-        )
-      : null; // Handle user not found
+  }
+
+  static async getUserByEmailAndPassword(email, password) {
+    let connection;
+    try {
+        connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `
+            SELECT * FROM Users 
+            WHERE email = @Email 
+            AND password = @Password
+        `;
+        
+        const request = connection.request();
+        request.input('Email', email);
+        request.input('Password', password);
+        
+        const result = await request.query(sqlQuery);
+
+        return result.recordset[0];
+    } catch (error) {
+        console.error('SQL error', error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.close();
+        }
+    }
   }
 
   static async createUser(newUserData) {
-    const connection = await sql.connect(dbConfig);
+    
+    let connection;
+    try {
+          connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `INSERT INTO Users (name, email, password, points, numberOfVouchers) VALUES (@name, @email, @password, @points, @numberOfVouchers); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
+          const sqlQuery = `INSERT INTO Users (name, email, password, points, numberOfVouchers) VALUES (@name, @email, @password, @points, @numberOfVouchers); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
 
-    const request = connection.request();
-    request.input("name", newUserData.name);
-    request.input("email", newUserData.email);
-    request.input("password", newUserData.password)
-    request.input("points", newUserData.points)
-    request.input("numberOfVouchers", newUserData.numberOfVouchers)
+          const request = connection.request();
+          request.input("name", newUserData.name);
+          request.input("email", newUserData.email);
+          request.input("password", newUserData.password)
+          request.input("points", newUserData.points || 0)
+          request.input("numberOfVouchers", newUserData.numberOfVouchers || 0)
 
-    const result = await request.query(sqlQuery);
+          const result = await request.query(sqlQuery);
 
-    connection.close();
+          const newUserId = result.recordset[0].id;
+          
+          const userId = this.getUserById(newUserId);
 
-    // Retrieve the newly created user using its ID
-    return this.getUserById(result.recordset[0].id);
-  }
+          // Retrieve the newly created user using its ID
+          return await userId;
 
-  static async updateUser(id, newUserData) {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `UPDATE Users SET name = @name, email = @email, password = @password, points = @points, numberOfVouchers = @numberOfVouchers WHERE id = @id`; // Parameterized query
-
-    const request = connection.request();
-    request.input("id", id);
-    request.input("name", newUserData.name || null); // Handle optional fields
-    request.input("email", newUserData.email || null);
-    request.input("password", newUserData.password || null);
-    request.input("points", newUserData.points || null);
-    request.input("numberOfVouchers", newUserData.numberOfVouchers || null)
-
-    await request.query(sqlQuery);
-
-    connection.close();
-
-    return this.getUserById(id); // returning the updated user data
+    } catch (error) {
+      console.error('SQL error', error);
+      throw error;
+    } finally {
+      if (connection) {
+          connection.close();
+      }
+    }
   }
 
   static async deleteUser(id) {

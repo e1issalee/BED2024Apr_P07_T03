@@ -2,26 +2,34 @@ const express = require("express");
 const usersController = require("./controllers/usersController");
 const foodItemsController = require("./controllers/foodItemsController");
 const tabNamesController = require('./controllers/tabNamesController');
+const healthReportController = require('./controllers/healthReportController');
+
 const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
+const validateUserDetails = require('./middlewares/reportValidate');
 const bodyParser = require("body-parser"); // Import body-parser
+const cors = require('cors');
+const publicstaticMiddleware = express.static("public"); 
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
-const staticMiddleware = express.static("Links Directed to"); // Path to the Links Directed to folder
 
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(publicstaticMiddleware); 
 app.use(express.json());
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+
+app.post('/users/login', usersController.getUserByEmailAndPassword)
+app.post('/users/create', validateUser, usersController.createUser)
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);
@@ -30,7 +38,6 @@ app.post("/users", validateUser, usersController.createUser); // POST for creati
 app.put("/users/:id", validateUser, usersController.updateUser); // PUT for updating users
 app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
-app.use(staticMiddleware); // Mount the static middleware
 
 // [FOOD] ======================================================
 app.post('/food', foodItemsController.createFoodItem);
@@ -42,6 +49,12 @@ app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 
 app.post('/tabNames', tabNamesController.saveTabName);
 
+// [health report] 
+app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
+// Add the GET endpoint to fetch generated report data by userName
+app.get('/healthReport/:reportID', healthReportController.getReportByID);
+
+
 app.listen(port, async () => {
   try {
     // Connect to the datsabase
@@ -49,8 +62,7 @@ app.listen(port, async () => {
     console.log("Database connection established successfully");
     console.log(`Server is running on http://localhost:${port}`);
   } catch (err) {
-    console.error("Database connection error:", err);
-    // Terminate the application with an error code (optional)
+    console.error("Database connection error:", err); // Terminate the application with an error code (optional)
     process.exit(1); // Exit with code 1 indicating an error
   }
 });

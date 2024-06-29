@@ -36,25 +36,27 @@ html {
     width: auto;
 }
 
-.navbar a:nth-child(1) { /* HOME */
-    margin-left: 185px;
+.navbar a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar a:nth-child(2) { /* HOME */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.navbar a:nth-child(3) { /* ABOUT US */
+    margin-left: 100px;
     margin-top: 50px;
 }
 
-.navbar a:nth-child(2),
-.navbar a:nth-child(3) { /* ABOUT US, RECIPES */
-    margin-left: -50px;
+.navbar a:nth-child(4) { /* RECIPES */
+    margin-left: 100px;
     margin-top: 50px;
-}
-
-.navbar a:nth-child(4) { /* LOGO */
-    margin-left: -50px;
-    height: 120px;
     width: auto;
 }
 
 .navbar a:nth-child(5) { /* CONTACT */
-    margin-left: -55px;
+    margin-left: 100px;
     margin-top: 50px;
 }
 
@@ -105,9 +107,8 @@ html {
     position: absolute;
     background-color: #f9f9f9d7;
     width: 150px; 
-    max-height: 198px;
     margin-top: 10px;
-    margin-left: 180px; /* Adjusted left margin */
+    margin-left: 95px; /* Adjusted left margin */
     padding: 10px; /* Added padding to the container */
     border-radius: 20px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -129,6 +130,7 @@ html {
     background-color: inherit;
     font-family: inherit;
     color: black;
+    margin-right: 450px;
 }
 
 /* Dropdown links */
@@ -147,10 +149,11 @@ html {
 }
 
 /* Adjust spacing between elements */
-.navbar > a,
+/* .navbar > a,
 .navbar > .dropdown {
     margin-left: -260px;
 }
+*/
 
 /* Style individual links */
 .dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
@@ -178,6 +181,21 @@ html {
     margin-top: 5px;
     margin-left: 2px; 
     margin-bottom: 13px;
+}
+
+#logout-button {
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    display: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #cbcbcb;
 }
 
 /* Container for the form */

@@ -18,23 +18,24 @@
     <link rel="stylesheet" href="styles.css" type="text/css">
 
     <!-- Link to the external JS file -->
-    <script src="script.js"></script>
+    <script src="signup-script.js"></script>
 </head>
 <body>
     <div class="navbar">
+        <a href="#home" onclick="scrollToTop()"><img src="images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
         <a href="#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
         <a href="Links Directed to/Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
-        <a href="#home" onclick="scrollToTop()"><img src="images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
-        <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+        <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
         <div class="dropdown">
             <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="Links Directed to/Health Report/health-report-index.html">Health Report</a>
                 <a href="Links Directed to/Food Diary/food-diary-index.html">Food Diary</a>
                 <a href="Links Directed to/Points/points-index.html">Points</a>
-                <a href="login.html">Login</a>
+                <a href="login.html" id="login-link">Login</a>
+                <button id="logout-button">Logout</button>
             </div>
         </div>
     </div>

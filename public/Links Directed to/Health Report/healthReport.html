@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCooked</title>
+
+    <!-- Google Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap" rel="stylesheet">
+
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="healthReportStyle.css" type="text/css">
+
+    <!-- Link to the external JS file -->
+    <script src="healthReportScript.js"></script>
+    
+</head>
+<body class="health-report-page"> <!-- Added class for background image -->
+    <div class="navbar">
+        <a href="index.html#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="recipes.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="index.html#home" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
+        <a href="index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <a href="index.html#credit" onclick="toggleActive(this)">CREDIT</a>
+        <div class="dropdown">
+            <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="healthReport.html">Health Report</a>
+                <a href="../Food Diary/food-diary-index.html">Food Diary</a>
+                <a href="../Points/points-index.html">Points</a>
+                <a href="logout.html">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>My Health Report</h1>
+        <p>Welcome to My Health Report, your comprehensive health companion designed to provide you with personalized insights and guidance on achieving your <br>
+            wellness goals. With My Health Report, you can easily track essential metrics such as your calorie goal, BMI (Body Mass Index), suggested BMI range, and <br>
+            activity levels, all in one convenient platform. Start your journey to optimal health today with My Health Report Now!</p>
+        <p>Oops... Looks like you have not generated a report.</p>
+        <p>Please fill in the following details to generate one!</p>
+        <form id="healthReportForm" class="healthReportForm">
+            <label for="userAge">Age:</label>
+            <input type="number" id="userAge" name="userAge" min="1" required>
+            <span id="userAgeError" class="error"></span><br><br>
+
+            <label for="userHeight">Height (in meters):</label>
+            <input type="number" id="userHeight" name="userHeight" step="0.01" min="1.00" max="2.00" required>
+            <span id="userHeightError" class="error"></span><br><br>
+
+            <label for="userWeight">Weight (in kg):</label>
+            <input type="number" id="userWeight" name="userWeight" step="0.1" min="0.0" max="999.9" required>
+            <span id="userWeightError" class="error"></span><br><br>
+
+            <label>Gender:</label>
+            <input type="radio" id="male" name="userGender" value="M" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="userGender" value="F" required>
+            <label for="female">Female</label>
+            <span id="userGenderError" class="error"></span><br><br>
+
+            <label for="userActivityLevel">Activity Level:</label>
+            <select id="userActivityLevel" name="userActivityLevel" required>
+              <option value="">Select Activity Level</option>
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
+            </select>
+            <span id="userActivityLevelError" class="error"></span><br><br>
+
+            <button type="button" id="generateButton">Generate</button>
+        </form>
+    </div>
+</body>
+</html>

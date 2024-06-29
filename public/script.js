@@ -58,3 +58,81 @@ window.onclick = function(event) {
         }
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Find the "Login" button by its id
+    const loginButton = document.getElementById('login-submit');
+    
+    loginButton.addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        const email = document.getElementById('login-user-email').value;
+        const password = document.getElementById('login-user-pwd').value;
+
+        try {
+            const response = await fetch('http://localhost:3000/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+                alert('Login successful!');
+                localStorage.setItem('user', JSON.stringify(user));
+                document.getElementById('login-dropdown').innerText = user.name;
+
+                // Redirect to a different page if needed
+                window.location.href = 'index.html';
+
+            } else {
+                const errorData = await response.json();
+                alert('Error logging in: ' + (errorData.message || 'Invalid credentials'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error logging in');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+        // Change the SIGN UP/LOGIN text to the user's name
+        const dropbtn = document.querySelector('.dropbtn');
+        dropbtn.textContent = user.name;
+
+        // Hide Login button
+        const loginLink = document.getElementById('login-link')
+        // Show logout button
+        const logoutButton = document.getElementById('logout-button');
+        if (loginLink && logoutButton) {
+            loginLink.style.display = 'none'
+            logoutButton.style.display = 'block';
+        }
+    } else {
+        // Hide logout button if user is not logged in and show login link when logged out
+        const loginLink = document.getElementById('login-link')
+        const logoutButton = document.getElementById('logout-button');
+        if (loginLink && logoutButton) {
+            loginLink.style.display = 'block'
+            logoutButton.style.display = 'none';
+        }
+    }
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton){
+        logoutButton.addEventListener('click', function() {
+            // Clear user data from localStorage
+            localStorage.removeItem('user');
+
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        });
+    }
+});
+
+
+
