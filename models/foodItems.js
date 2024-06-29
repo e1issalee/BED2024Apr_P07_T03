@@ -14,22 +14,6 @@ class Food {
     this.protein = protein;
     this.fat = fat;
     }
-
-    static async saveTabContent(tabName) {
-      try {
-        const connection = await sql.connect(dbConfig);
-  
-        // SQL query to insert tabName into Tabs table (adjust as per your schema)
-        const sqlQuery = 'INSERT INTO tabName (tabName) VALUES (@tabName)';
-        const result = await connection.query(sqlQuery, { tabName });
-  
-        connection.close();
-        return result; // Return any relevant data if needed
-      } catch (error) {
-        console.error('Error saving tab name:', error);
-        throw error; // Propagate the error to be handled by the caller
-      }
-    }
   
     static async getAllFoodItems() {
       const connection = await sql.connect(dbConfig);

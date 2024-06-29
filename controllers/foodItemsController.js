@@ -36,18 +36,6 @@ const getNutritionData = (req, res) => {
   });
 };
 
-const saveTabContent = async (req, res) => {
-  try {
-    const { tabName, tabContent } = req.body; // Assuming you're sending tabName and tabContent in the request body
-    await foodItemsModel.saveTabContent(tabName, tabContent); // Call the model function to save the tab content
-
-    res.status(200).json({ message: 'Tab content saved successfully' });
-  } catch (error) {
-    console.error('Error saving tab content:', error);
-    res.status(500).json({ error: 'Failed to save tab content' });
-  }
-};
-
 const getAllFoodItems = async (req, res) => {
     try {
       const foods = await Food.getAllFoodItems();
@@ -101,9 +89,9 @@ const getAllFoodItems = async (req, res) => {
   };
 
 const fetchFoodItems = async (req, res) => {
+  const tab = req.query.tab; // Extract the 'tab' query parameter from the URL
   try {
-    const tab = req.query.tab; // Extract the 'tab' query parameter from the URL
-    const result = await db.query('SELECT * FROM food_items WHERE tabName = $1', [tab]); // Use the tab value to filter results
+    const result = await Food.fetchFoodItems('SELECT * FROM food_items WHERE tabName = $1', [tab]); // Use the tab value to filter results
     res.json(result.rows); // Send the results back to the client
   } catch (error) {
     console.error('Error fetching food items:', error);
@@ -127,7 +115,6 @@ const fetchFoodItems = async (req, res) => {
   };
 
 module.exports = {
-  saveTabContent,
   fetchFoodItems,
   getAllFoodItems,
   getFoodItemById,
