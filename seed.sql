@@ -13,7 +13,8 @@ CREATE TABLE FoodItems (
 
 
 CREATE TABLE userDetails (
-    userAge INT,
+	reportID INT IDENTITY(1,1) PRIMARY KEY,
+	userAge INT,
     userHeight DECIMAL(4, 2),
     userWeight DECIMAL(5, 2),
     userGender CHAR(1),

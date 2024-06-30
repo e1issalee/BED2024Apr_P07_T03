@@ -146,17 +146,17 @@
   }
 
   /* Style individual links */
-  .dropdown-content a[href="Links Directed to/Health Report/health-report-index.html"] {
+  .dropdown-content a[href="../Health Report/healthReport.html"] {
       margin-top: 10px;
       margin-left: 2px; 
   }
 
-  .dropdown-content a[href="Links Directed to/Food Diary/food-diary-index.html"] {
+  .dropdown-content a[href="food-diary-index.html"] {
       margin-top: 8px;
       margin-left: 2px; 
   }
 
-  .dropdown-content a[href="Links Directed to/Points/points-index.html"] {
+  .dropdown-content a[href="../Points/points-index.html"] {
       margin-top: 5px;
       margin-left: 2px; 
   }

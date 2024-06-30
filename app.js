@@ -49,9 +49,8 @@ app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 
 app.post('/tabNames', tabNamesController.saveTabName);
 
-// [health report] 
+// [health report] ===================================================================
 app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
-// Add the GET endpoint to fetch generated report data by userName
 app.get('/healthReport/:reportID', healthReportController.getReportByID);
 
 

@@ -29,33 +29,6 @@ const saveUserDetails = async (req, res) => {
   }
 };
 
-/*
-const getHealthReportByID = async (req, res) => {
-  const reportID = req.params.reportID;
-
-  try {
-    const pool = await sql.connect(dbConfig);
-
-    const result = await pool.request()
-      .input('reportID', sql.Int, reportID)
-      .query(`
-        SELECT * FROM HealthReports
-        WHERE reportID = @reportID
-      `);
-
-    sql.close(); // Close the connection
-
-    const healthReport = result.recordset[0];
-    if (!healthReport) {
-      return res.status(404).json({ message: 'Health report not found' });
-    }
-
-    res.json(healthReport);
-  } catch (error) {
-    console.error('Error fetching health report:', error);
-    res.status(500).json({ message: 'Error fetching health report' });
-  } 
-}; */
 
 const getReportByID = async (req, res) => {
   const reportID = parseInt(req.params.reportID);

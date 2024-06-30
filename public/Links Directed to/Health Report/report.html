@@ -22,19 +22,20 @@
 </head>
 <body class="report-page"> <!-- Added class for background image -->
     <div class="navbar">
-        <a href="index.html#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
-        <a href="index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
-        <a href="recipes.html" onclick="toggleActive(this)">RECIPES</a>
-        <a href="index.html#home" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
-        <a href="index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
-        <a href="index.html#credit" onclick="toggleActive(this)">CREDIT</a>
+        <a class="index-logo" href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
+        <a href="../../index.html#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="../../index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="../Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="../../index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
         <div class="dropdown">
             <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
             <div class="dropdown-content" id="dropdownContent">
-                <a href="healthReport.html">Health Report</a>
+                <a href="../Health Report/healthReport.html">Health Report</a>
                 <a href="../Food Diary/food-diary-index.html">Food Diary</a>
                 <a href="../Points/points-index.html">Points</a>
-                <a href="logout.html">Logout</a>
+                <a href="../../login.html" id="login-link">Login</a>
+                <button id="logout-button">Logout</button>
             </div>
         </div>
     </div>
