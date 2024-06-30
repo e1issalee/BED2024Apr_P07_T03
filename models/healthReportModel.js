@@ -117,42 +117,6 @@ class HealthReport {
     }
   }
 
-/*
-  static async getReportByID(reportID) {
-    try {
-      const pool = await sql.connect(dbConfig);
-
-      const result = await pool.request()
-        .input('reportID', sql.Int, reportID)
-        .query('SELECT * FROM userDetails WHERE reportID = @reportID');
-
-      sql.close(); // Close the connection
-
-      const report = result.recordset[0]; // Assuming only one report will be found
-      if (!report) {
-        throw new Error(`Report with ID ${reportID} not found`);
-      }
-
-      return new HealthReport(
-        report.reportID,
-        report.userAge,
-        report.userHeight,
-        report.userWeight,
-        report.userGender,
-        report.userActivityLevel,
-        report.userBMI,
-        report.userDailyCaloricIntake,
-        report.userBodyFatPercentage,
-        report.userBMIRange,
-        report.userBFPRange
-      );
-    } catch (error) {
-      throw error;
-    } finally {
-      sql.close(); // Ensure the connection is closed
-    }
-  } */
-
   static async getReportByID(reportID) {
     let connection;
     try {
