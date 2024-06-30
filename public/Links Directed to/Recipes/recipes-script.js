@@ -64,5 +64,10 @@ searchBtn.addEventListener('click', getRecipeList);
 //get recipe list that matches name
 function getRecipeList(){
     let searchInputTxt = document.getElementById('search-input').value.trim();
-    console.log(searchInputTxt);
+    ('search-input').value.trim();
+    fetch(`www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata`)
+    .then(Response => Response.json())
+    .then(data => {
+        console.log(data);
+    })
 }
