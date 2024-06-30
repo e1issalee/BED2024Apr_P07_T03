@@ -15,16 +15,17 @@ CREATE TABLE FoodItems (
 CREATE TABLE userDetails (
 	reportID INT IDENTITY(1,1) PRIMARY KEY,
 	userAge INT,
-    userHeight DECIMAL(4, 2),
-    userWeight DECIMAL(5, 2),
-    userGender CHAR(1),
-    userActivityLevel VARCHAR(10),
-    userBMI DECIMAL(5, 2),
-    userDailyCaloricIntake DECIMAL(10, 2),
-    userBodyFatPercentage DECIMAL(5, 2),
-    userBMIRange VARCHAR(50),
-    userBFPRange VARCHAR(50)
+  userHeight DECIMAL(4, 2),
+  userWeight DECIMAL(5, 2),
+  userGender CHAR(1),
+  userActivityLevel VARCHAR(10),
+  userBMI DECIMAL(5, 2),
+  userDailyCaloricIntake DECIMAL(10, 2),
+  userBodyFatPercentage DECIMAL(5, 2),
+  userBMIRange VARCHAR(50),
+  userBFPRange VARCHAR(50)
 );
+
 
 
 CREATE TABLE Users (
@@ -35,6 +36,32 @@ CREATE TABLE Users (
   numberOfVouchers int NOT NULL
 );
 
+
+-- dummy data
+
 INSERT INTO Users
 VALUES
   ('Jack Hardy', 'jackhardy123@gmail.com', 0, 0);
+
+INSERT INTO userDetails (userAge, 
+    userHeight, 
+    userWeight, 
+    userGender, 
+    userActivityLevel, 
+    userBMI, 
+    userDailyCaloricIntake, 
+    userBodyFatPercentage, 
+    userBMIRange, 
+    userBFPRange
+) VALUES (
+    18,         -- userAge
+    1.79,       -- userHeight
+    56.00,      -- userWeight
+    'F',        -- userGender
+    'low',      -- userActivityLevel
+    17.48,      -- userBMI
+    1966.53,    -- userDailyCaloricIntake
+    19.71,      -- userBodyFatPercentage
+    'Underweight',                    -- userBMIRange
+    'Very low body fat, common in athletes.' -- userBFPRange
+);
