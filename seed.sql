@@ -34,3 +34,7 @@ CREATE TABLE Users (
   points int NOT NULL,
   numberOfVouchers int NOT NULL
 );
+
+INSERT INTO Users
+VALUES
+  ('Jack Hardy', 'jackhardy123@gmail.com', 0, 0);
