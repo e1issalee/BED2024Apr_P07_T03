@@ -24,9 +24,16 @@
   </head>
   <body>
     <div class="navbar">
-      <a href="#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+      <a href="Links Directed to/../../../index.html" onclick="scrollToTop()"
+        ><img src="../../Images/NutriCooked Logo.png" alt="Logo"
+      /></a>
       <a
-        href="#aboutUs"
+        href="Links Directed to/../../../index.html"
+        onclick="toggleActive(this); scrollToTop()"
+        >HOME</a
+      >
+      <a
+        href="Links Directed to/../../../index.html"
         onclick="toggleActive(this); scrollToSection('aboutUs')"
         >ABOUT US</a
       >
@@ -35,17 +42,17 @@
         onclick="toggleActive(this)"
         >RECIPES</a
       >
-      <a href="../../index.html" onclick="scrollToTop()"
-        ><img src="../../Images/NutriCooked Logo.png" alt="Logo"
-      /></a>
       <a
-        href="#contact"
+        href="Links Directed to/../../../index.html"
         onclick="toggleActive(this); scrollToSection('contact')"
         >CONTACT</a
       >
-      <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+      <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
       <div class="dropdown">
-        <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()"
+        <a
+          href="Links Directed to/../../../login.html"
+          class="dropbtn"
+          onclick="toggleDropdown()"
           >SIGN UP / LOGIN</a
         >
         <div class="dropdown-content" id="dropdownContent">
@@ -56,11 +63,13 @@
             >Food Diary</a
           >
           <a href="Links Directed to/Points/points-index.html">Points</a>
-          <a href="logout.html">Logout</a>
+          <a href="login.html" id="login-link">Login</a>
+          <button id="logout-button">Logout</button>
         </div>
       </div>
     </div>
 
+    <!-- ---------Recipe Homepage section--------- -->
     <div class="recipes-container">
       <div class="recipe-wrapper">
         <div class="recipe-search">
@@ -99,34 +108,44 @@
               </div>
             </div>
             <!-- end of recipe item -->
-            <!-- recipe item -->
-            <div class="recipe-item">
-              <div class="recipe-img">
-                <img
-                  src="../../Images/recipe-img(chickenrice).jpg"
-                  alt="Image of recipe"
-                />
-              </div>
-              <div class="recipe-name">
-                <h3>Chicken Rice</h3>
-                <a href="#" class="recipe-btn">Click to view</a>
-              </div>
+          </div>
+        </div>
+
+        <div class="recipe-details">
+          <!-- recipe close button -->
+          <button
+            type="button"
+            class="btn recipe-close-btn"
+            id="recipe-close-btn"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+
+          <!-- recipe content -->
+          <div class="recipe-details-content">
+            <h2 class="recipe-title">Recipes Name Here</h2>
+            <p class="recipe-category">Category Name</p>
+            <div class="recipe-instruct">
+              <h3>Instructions:</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Et,
+                perspiciatis eligendi. Perspiciatis voluptatibus similique rem
+                officiis delectus. Harum consequatur sapiente distinctio
+                doloribus vel minima quibusdam, eum nisi ratione, assumenda
+                voluptates.
+              </p>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Deleniti minima quidem ex sapiente repellendus amet ad corrupti
+                beatae consectetur iusto?
+              </p>
             </div>
-            <!-- end of recipe item -->
-            <!-- recipe item -->
-            <div class="recipe-item">
-              <div class="recipe-img">
-                <img
-                  src="../../Images/recipe-img(chickenrice).jpg"
-                  alt="Image of recipe"
-                />
-              </div>
-              <div class="recipe-name">
-                <h3>Chicken Rice</h3>
-                <a href="#" class="recipe-btn">Click to view</a>
-              </div>
+            <div class="recipe-meal-img">
+              <img src="../../Images/recipe-img(chickenrice).jpg" alt="" />
             </div>
-            <!-- end of recipe item -->
+            <div class="recipe-link">
+              <a href="#" target="_blank">Watch Video</a>
+            </div>
           </div>
         </div>
       </div>
