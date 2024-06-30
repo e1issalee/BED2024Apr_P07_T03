@@ -8,7 +8,6 @@ const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
-const validateUserDetails = require('./middlewares/reportValidate');
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require('cors');
 const publicstaticMiddleware = express.static("public"); 
@@ -50,7 +49,7 @@ app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem);
 app.post('/tabNames', tabNamesController.saveTabName);
 
 // [health report] ===================================================================
-app.post('/saveUserDetails', validateUserDetails, healthReportController.saveUserDetails);
+app.post('/saveUserDetails', healthReportController.saveUserDetails);
 app.get('/healthReport/:reportID', healthReportController.getReportByID);
 
 
