@@ -55,21 +55,78 @@ window.addEventListener('scroll', debounce(function() {
 // ======================= Recipe Homepage  ========================
 const searchBtn = document.getElementById('search-btn');
 const recipeList = document.getElementById('recipe');
-const recipeDetailsContent = document.querySelector('recipe-details-content');
+const recipeDetailsContent = document.querySelector('.recipe-details-content');
 const recipeCloseBtn = document.getElementById('recipe-close-btn');
 
 //event listeners
 searchBtn.addEventListener('click', getRecipeList);
+recipeCloseBtn.addEventListener('click', closeRecipeDetails);
 
 //get recipe list that matches name
 function getRecipeList(){
     let searchInputTxt = document.getElementById('search-input').value.trim();
-    ('search-input').value.trim();
-    fetch(`www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata`)
-    .then(Response => Response.json())
-    .then(data => {
-        console.log(data);
-    })
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`)
+        .then(response => response.json())
+        .then(data => {
+            let html = "";
+            if (data.meals) {
+                data.meals.forEach(meal => {
+                    html += `
+                        <div class="recipe-item" data-id="${meal.idMeal}">
+                            <div class="recipe-img">
+                                <img src="${meal.strMealThumb}" alt="Image of recipe" />
+                            </div>
+                            <div class="recipe-name">
+                                <h3>${meal.strMeal}</h3>
+                                <a href="#" class="recipe-btn">Click to view</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                recipeList.classList.remove('notFound');
+            } else {
+                html = "No recipes found.";
+                recipeList.classList.add('notFound');
+            }
+            recipeList.innerHTML = html;
+            addRecipeEventListeners();
+        });
+}
+
+function addRecipeEventListeners() {
+    const recipeItems = document.querySelectorAll('.recipe-item');
+    recipeItems.forEach(item => {
+        item.addEventListener('click', getRecipeDetails);
+    });
+}
+
+function getRecipeDetails(event) {
+    const mealId = event.currentTarget.getAttribute('data-id');
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+        .then(response => response.json())
+        .then(data => {
+            const meal = data.meals[0];
+            const html = `
+                <h2 class="recipe-title">${meal.strMeal}</h2>
+                <p class="recipe-category">${meal.strCategory}</p>
+                <div class="recipe-instruct">
+                    <h3>Instructions:</h3>
+                    <p>${meal.strInstructions}</p>
+                </div>
+                <div class="recipe-meal-img">
+                    <img src="${meal.strMealThumb}" alt="Image of recipe" />
+                </div>
+                <div class="recipe-link">
+                    <a href="${meal.strYoutube}" target="_blank">Watch Video</a>
+                </div>
+            `;
+            recipeDetailsContent.innerHTML = html;
+            document.querySelector('.recipe-details').classList.add('showRecipe');
+        });
+}
+
+function closeRecipeDetails() {
+    document.querySelector('.recipe-details').classList.remove('showRecipe');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
