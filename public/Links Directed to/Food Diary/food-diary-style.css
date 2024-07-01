@@ -29,33 +29,63 @@
       width: auto;
   }
 
-  .navbar a:nth-child(1) { /* HOME */
-      margin-left: 185px;
-      margin-top: 50px;
-  }
+  .navbar a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
 
-  .navbar a:nth-child(2),
-  .navbar a:nth-child(3) { /* ABOUT US, RECIPES */
-      margin-left: -50px;
-      margin-top: 50px;
-  }
+.navbar a:nth-child(2) { /* HOME */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.navbar a:nth-child(3) { /* ABOUT US */
+    margin-left: 100px;
+    margin-top: 50px;
+}
 
-  .navbar a:nth-child(4) { /* LOGO */
-      margin-left: -50px;
-      height: 160px;
-      width: auto;
-  }
+.navbar a:nth-child(4) { /* RECIPES */
+    margin-left: 100px;
+    margin-top: 50px;
+    width: auto;
+}
 
-  .navbar a:nth-child(5) { /* CONTACT */
-      margin-left: -55px;
-      margin-top: 50px;
-  }
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: 100px;
+    margin-top: 50px;
+}
 
-  .navbar a:nth-child(6) { /* CREDIT */
-      margin-left: -50px;
-      margin-top: 50px;
-      z-index: 10;
-  }
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+.navbar .dropdown a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(1) { /* LOGO */
+    margin-left: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(2) { /* HOME */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+.navbar .dropdown .dropdown-content a:nth-child(3) { /* ABOUT US */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(4) { /* RECIPES */
+    margin-left: 0px;
+    margin-top: 0px;
+    width: auto;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(5) { 
+    margin-left: 0px;
+    margin-top: 0px;
+}
 
   /* Hover effect */
   .navbar a.active,
@@ -97,10 +127,9 @@
       display: none;
       position: absolute;
       background-color: #f9f9f9d7;
-      width: 160px; 
-      max-height: 210px;
+      width: 160px;
       margin-top: 10px;
-      margin-left: 190px; /* Adjusted left margin */
+      margin-left: 95px; /* Adjusted left margin */
       padding: 10px; /* Added padding to the container */
       border-radius: 20px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -122,6 +151,7 @@
       background-color: inherit;
       font-family: inherit;
       color: black;
+      margin-right: 450px;
   }
 
   /* Dropdown links */
@@ -140,10 +170,10 @@
   }
 
   /* Adjust spacing between elements */
-  .navbar > a,
+  /* .navbar > a,
   .navbar > .dropdown {
       margin-left: -260px;
-  }
+  } */
 
   /* Style individual links */
   .dropdown-content a[href="../Health Report/healthReport.html"] {
@@ -161,11 +191,33 @@
       margin-left: 2px; 
   }
 
-  .dropdown-content a[href="logout.html"] {
-      margin-top: 5px;
-      margin-left: 2px; 
-      margin-bottom: 13px;
-  }
+  .dropdown-content a[href="login.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+.dropdown-content a[href="signup.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+#logout-button {
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    display: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #cbcbcb;
+}
+
 }
 
 * {
