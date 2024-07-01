@@ -72,6 +72,34 @@ body {
     z-index: 10;
 }
 
+.navbar .dropdown a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(1) { /* LOGO */
+    margin-left: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(2) { /* HOME */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+.navbar .dropdown .dropdown-content a:nth-child(3) { /* ABOUT US */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(4) { /* RECIPES */
+    margin-left: 0px;
+    margin-top: 0px;
+    width: auto;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(5) { 
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
 /* Hover effect */
 .navbar a.active,
 .navbar a:hover {
@@ -112,7 +140,7 @@ body {
     display: none;
     position: absolute;
     background-color: #f9f9f9d7;
-    width: 150px; 
+    width: 160px; 
     margin-top: 10px;
     margin-left: 95px; /* Adjusted left margin */
     padding: 10px; /* Added padding to the container */
