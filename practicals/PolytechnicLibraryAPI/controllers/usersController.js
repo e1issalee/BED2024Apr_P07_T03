@@ -17,7 +17,7 @@ const getAllUsers = async (req, res) => {
   const getUserByUsername = async (req, res) => {
     const userUsername = parseInt(req.params.username);
     try {
-      const user = await User.getUserById(userUsername);
+      const user = await User.getUserByUsername(userUsername);
       if (!user) {
         return res.status(404).send("User not found");
       }
