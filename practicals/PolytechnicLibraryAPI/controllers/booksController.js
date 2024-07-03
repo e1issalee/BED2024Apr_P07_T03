@@ -11,7 +11,7 @@ const getAllBooks = async (req, res) => {
 };
 
 const getBookById = async (req, res) => {
-  const bookId = parseInt(req.params.book_id);
+  const bookId = parseInt(req.params.id);
   try {
     const book = await Book.getBookById(bookId);
     if (!book) {
@@ -25,7 +25,7 @@ const getBookById = async (req, res) => {
 };
 
 const updateBookAvailability = async (req, res) => {
-    const bookId = parseInt(req.params.book_id);
+    const bookId = parseInt(req.params.bookId);
     const newBookData = req.body;
   
     try {
