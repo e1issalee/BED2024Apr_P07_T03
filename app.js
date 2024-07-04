@@ -29,12 +29,12 @@ app.get('/', (req, res) => {
 
 app.post('/users/login', usersController.getUserByEmailAndPassword)
 app.post('/users/create', validateUser, usersController.createUser)
+app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAndVouchers); // PUT for updating users
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);
 app.get("/users/:id", usersController.getUserById);
 app.post("/users", validateUser, usersController.createUser); // POST for creating user (can handle JSON data)
-app.put("/users/:id", validateUser, usersController.updateUser); // PUT for updating users
 app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
 

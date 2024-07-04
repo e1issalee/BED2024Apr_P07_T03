@@ -49,12 +49,12 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserPointsAndVouchers = async (req, res) => {
+  
   const userId = parseInt(req.params.id);
-  const newUserData = req.body;
-
+  const { points, numberOfVouchers } = req.body;
   try {
-    const updatedUser = await User.updateUser(userId, newUserData);
+    const updatedUser = await User.updateUserPointsAndVouchers(userId, points, numberOfVouchers);
     if (!updatedUser) {
       return res.status(404).send("User not found");
     }
@@ -84,6 +84,6 @@ module.exports = {
   getUserById,
   getUserByEmailAndPassword,
   createUser,
-  updateUser,
+  updateUserPointsAndVouchers,
   deleteUser,
 };

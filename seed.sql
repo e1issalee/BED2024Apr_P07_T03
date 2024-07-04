@@ -32,6 +32,7 @@ CREATE TABLE Users (
   id INT IDENTITY(1,1) PRIMARY KEY,
   name VARCHAR(50) NOT NULL, 
   email VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
   points int NOT NULL,
   numberOfVouchers int NOT NULL
 );
@@ -41,7 +42,7 @@ CREATE TABLE Users (
 
 INSERT INTO Users
 VALUES
-  ('Jack Hardy', 'jackhardy123@gmail.com', 0, 0);
+  ('Jack Hardy', 'jackhardy123@gmail.com', 'password', 0, 0);
 
 INSERT INTO userDetails (userAge, 
     userHeight, 

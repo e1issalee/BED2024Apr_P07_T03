@@ -121,6 +121,37 @@ class User {
     }
   }
 
+  static async updateUserPointsAndVouchers(id, points, numberOfVouchers) {
+    let connection;
+    try {
+        connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `UPDATE Users SET points = @points, numberOfVouchers = @numberOfVouchers WHERE id = @id`;
+        
+        const request = connection.request();
+        request.input("id", id);
+        request.input("points", points || null);
+        request.input("numberOfVouchers", numberOfVouchers || 0);
+
+        await request.query(sqlQuery);
+
+        // Optionally, retrieve updated user data
+        const updatedUser = await this.getUserById(id);
+        return updatedUser;
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error; // Re-throw the error to be caught by the caller
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (error) {
+                console.error('Error closing connection:', error);
+            }
+        }
+    }
+  }
+
   static async deleteUser(id) {
     const connection = await sql.connect(dbConfig);
 

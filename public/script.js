@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const user = await response.json();
                 alert('Login successful!');
                 localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('userID', user.id); // for linking to health report
                 document.getElementById('login-dropdown').innerText = user.name;
 
                 // Redirect to a different page if needed
