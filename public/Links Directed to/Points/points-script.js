@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
+
+        // Fetch the latest user data from the server
+        await refreshUserData(user.id);
+
         // Change the SIGN UP/LOGIN text to the user's name
         const dropbtn = document.querySelector('.dropbtn');
         dropbtn.textContent = user.name;
@@ -96,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Calorie counter logic
-    resetCaloriesAtMidnight();
+    resetCaloriesAtMidnight(user.id);
     updateProgressBar();
     checkClaimStatus();
 });
@@ -105,14 +109,67 @@ const dailyCalorieGoal = 2500;
 let totalCaloriesConsumed = localStorage.getItem('totalCaloriesConsumed') ? parseInt(localStorage.getItem('totalCaloriesConsumed')) : 0;
 let isClaimed = localStorage.getItem('isClaimed') ? JSON.parse(localStorage.getItem('isClaimed')) : false;
 
-function addCalories() {
+async function refreshUserData(userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/users/${userId}`);
+        if (response.ok) {
+            const user = await response.json();
+            localStorage.setItem('user', JSON.stringify(user));
+            totalCaloriesConsumed = user.dailyCalories;
+            localStorage.setItem('totalCaloriesConsumed', totalCaloriesConsumed);
+            // Update the total calories consumed today element
+            resetCaloriesAtMidnight(user.id);
+        } else {
+            console.error('Error fetching user data');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+}
+
+async function addCalories() {
     const calorieInput = document.getElementById('calorie-input');
     const caloriesToAdd = parseInt(calorieInput.value);
     if (!isNaN(caloriesToAdd) && caloriesToAdd > 0) {
-        totalCaloriesConsumed += caloriesToAdd;
-        localStorage.setItem('totalCaloriesConsumed', totalCaloriesConsumed);
-        updateProgressBar();
-        calorieInput.value = '';
+        const success = await updateUserCaloriesInDB(caloriesToAdd);
+        if (success) {
+            totalCaloriesConsumed += caloriesToAdd;
+            localStorage.setItem('totalCaloriesConsumed', totalCaloriesConsumed);
+            updateProgressBar();
+            calorieInput.value = '';
+        }
+    }
+}
+
+async function updateUserCaloriesInDB(caloriesToAdd) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+        alert("User not logged in. Please log in to update calories.");
+        return false;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/users/updateDailyCalories/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dailyCalories: user.dailyCalories + caloriesToAdd })
+        });
+
+        if (response.ok) {
+            const updatedUser = await response.json();
+            user.dailyCalories = updatedUser.dailyCalories;
+            localStorage.setItem('user', JSON.stringify(user));
+            return true;
+        } else {
+            alert("Error updating calories");
+            return false;
+        }
+    } catch (error) {
+        console.error("Error updating calories", error);
+        alert("Error updating calories");
+        return false;
     }
 }
 
@@ -131,21 +188,51 @@ function updateProgressBar() {
     }
 }
 
-function resetCaloriesAtMidnight() {
+function resetCaloriesAtMidnight(userId) {
     const current = new Date();
     const midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
 
     const timeToMidnight = midnight.getTime() - current.getTime();
 
-    setTimeout(() => {
-        totalCaloriesConsumed = 0;
-        isClaimed = false;
-        localStorage.setItem('totalCaloriesConsumed', totalCaloriesConsumed);
-        localStorage.setItem('isClaimed', JSON.stringify(isClaimed));
-        updateProgressBar();
-        resetCaloriesAtMidnight();  // set the next reset
+    setTimeout(async () => {
+        try {
+            // Reset local variables and storage
+            totalCaloriesConsumed = 0;
+            isClaimed = false;
+            localStorage.setItem('totalCaloriesConsumed', totalCaloriesConsumed);
+            localStorage.setItem('isClaimed', JSON.stringify(isClaimed));
+            updateProgressBar();
+
+            // Reset dailyCalories in MSSQL via PUT request
+            await resetDailyCalories(userId);
+
+            // Set the next reset
+            resetCaloriesAtMidnight(userId);
+
+        } catch (error) {
+            console.error('Error resetting at midnight:', error);
+        }
     }, timeToMidnight);
+}
+
+async function resetDailyCalories(userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/users/resetDailyCalories/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            // Optionally, pass additional data if needed in the body
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to reset daily calories');
+        }
+    } catch (error) {
+        console.error('Error resetting daily calories:', error);
+        throw error;
+    }
 }
 
 async function claimCalories() {

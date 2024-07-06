@@ -30,6 +30,8 @@ app.get('/', (req, res) => {
 app.post('/users/login', usersController.getUserByEmailAndPassword)
 app.post('/users/create', validateUser, usersController.createUser)
 app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAndVouchers); // PUT for updating users
+app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); // PUT for updating daily calories
+app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);

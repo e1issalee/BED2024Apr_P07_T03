@@ -65,6 +65,37 @@ const updateUserPointsAndVouchers = async (req, res) => {
   }
 };
 
+const updateUserCalories = async (req, res) => {
+  
+  const userId = parseInt(req.params.id);
+  const { dailyCalories } = req.body;
+  try {
+    const updatedUser = await User.updateUserCalories(userId, dailyCalories);
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating user");
+  }
+};
+
+const resetUserCalories = async (req, res) => {
+  
+  const userId = parseInt(req.params.id);
+  try {
+    const updatedUser = await User.resetUserCalories(userId);
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating user");
+  }
+};
+
 const deleteUser = async (req, res) => {
   const userId = parseInt(req.params.id);
 
@@ -85,5 +116,7 @@ module.exports = {
   getUserByEmailAndPassword,
   createUser,
   updateUserPointsAndVouchers,
+  updateUserCalories,
+  resetUserCalories,
   deleteUser,
 };
