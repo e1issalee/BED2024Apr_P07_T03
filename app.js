@@ -46,6 +46,7 @@ app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
 app.get('/nutrition', foodItemsController.getNutritionData);
 app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
+app.put('/food/:id', foodItemsController.updateFoodItemQuantity)
 app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); 
 
 app.post('/tabNames', tabNamesController.saveTabName);

@@ -22,7 +22,6 @@ window.addEventListener('scroll', function() {
 const tabBtns = document.querySelectorAll(".tab-btn"); 
 const tabs = document.querySelectorAll(".tab-menu li"); 
 
-
 // Function to save tab data to the database
 async function saveTabData(tabIndex) {
   try {
@@ -232,62 +231,159 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function addFoodToTab(item) {
     try {
-        // Make a POST request to save the food item and get back the generated itemId
-        const response = await fetch('http://localhost:3000/food', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                tabName: currentTab,
-                name: item.name,
-                calories: item.calories,
-                servingSize: item.servingSize,
-                carbs: item.carbs,
-                protein: item.protein,
-                fat: item.fat
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to add food item');
-        }
-
-        const responseData = await response.json();
-        const itemId = responseData.id; // Assuming the server returns the generated ID in the response
-
-        const foodHtml = `
-            <div class="food-item" data-item-id="${itemId}" data-tab="${currentTab}">
-                <div class="food-info">
-                    <div class="food-name">${item.name}</div>
-                    <div class="nutrients">
-                        ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> ${item.calories} cal` : ''}
-                        ${item.servingSize ? ` &nbsp; &bull; &nbsp; Serving Size: ${item.servingSize}` : ''}
-                    </div>
-                    <div class="nutrients2">
-                        ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> ${item.carbs}` : ''}
-                        ${item.protein ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> ${item.protein}` : ''}
-                        ${item.fat ? ` &nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> ${item.fat}` : ''}
-                        <button class="delete-button" data-item-id="${itemId}" data-tab="${currentTab}"></i></button>
-                    </div>
-                </div>
+      // Make a POST request to save the food item and get back the generated itemId
+      const response = await fetch('http://localhost:3000/food', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tabName: currentTab,
+          name: item.name,
+          calories: item.calories,
+          servingSize: item.servingSize,
+          carbs: item.carbs,
+          protein: item.protein,
+          fat: item.fat,
+          quantity: item.quantity || 1,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add food item');
+      }
+  
+      const responseData = await response.json();
+      const itemId = responseData.id;
+  
+      const foodHtml = `
+        <div class="food-item" data-item-id="${itemId}" data-tab="${currentTab}" data-calories="${item.calories}" data-carbs="${item.carbs}" data-protein="${item.protein}" data-fat="${item.fat}" data-serving-size="${item.servingSize}">
+          <div class="food-info">
+            <div class="food-name">${item.name}</div>
+            <div class="nutrients">
+              ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> <span class="calories">${item.calories}</span> cal` : ''}
+              ${item.servingSize ? `&nbsp; &bull; &nbsp; Serving Size: <span class="serving-size">${item.servingSize}</span>` : ''}
             </div>
-        `;
-
-        const foodContainer = document.createElement('div');
-        foodContainer.innerHTML = foodHtml;
-
-        const tabContent = document.getElementById(currentTab);
-        tabContent.appendChild(foodContainer); // Append the new food container to the tab content
-
-        alert(`Food item added successfully for ${currentTab}!`);
+            <div class="nutrients2">
+              ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> <span class="carbs">${item.carbs}</span>` : ''}
+              ${item.protein ? `&nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> <span class="protein">${item.protein}</span>` : ''}
+              ${item.fat ? `&nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> <span class="fat">${item.fat}</span>` : ''}
+              <button class="delete-button" data-item-id="${itemId}" data-tab="${currentTab}"></button>
+            </div>
+            <div class="counter">
+              <button class="decrement">-</button>
+              <div id="count" data-item-id="${itemId}" data-tab="${currentTab}">${item.quantity || 1}</div>
+              <button class="increment">+</button>
+            </div>
+          </div>
+        </div>
+      `;
+  
+      const foodContainer = document.createElement('div');
+      foodContainer.innerHTML = foodHtml;
+  
+      const tabContent = document.getElementById(currentTab);
+      tabContent.appendChild(foodContainer);
+  
+      alert(`Food item added successfully for ${currentTab}!`);
     } catch (error) {
-        console.error('Error adding food item:', error);
-        alert('Error adding food item');
+      console.error('Error adding food item:', error);
+      alert('Error adding food item');
     }
   }
-});
+  
+  // Event listeners for increment and decrement buttons
+  document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('increment') || event.target.classList.contains('decrement')) {
+      const counterDiv = event.target.parentElement.querySelector('#count');
+      const itemId = counterDiv.getAttribute('data-item-id');
+      const currentTab = counterDiv.getAttribute('data-tab');
+      let currentCount = parseInt(counterDiv.textContent);
+  
+      if (event.target.classList.contains('increment')) {
+        currentCount += 1;
+      } else if (event.target.classList.contains('decrement') && currentCount > 0) {
+        currentCount -= 1;
+      }
+  
+      counterDiv.textContent = currentCount;
+  
+      if (currentCount === 0) {
+        const confirmDelete = confirm("Quantity is zero. Do you want to delete this item?");
+        if (confirmDelete) {
+          removeFoodItem(itemId, currentTab);
+        } else {
+          counterDiv.textContent = currentCount + 1;
+        }
+      } else {
+        const foodItem = event.target.closest('.food-item');
+        updateQuantity(itemId, currentTab, currentCount, foodItem);
+        updateNutrients(foodItem, currentCount);
+      }
+    }
+  });
+  
+  // Update nutrients in UI
+  function updateNutrients(foodItem, quantity) {
+    const baseCalories = parseFloat(foodItem.getAttribute('data-calories'));
+    const baseCarbs = parseFloat(foodItem.getAttribute('data-carbs'));
+    const baseProtein = parseFloat(foodItem.getAttribute('data-protein'));
+    const baseFat = parseFloat(foodItem.getAttribute('data-fat'));
+    const baseServingSize = foodItem.getAttribute('data-serving-size');
+  
+    const calories = (baseCalories * quantity).toFixed(2);
+    const carbs = (baseCarbs * quantity).toFixed(2);
+    const protein = (baseProtein * quantity).toFixed(2);
+    const fat = (baseFat * quantity).toFixed(2);
+    const servingSize = baseServingSize ? `${parseFloat(baseServingSize) * quantity}g` : 'N/A';
+  
+    foodItem.querySelector('.calories').textContent = calories;
+    foodItem.querySelector('.carbs').textContent = carbs;
+    foodItem.querySelector('.protein').textContent = protein;
+    foodItem.querySelector('.fat').textContent = fat;
+    foodItem.querySelector('.serving-size').textContent = servingSize;
+  }
 
+  // Update nutrients in database
+  async function updateQuantity(itemId, currentTab, quantity, foodItem) {
+    try {
+      const baseCalories = parseFloat(foodItem.getAttribute('data-calories'));
+      const baseCarbs = parseFloat(foodItem.getAttribute('data-carbs'));
+      const baseProtein = parseFloat(foodItem.getAttribute('data-protein'));
+      const baseFat = parseFloat(foodItem.getAttribute('data-fat'));
+      const baseServingSize = parseFloat(foodItem.getAttribute('data-serving-size'));
+  
+      const calories = (baseCalories * quantity).toFixed(2);
+      const carbs = (baseCarbs * quantity).toFixed(2);
+      const protein = (baseProtein * quantity).toFixed(2);
+      const fat = (baseFat * quantity).toFixed(2);
+      const servingSize = baseServingSize ? `${baseServingSize * quantity}g` : 'N/A';
+  
+      const response = await fetch(`http://localhost:3000/food/${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quantity,
+          tabName: currentTab,
+          calories,
+          carbs,
+          protein,
+          fat,
+          servingSize
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update food item quantity');
+      }
+    } catch (error) {
+      console.error('Error updating food item quantity:', error);
+    }
+  }
+  
+});  
 
 // ======================= Calendar  =======================
 const calendar = document.querySelector(".calendar"),

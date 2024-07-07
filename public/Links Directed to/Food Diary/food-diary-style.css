@@ -278,9 +278,9 @@
 .tab-content {
   padding: 10px; /* Increased padding for better spacing */
   border-radius: 10px;
-  margin-top: 10px; /* Adjusted margin top */
+  margin-top: 10px; 
   margin-left: auto; /* Center align horizontally */
-  width: fit-content; /* Adjust width as needed */
+  width: fit-content; 
   position: relative; /* Ensure relative positioning for containing tabs and content */
   z-index: 100;
 }
@@ -288,9 +288,9 @@
 .tab-content-item {
   display: none;
   position: absolute; /* Position absolutely within the relative parent (.tab-content) */
-  top: calc(100% - 20px); /* Position below the tabs; adjust the 10px as needed */
+  top: calc(100% - 20px); /* Position below the tabs */
   left: -480px;
-  padding: 20px; /* Increased padding for better spacing */
+  padding: 20px; 
   border-radius: 15px;
 }
 
@@ -299,8 +299,11 @@
 }
 
 .food-item {
+  position: relative;
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 15px;
+  width: 410px;
+  height: 110px;
   margin-bottom: 10px;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -331,7 +334,10 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem;
+  position: absolute;
+  top: 65px; 
+  right: 12px;
+  font-size: 1.3rem;
   color: red;
 }
 
@@ -379,6 +385,37 @@ body {
   width: 60%;
   padding: 20px;
 }
+
+/* ------------ Counter ------------ */
+.counter {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: -75px; 
+  margin-left: 310px;
+}
+
+button {
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 1px;
+  font-weight: bolder;
+}
+
+.counter div {
+  font-size: 15px;
+  font-weight: bolder;
+  background-color: #ccc;
+  border: none;
+  border-radius: 20%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
 
 /* ------------ Search Bar ------------ */
 .search-box{

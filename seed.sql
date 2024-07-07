@@ -7,6 +7,7 @@ CREATE TABLE FoodItems (
     carbs NVARCHAR(50) NULL,
     protein NVARCHAR(50) NULL,
     fat NVARCHAR(50) NULL,
+	  quantity INT DEFAULT 1,
     createdAt DATETIME DEFAULT GETDATE()
 );
 

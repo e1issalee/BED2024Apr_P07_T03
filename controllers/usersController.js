@@ -110,6 +110,7 @@ const deleteUser = async (req, res) => {
     res.status(500).send("Error deleting user");
   }
 };
+
 module.exports = {
   getAllUsers,
   getUserById,
