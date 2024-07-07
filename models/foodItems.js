@@ -64,7 +64,7 @@ class Food {
         : null;
     }
     
-    static async createFoodItem(newFoodItem, userId) {
+    static async createFoodItem(newFoodItem) {
       const connection = await sql.connect(dbConfig);
     
       const sqlQuery = `
@@ -89,38 +89,6 @@ class Food {
       return result.recordset[0].id;
     }
     
-    static async updateFoodItem(id, updatedFoodItem) {
-      const connection = await sql.connect(dbConfig);
-    
-      const sqlQuery = `
-        UPDATE FoodItems
-        SET name = @name,
-            calories = @calories,
-            servingSize = @servingSize,
-            carbs = @carbs,
-            protein = @protein,
-            fat = @fat
-        WHERE id = @id`;
-    
-      const request = connection.request();
-      request.input("id", id);
-      request.input("name", updatedFoodItem.name || null);
-      request.input("calories", updatedFoodItem.calories || null);
-      request.input("servingSize", updatedFoodItem.servingSize || null);
-      request.input("carbs", updatedFoodItem.carbs || null);
-      request.input("protein", updatedFoodItem.protein || null);
-      request.input("fat", updatedFoodItem.fat || null);
-    
-      const result = await request.query(sqlQuery);
-        const newId = result.recordset[0].id;
-        connection.close();
-
-        res.json({ id: newId });
-    } catch (error) {
-        console.error("Error creating food item:", error);
-        res.status(500).send("Error creating food item");
-    }
-
     static async updateFoodItemQuantity(id, quantity, calories, carbs, protein, fat, servingSize) {
       const connection = await sql.connect(dbConfig);
       const query = `

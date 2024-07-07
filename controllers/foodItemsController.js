@@ -72,22 +72,6 @@ const getAllFoodItems = async (req, res) => {
     }
   };
 
-  const updateFoodItem = async (req, res) => {
-    const foodId = parseInt(req.params.id);
-    const newFoodData = req.body;
-  
-    try {
-      const updatedFood = await Food.updateFoodItem(foodId, newFoodData);
-      if (!updatedFood) {
-        return res.status(404).send("Food not found");
-      }
-      res.json(updatedFood);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error updating Food");
-    }
-  };
-
   const updateFoodItemQuantity = async (req, res) => {
     const itemId = parseInt(req.params.id);
     const { quantity, calories, carbs, protein, fat, servingSize } = req.body;
@@ -141,7 +125,6 @@ module.exports = {
   getAllFoodItems,
   getFoodItemById,
   createFoodItem,
-  updateFoodItem,
   updateFoodItemQuantity,
   deleteFoodItem,
   getNutritionData
