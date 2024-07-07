@@ -304,12 +304,15 @@
   padding: 15px;
   width: 410px;
   height: 110px;
-  margin-bottom: 10px;
+  margin-top: -20px;
+  margin-left: -200px;
+  margin-bottom: 30px;
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex; /* Use flexbox to manage the layout */
+  justify-content: space-between;
 }
-
 
 .food-name {
   font-weight: bold;
@@ -416,6 +419,26 @@ button {
   margin: 0 10px;
 }
 
+/* ------------ Calorie Counter ------------ */
+.calorie-counter {
+  display: flex;
+  flex-direction: column; /* Display items in a column */
+  justify-content: space-between; /* Align items with space between them */
+  margin-top: -220px; /* Adjust as needed */
+  margin-right: -330px;
+  text-align: left; /* Align text to the left */
+  z-index: 100; /* Adjust z-index as needed */
+}
+
+.calorie-counter .goal,
+.calorie-counter .current {
+  font-size: 1rem;
+  color: #878895;
+  font-weight: 700;
+  text-align: left; /* Align text to the left */
+  margin-bottom: 3px; /* Space between items */
+}
+
 
 /* ------------ Search Bar ------------ */
 .search-box{
@@ -425,7 +448,7 @@ button {
   margin-top: -100px;
   border-radius: 40px;
   z-index: 100;
-  position: relative; /* Ensure the result box is positioned within this container */
+  position: relative; 
 }
 
 .row {

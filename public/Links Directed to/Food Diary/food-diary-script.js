@@ -42,6 +42,21 @@ async function saveTabData(tabIndex) {
       alert('Error saving tab data');
   }
 }
+  // Update total calories function
+  function updateTotalCalories() {
+    let totalCalories = 0;
+    const foodItems = document.querySelectorAll('.food-item');
+
+    foodItems.forEach(foodItem => {
+      const calories = parseFloat(foodItem.getAttribute('data-calories'));
+      const quantity = parseInt(foodItem.querySelector('#count').textContent);
+      totalCalories += calories * quantity;
+    });
+
+    // Update the total calories in the UI
+    const totalCaloriesElement = document.getElementById('totalCalories');
+    totalCaloriesElement.textContent = totalCalories.toFixed(2);
+  }
   async function removeFoodItem(itemId, currentTab) {
       if (itemId && currentTab) {
         try {
@@ -59,6 +74,8 @@ async function saveTabData(tabIndex) {
             const foodItem = document.querySelector(`.food-item[data-tab="${currentTab}"][data-item-id="${itemId}"]`);
             if (foodItem) {
                 foodItem.remove();
+                // Update the total calories
+                updateTotalCalories();
                 alert('Food item deleted successfully!');
             } else {
                 console.error('Food item not found in UI');
@@ -284,6 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
       const tabContent = document.getElementById(currentTab);
       tabContent.appendChild(foodContainer);
+
+      // Update total calories
+      updateTotalCalories();
   
       alert(`Food item added successfully for ${currentTab}!`);
     } catch (error) {
@@ -291,6 +311,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Error adding food item');
     }
   }
+
+
   
   // Event listeners for increment and decrement buttons
   document.addEventListener('click', function (event) {
@@ -319,6 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const foodItem = event.target.closest('.food-item');
         updateQuantity(itemId, currentTab, currentCount, foodItem);
         updateNutrients(foodItem, currentCount);
+        updateTotalCalories();
       }
     }
   });
@@ -382,7 +405,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Error updating food item quantity:', error);
     }
   }
-  
 });  
 
 // ======================= Calendar  =======================
