@@ -7,7 +7,6 @@ const validateUser = (req, res, next) => {
     password: Joi.string().min(3).max(50).required(),
     points: Joi.number().integer().min(0).default(0), // Validate and set default value
     numberOfVouchers: Joi.number().integer().min(0).default(0), // Validate and set default value
-    dailyCalories: Joi.number.integer().min(0).default(0)
   });
 
   const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
