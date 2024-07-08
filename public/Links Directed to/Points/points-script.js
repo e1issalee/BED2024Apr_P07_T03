@@ -274,8 +274,45 @@ async function claimCalories() {
   }
 }
 
-function redeemVoucher() {
-    alert("Voucher redeemed!");
+async function redeemVoucher() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user || !user.id) {
+        alert("User not logged in. Please log in to redeem a voucher.");
+        return;
+    }
+
+    if (user.points < 50) {
+        alert("Not enough points to redeem a voucher.");
+        return;
+    }
+
+    try {
+        // Update points and vouchers in the database
+        const response = await fetch(`http://localhost:3000/users/updatePointsAndVouchers/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ points: user.points - 50, numberOfVouchers: user.numberOfVouchers + 1 })
+        });
+
+        if (response.ok) {
+            const updatedUser = await response.json();
+
+            // Update local storage
+            user.points = updatedUser.points;
+            user.numberOfVouchers = updatedUser.numberOfVouchers;
+            localStorage.setItem('user', JSON.stringify(user));
+
+            alert("Voucher redeemed successfully!");
+        } else {
+            alert("Error redeeming voucher.");
+        }
+    } catch (error) {
+        console.error("Error redeeming voucher", error);
+        alert("Error redeeming voucher.");
+    }
 }
 
 function checkClaimStatus() {
