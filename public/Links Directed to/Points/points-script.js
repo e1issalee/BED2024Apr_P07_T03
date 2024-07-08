@@ -59,7 +59,7 @@ window.onclick = function(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
