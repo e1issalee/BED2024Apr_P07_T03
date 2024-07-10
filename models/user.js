@@ -212,6 +212,57 @@ class User {
         }
     }
   }
+
+  static async getUsersWithVouchers() {
+    let connection;
+    try {
+        connection = await sql.connect(dbConfig);
+        const query = `
+            SELECT u.id AS user_id, u.name, u.email, u.password, 
+                   u.points, u.numberOfVouchers, u.dailyCalories,
+                   v.id AS voucher_id, v.redemptionDate
+            FROM Users u
+            LEFT JOIN VoucherUsers vu ON vu.user_id = u.id
+            LEFT JOIN Vouchers v ON vu.voucher_id = v.id
+            ORDER BY u.id;
+        `;
+
+        const result = await connection.request().query(query);
+
+        // Group vouchers and their users
+        const usersWithVouchers = {};
+        for (const row of result.recordset) {
+            const userId = row.user_id;
+            if (!usersWithVouchers[userId]) {
+                usersWithVouchers[userId] = {
+                    id: userId,
+                    name: row.name,
+                    email: row.email,
+                    password: row.password,
+                    points: row.points,
+                    numberOfVouchers: row.numberOfVouchers,
+                    dailyCalories: row.dailyCalories,
+                    vouchers: [],
+                };
+            }
+            if (row.voucher_id) {
+                usersWithVouchers[userId].vouchers.push({
+                    id: row.voucher_id,
+                    redemptionDate: row.redemptionDate,
+                });
+            }
+        }
+
+        return Object.values(usersWithVouchers);
+    } catch (error) {
+        console.error('Error fetching users with vouchers:', error);
+        throw new Error("Error fetching users with vouchers");
+    } finally {
+        if (connection) {
+            await connection.close();
+        }
+    }
+  }
   
   static async deleteUser(id) {
     const connection = await sql.connect(dbConfig);

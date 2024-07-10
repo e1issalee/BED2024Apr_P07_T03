@@ -96,6 +96,16 @@ const resetUserCalories = async (req, res) => {
   }
 };
 
+const getUsersWithVouchers = async (req, res) => {
+  try {
+      const users = await User.getUsersWithVouchers();
+      res.json(users);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching users with vouchers" });
+  }
+};
+
 const deleteUser = async (req, res) => {
   const userId = parseInt(req.params.id);
 
@@ -119,5 +129,6 @@ module.exports = {
   updateUserPointsAndVouchers,
   updateUserCalories,
   resetUserCalories,
+  getUsersWithVouchers,
   deleteUser,
 };
