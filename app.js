@@ -1,5 +1,7 @@
 const express = require("express");
 const usersController = require("./controllers/usersController");
+const vouchersController = require("./controllers/vouchersController");
+const voucherUsersController = require("./controllers/voucherUsersController");
 const foodItemsController = require("./controllers/foodItemsController");
 const tabNamesController = require('./controllers/tabNamesController');
 const healthReportController = require('./controllers/healthReportController');
@@ -8,6 +10,7 @@ const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
+const validateVoucher = require("./middlewares/validateVoucher");
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require('cors');
 const publicstaticMiddleware = express.static("public"); 
@@ -32,6 +35,12 @@ app.post('/users/create', validateUser, usersController.createUser)
 app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAndVouchers); // PUT for updating users
 app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); // PUT for updating daily calories
 app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories
+
+app.post("/vouchers/create", validateVoucher, vouchersController.createVoucher);
+app.get("/vouchers/:id", vouchersController.getVoucherById);
+
+app.post("/voucherUsers/create", voucherUsersController.createVoucherUsers);
+app.get("/voucherUsers/:id", voucherUsersController.getVoucherUserById);
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);

@@ -276,6 +276,9 @@ async function claimCalories() {
 
 async function redeemVoucher() {
     const user = JSON.parse(localStorage.getItem('user'));
+    const redemptionDate = formatDate(new Date());
+    const newVoucher = { redemptionDate };
+    console.log(JSON.stringify(newVoucher));
 
     if (!user || !user.id) {
         alert("User not logged in. Please log in to redeem a voucher.");
@@ -313,6 +316,70 @@ async function redeemVoucher() {
         console.error("Error redeeming voucher", error);
         alert("Error redeeming voucher.");
     }
+
+    try {
+        const response = await fetch('http://localhost:3000/vouchers/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newVoucher)
+        });
+        if (response.ok) {
+            const createdVoucher = await response.json();
+
+            const newLocalVoucher = {
+                id: createdVoucher.id,
+                redemptionDate: redemptionDate
+            };
+            localStorage.setItem('voucher', JSON.stringify(newLocalVoucher));
+            
+            alert('Voucher created successfully!');
+
+            console.log('Created Voucher:', createdVoucher);
+        } else {
+            alert('Error creating voucher');
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error creating voucher');
+    }
+
+    const voucher = JSON.parse(localStorage.getItem('voucher'));
+    const createVuVoucherId = voucher.id;
+    const createVuUserId = user.id;
+    const newVoucherUser = { createVuVoucherId, createVuUserId }
+    console.log(newVoucherUser);
+    try {
+        const response = await fetch('http://localhost:3000/voucherUsers/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newVoucherUser)
+        });
+        if (response.ok) {
+            const createdVoucherUser = await response.json();
+            alert('Voucher created successfully!');
+
+            console.log('Created VoucherUser :', createdVoucherUser);
+        } else {
+            alert('Error creating voucherUser');
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error creating voucherUser');
+    }
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Month is zero-indexed
+    const day = ('0' + date.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
 }
 
 function checkClaimStatus() {

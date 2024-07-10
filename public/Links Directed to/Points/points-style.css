@@ -230,17 +230,26 @@ html {
 .container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     min-height: 70vh;
     padding: 20px;
 }
 
 .left-section, .right-section {
     flex: 1;
-    margin: 10px;
+    margin: 160px 10px 10px 10px;
 }
 
-.calorie-counter, .voucher-redeem {
+.calorie-counter {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.voucher-redeem, .voucher-section {
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 10px;
@@ -287,6 +296,10 @@ button:hover {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+.container .right-section .voucher-redeem img {
+    height: 420px;
 }
 
 /* --------------------------- Media Queries --------------------------- */

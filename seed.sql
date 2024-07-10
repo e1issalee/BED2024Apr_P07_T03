@@ -46,6 +46,17 @@ INSERT INTO Users
 VALUES
   ('Jack Hardy', 'jackhardy123@gmail.com', 'password', 0, 0, 0);
 
+CREATE TABLE Vouchers (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  redemptionDate Date NOT NULL
+);
+
+CREATE TABLE VoucherUsers (
+  id INT PRIMARY KEY IDENTITY,
+  voucher_id INT FOREIGN KEY REFERENCES Vouchers(id),
+  user_id INT FOREIGN KEY REFERENCES Users(id)
+);
+
 INSERT INTO userDetails (userAge, 
     userHeight, 
     userWeight, 
