@@ -60,6 +60,57 @@ class Voucher {
             }
         }
     }
+    
+    static async getVouchersWithUsers() {
+        let connection;
+        try {
+            connection = await sql.connect(dbConfig);
+            const query = `
+                SELECT v.id AS voucher_id, v.redemptionDate, 
+                    u.id AS user_id, u.name, u.email, u.password, 
+                    u.points, u.numberOfVouchers, u.dailyCalories
+                FROM Vouchers v
+                LEFT JOIN VoucherUsers vu ON vu.voucher_id = v.id
+                LEFT JOIN Users u ON vu.user_id = u.id
+                ORDER BY v.redemptionDate;
+            `;
+
+            const result = await connection.request().query(query);
+
+            // Group users and their vouchers
+            const vouchersWithUsers = {};
+            for (const row of result.recordset) {
+                const voucherId = row.voucher_id;
+                if (!vouchersWithUsers[voucherId]) {
+                    vouchersWithUsers[voucherId] = {
+                        id: voucherId,
+                        redemptionDate: row.redemptionDate,
+                        users: [],
+                    };
+                }
+                if (row.user_id) {
+                    vouchersWithUsers[voucherId].users.push({
+                        id: row.user_id,
+                        name: row.name,
+                        email: row.email,
+                        password: row.password,
+                        points: row.points,
+                        numberOfVouchers: row.numberOfVouchers,
+                        dailyCalories: row.dailyCalories,
+                    });
+                }
+            }
+
+            return Object.values(vouchersWithUsers);
+        } catch (error) {
+            console.error('Error fetching vouchers with users:', error);
+            throw new Error("Error fetching vouchers with users");
+        } finally {
+            if (connection) {
+                await connection.close();
+            }
+        }
+    }
 }
 
 module.exports = Voucher;

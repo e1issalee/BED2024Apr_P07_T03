@@ -25,7 +25,18 @@ const createVoucher = async (req, res) => {
     }
 };
 
+const getVouchersWithUsers = async (req, res) => {
+  try {
+    const vouchers = await Voucher.getVouchersWithUsers();
+    res.json(vouchers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching vouchers with users" });
+  }
+}
+
 module.exports = {
     getVoucherById,
     createVoucher,
+    getVouchersWithUsers,
 };

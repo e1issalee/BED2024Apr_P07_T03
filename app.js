@@ -37,6 +37,7 @@ app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); /
 app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories
 
 app.post("/vouchers/create", validateVoucher, vouchersController.createVoucher);
+app.get("/vouchers/with-users", vouchersController.getVouchersWithUsers);
 app.get("/vouchers/:id", vouchersController.getVoucherById);
 
 app.post("/voucherUsers/create", voucherUsersController.createVoucherUsers);
