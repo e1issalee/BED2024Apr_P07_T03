@@ -277,6 +277,55 @@ class User {
 
     return result.rowsAffected > 0; // Indicate success based on affected rows
   }
+
+  static async getUserWithVouchersById(userId) {
+    let connection;
+    try {
+        connection = await sql.connect(dbConfig);
+        const query = `
+            SELECT u.id AS user_id, u.name, u.email, u.password, 
+                   u.points, u.numberOfVouchers, u.dailyCalories,
+                   v.id AS voucher_id, v.redemptionDate
+            FROM Users u
+            LEFT JOIN VoucherUsers vu ON vu.user_id = u.id
+            LEFT JOIN Vouchers v ON vu.voucher_id = v.id
+            WHERE u.id = @userId
+            ORDER BY v.redemptionDate;
+        `;
+
+        const request = connection.request();
+        request.input('userId', sql.Int, userId);
+        const result = await request.query(query);
+
+        // Group vouchers and their users
+        if (result.recordset.length === 0) {
+            return null; // User not found
+        }
+
+        const userWithVouchers = {
+            id: result.recordset[0].user_id,
+            name: result.recordset[0].name,
+            email: result.recordset[0].email,
+            password: result.recordset[0].password,
+            points: result.recordset[0].points,
+            numberOfVouchers: result.recordset[0].numberOfVouchers,
+            dailyCalories: result.recordset[0].dailyCalories,
+            vouchers: result.recordset.filter(row => row.voucher_id).map(row => ({
+                id: row.voucher_id,
+                redemptionDate: row.redemptionDate,
+            })),
+        };
+
+            return userWithVouchers;
+        } catch (error) {
+            console.error('Error fetching user with vouchers:', error);
+            throw new Error("Error fetching user with vouchers");
+        } finally {
+            if (connection) {
+                await connection.close();
+            }
+        }
+    }
 }
 
 module.exports = User;

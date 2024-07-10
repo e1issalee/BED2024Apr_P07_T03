@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
+    fetchVouchers(user.id);
+
     // Calorie counter logic
     resetCaloriesAtMidnight(user.id);
     updateProgressBar();
@@ -380,6 +382,50 @@ function formatDate(date) {
     const day = ('0' + date.getDate()).slice(-2);
 
     return `${year}-${month}-${day}`;
+}
+
+async function fetchVouchers(userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/users/with-vouchers/${userId}`); // Replace with your API endpoint
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        const voucherList = document.getElementById("voucher-list");
+
+        // Clear the list before appending new data
+        voucherList.innerHTML = '';
+
+        if (data.vouchers && Array.isArray(data.vouchers)) {
+            data.vouchers.forEach((voucher) => {
+                const voucherItem = document.createElement("div");
+                voucherItem.classList.add("voucher"); // Add a CSS class for styling
+
+                // Create elements for voucher data and populate with voucher data
+                const redemptionDateElement = document.createElement("h2");
+                redemptionDateElement.textContent = `Redemption Date: ${voucher.redemptionDate}`;
+
+                const userElement = document.createElement("p");
+                userElement.textContent = `User: ${data.name}`; // Assuming 'name' is a property of the user object
+
+                // ... add more elements for other voucher data (optional)
+
+                voucherItem.appendChild(redemptionDateElement);
+                voucherItem.appendChild(userElement);
+                // ... append other elements
+
+                voucherList.appendChild(voucherItem);
+            });
+        } else {
+            const noVouchersMessage = document.createElement("p");
+            noVouchersMessage.textContent = "No vouchers found.";
+            voucherList.appendChild(noVouchersMessage);
+        }
+    } catch (error) {
+        console.error('Error fetching vouchers:', error);
+        // Handle error appropriately
+    }
 }
 
 function checkClaimStatus() {

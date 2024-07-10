@@ -30,8 +30,9 @@ app.get('/', (req, res) => {
 });
 
 app.get("/users/with-vouchers", usersController.getUsersWithVouchers);
-app.post('/users/login', usersController.getUserByEmailAndPassword)
-app.post('/users/create', validateUser, usersController.createUser)
+app.post('/users/login', usersController.getUserByEmailAndPassword);
+app.post('/users/create', validateUser, usersController.createUser);
+app.get("/users/with-vouchers/:id", usersController.getUserWithVouchersById); // GET for the user with the voucher he has
 app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAndVouchers); // PUT for updating users
 app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); // PUT for updating daily calories
 app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories

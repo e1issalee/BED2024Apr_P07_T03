@@ -302,6 +302,22 @@ button:disabled {
     height: 420px;
 }
 
+.voucher {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+}
+
+.voucher h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.voucher p {
+    margin: 0;
+    font-size: 1em;
+}
+
 /* --------------------------- Media Queries --------------------------- */
 @media only screen and (max-width: 768px) {
 

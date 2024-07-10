@@ -121,6 +121,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserWithVouchersById = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+      const user = await User.getUserWithVouchersById(userId);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching user with vouchers" });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -131,4 +149,5 @@ module.exports = {
   resetUserCalories,
   getUsersWithVouchers,
   deleteUser,
+  getUserWithVouchersById,
 };
