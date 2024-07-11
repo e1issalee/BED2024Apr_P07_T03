@@ -7,6 +7,7 @@ CREATE TABLE FoodItems (
     carbs NVARCHAR(50) NULL,
     protein NVARCHAR(50) NULL,
     fat NVARCHAR(50) NULL,
+	  quantity INT DEFAULT 1,
     createdAt DATETIME DEFAULT GETDATE()
 );
 
@@ -32,8 +33,10 @@ CREATE TABLE Users (
   id INT IDENTITY(1,1) PRIMARY KEY,
   name VARCHAR(50) NOT NULL, 
   email VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
   points int NOT NULL,
-  numberOfVouchers int NOT NULL
+  numberOfVouchers int NOT NULL,
+  dailyCalories int NOT NULL
 );
 
 
@@ -41,7 +44,18 @@ CREATE TABLE Users (
 
 INSERT INTO Users
 VALUES
-  ('Jack Hardy', 'jackhardy123@gmail.com', 0, 0);
+  ('Jack Hardy', 'jackhardy123@gmail.com', 'password', 0, 0, 0);
+
+CREATE TABLE Vouchers (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  redemptionDate Date NOT NULL
+);
+
+CREATE TABLE VoucherUsers (
+  id INT PRIMARY KEY IDENTITY,
+  voucher_id INT FOREIGN KEY REFERENCES Vouchers(id),
+  user_id INT FOREIGN KEY REFERENCES Users(id)
+);
 
 INSERT INTO userDetails (userAge, 
     userHeight, 

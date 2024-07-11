@@ -20,19 +20,20 @@
   </head>
   <body>
     <div class="navbar">
+        <a class="index-logo" href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="../../index.html" onclick="toggleActive(this); scrollToTop()">HOME</a>
         <a href="../../index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
         <a href="../Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
-        <a href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
         <a href="../../index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
-        <a href="#credit" onclick="toggleActive(this)">CREDIT</a>
+        <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
         <div class="dropdown">
             <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="../Health Report/healthReport.html">Health Report</a>
                 <a href="food-diary-index.html">Food Diary</a>
                 <a href="../Points/points-index.html">Points</a>
-                <a href="logout.html">Logout</a>
+                <a href="../../login.html" id="login-link">Login</a>
+                <button id="logout-button">Logout</button>
             </div>
         </div>
     </div>
@@ -54,6 +55,12 @@
       <div id="lunch" class="tab-content-item"></div>
       <div id="dinner" class="tab-content-item"></div>
     </div>
+
+    <div class="calorie-counter">
+      <div class="goal">Goal:</div>
+      <div class="current">Current: <span id="totalCalories">0</span> cal</div>
+    </div>
+    
 
     <div class="search-box">
       <div class="row">

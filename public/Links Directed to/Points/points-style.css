@@ -226,6 +226,104 @@ html {
     background-color: #cbcbcb;
 }
 
+/* container */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 70vh;
+    padding: 20px;
+}
+
+.left-section, .right-section {
+    flex: 1;
+    margin: 160px 10px 10px 10px;
+}
+
+.calorie-counter {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.voucher-redeem, .voucher-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress-bar {
+    height: 30px;
+    width: 0%;
+    background-color: #76c7c0;
+    border-radius: 25px;
+    transition: width 0.3s;
+}
+
+#calorie-input {
+    width: 100px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #76c7c0;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #64b3ad;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.container .right-section .voucher-redeem img {
+    height: 420px;
+}
+
+.voucher-list {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 16px;
+}
+.voucher {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-right: 16px;
+    margin-bottom: 8px;
+    display: inline-block;
+    min-width: 320px;
+}
+.voucher h2 {
+    margin: 0;
+    font-size: 1.25em;
+}
+.voucher p {
+    margin: 0.5em 0;
+}
+
 /* --------------------------- Media Queries --------------------------- */
 @media only screen and (max-width: 768px) {
 

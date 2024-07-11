@@ -29,33 +29,63 @@
       width: auto;
   }
 
-  .navbar a:nth-child(1) { /* HOME */
-      margin-left: 185px;
-      margin-top: 50px;
-  }
+  .navbar a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
 
-  .navbar a:nth-child(2),
-  .navbar a:nth-child(3) { /* ABOUT US, RECIPES */
-      margin-left: -50px;
-      margin-top: 50px;
-  }
+.navbar a:nth-child(2) { /* HOME */
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.navbar a:nth-child(3) { /* ABOUT US */
+    margin-left: 100px;
+    margin-top: 50px;
+}
 
-  .navbar a:nth-child(4) { /* LOGO */
-      margin-left: -50px;
-      height: 160px;
-      width: auto;
-  }
+.navbar a:nth-child(4) { /* RECIPES */
+    margin-left: 100px;
+    margin-top: 50px;
+    width: auto;
+}
 
-  .navbar a:nth-child(5) { /* CONTACT */
-      margin-left: -55px;
-      margin-top: 50px;
-  }
+.navbar a:nth-child(5) { /* CONTACT */
+    margin-left: 100px;
+    margin-top: 50px;
+}
 
-  .navbar a:nth-child(6) { /* CREDIT */
-      margin-left: -50px;
-      margin-top: 50px;
-      z-index: 10;
-  }
+.navbar a:nth-child(6) { /* CREDIT */
+    margin-left: -50px;
+    margin-top: 50px;
+    z-index: 10;
+}
+
+.navbar .dropdown a:nth-child(1) { /* LOGO */
+    margin-left: 100px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(1) { /* LOGO */
+    margin-left: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(2) { /* HOME */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+.navbar .dropdown .dropdown-content a:nth-child(3) { /* ABOUT US */
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(4) { /* RECIPES */
+    margin-left: 0px;
+    margin-top: 0px;
+    width: auto;
+}
+
+.navbar .dropdown .dropdown-content a:nth-child(5) { 
+    margin-left: 0px;
+    margin-top: 0px;
+}
 
   /* Hover effect */
   .navbar a.active,
@@ -97,10 +127,9 @@
       display: none;
       position: absolute;
       background-color: #f9f9f9d7;
-      width: 160px; 
-      max-height: 210px;
+      width: 160px;
       margin-top: 10px;
-      margin-left: 190px; /* Adjusted left margin */
+      margin-left: 95px; /* Adjusted left margin */
       padding: 10px; /* Added padding to the container */
       border-radius: 20px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -122,6 +151,7 @@
       background-color: inherit;
       font-family: inherit;
       color: black;
+      margin-right: 450px;
   }
 
   /* Dropdown links */
@@ -140,10 +170,10 @@
   }
 
   /* Adjust spacing between elements */
-  .navbar > a,
+  /* .navbar > a,
   .navbar > .dropdown {
       margin-left: -260px;
-  }
+  } */
 
   /* Style individual links */
   .dropdown-content a[href="../Health Report/healthReport.html"] {
@@ -161,11 +191,33 @@
       margin-left: 2px; 
   }
 
-  .dropdown-content a[href="logout.html"] {
-      margin-top: 5px;
-      margin-left: 2px; 
-      margin-bottom: 13px;
-  }
+  .dropdown-content a[href="login.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+.dropdown-content a[href="signup.html"] {
+    margin-top: 5px;
+    margin-left: 2px; 
+    margin-bottom: 13px;
+}
+
+#logout-button {
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    display: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #cbcbcb;
+}
+
 }
 
 * {
@@ -226,9 +278,9 @@
 .tab-content {
   padding: 10px; /* Increased padding for better spacing */
   border-radius: 10px;
-  margin-top: 10px; /* Adjusted margin top */
+  margin-top: 10px; 
   margin-left: auto; /* Center align horizontally */
-  width: fit-content; /* Adjust width as needed */
+  width: fit-content; 
   position: relative; /* Ensure relative positioning for containing tabs and content */
   z-index: 100;
 }
@@ -236,9 +288,9 @@
 .tab-content-item {
   display: none;
   position: absolute; /* Position absolutely within the relative parent (.tab-content) */
-  top: calc(100% - 20px); /* Position below the tabs; adjust the 10px as needed */
+  top: calc(100% - 20px); /* Position below the tabs */
   left: -480px;
-  padding: 20px; /* Increased padding for better spacing */
+  padding: 20px; 
   border-radius: 15px;
 }
 
@@ -247,14 +299,20 @@
 }
 
 .food-item {
+  position: relative;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 15px;
+  width: 410px;
+  height: 110px;
+  margin-top: -20px;
+  margin-left: -200px;
+  margin-bottom: 30px;
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex; /* Use flexbox to manage the layout */
+  justify-content: space-between;
 }
-
 
 .food-name {
   font-weight: bold;
@@ -279,7 +337,10 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem;
+  position: absolute;
+  top: 65px; 
+  right: 12px;
+  font-size: 1.3rem;
   color: red;
 }
 
@@ -328,6 +389,57 @@ body {
   padding: 20px;
 }
 
+/* ------------ Counter ------------ */
+.counter {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: -75px; 
+  margin-left: 310px;
+}
+
+button {
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 1px;
+  font-weight: bolder;
+}
+
+.counter div {
+  font-size: 15px;
+  font-weight: bolder;
+  background-color: #ccc;
+  border: none;
+  border-radius: 20%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+/* ------------ Calorie Counter ------------ */
+.calorie-counter {
+  display: flex;
+  flex-direction: column; /* Display items in a column */
+  justify-content: space-between; /* Align items with space between them */
+  margin-top: -220px; /* Adjust as needed */
+  margin-right: -330px;
+  text-align: left; /* Align text to the left */
+  z-index: 100; /* Adjust z-index as needed */
+}
+
+.calorie-counter .goal,
+.calorie-counter .current {
+  font-size: 1rem;
+  color: #878895;
+  font-weight: 700;
+  text-align: left; /* Align text to the left */
+  margin-bottom: 3px; /* Space between items */
+}
+
+
 /* ------------ Search Bar ------------ */
 .search-box{
   width: 350px;
@@ -336,7 +448,7 @@ body {
   margin-top: -100px;
   border-radius: 40px;
   z-index: 100;
-  position: relative; /* Ensure the result box is positioned within this container */
+  position: relative; 
 }
 
 .row {

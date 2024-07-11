@@ -1,12 +1,8 @@
 const Joi = require("joi");
 
-const validateUser = (req, res, next) => {
+const validateVoucher = (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    email: Joi.string().min(3).max(50).email().required(),
-    password: Joi.string().min(3).max(50).required(),
-    points: Joi.number().integer().min(0).default(0), // Validate and set default value
-    numberOfVouchers: Joi.number().integer().min(0).default(0), // Validate and set default value
+    redemptionDate: Joi.date().iso().required()
   });
 
   const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
@@ -20,4 +16,4 @@ const validateUser = (req, res, next) => {
   next(); // If validation passes, proceed to the next route handler
 };
 
-module.exports = validateUser;
+module.exports = validateVoucher;

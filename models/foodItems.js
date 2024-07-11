@@ -68,8 +68,8 @@ class Food {
       const connection = await sql.connect(dbConfig);
     
       const sqlQuery = `
-        INSERT INTO FoodItems (tabname, name, calories, servingSize, carbs, protein, fat)
-        VALUES (@tabname, @name, @calories, @servingSize, @carbs, @protein, @fat);
+        INSERT INTO FoodItems (tabname, name, calories, servingSize, carbs, protein, fat, quantity)
+        VALUES (@tabname, @name, @calories, @servingSize, @carbs, @protein, @fat, @quantity);
         SELECT SCOPE_IDENTITY() AS id`;
     
       const request = connection.request();
@@ -80,6 +80,7 @@ class Food {
       request.input("carbs", newFoodItem.carbs || null);
       request.input("protein", newFoodItem.protein || null);
       request.input("fat", newFoodItem.fat || null);
+      request.input("quantity", newFoodItem.quantity || 1);
     
       const result = await request.query(sqlQuery);
     
@@ -88,36 +89,32 @@ class Food {
       return result.recordset[0].id;
     }
     
-    static async updateFoodItem(id, updatedFoodItem) {
+    static async updateFoodItemQuantity(id, quantity, calories, carbs, protein, fat, servingSize) {
       const connection = await sql.connect(dbConfig);
-    
-      const sqlQuery = `
+      const query = `
         UPDATE FoodItems
-        SET name = @name,
-            calories = @calories,
-            servingSize = @servingSize,
-            carbs = @carbs,
-            protein = @protein,
-            fat = @fat
-        WHERE id = @id`;
+        SET 
+          quantity = @quantity,
+          calories = @calories,
+          carbs = @carbs,
+          protein = @protein,
+          fat = @fat,
+          servingSize = @servingSize
+        WHERE id = @id
+      `;
     
       const request = connection.request();
-      request.input("id", id);
-      request.input("name", updatedFoodItem.name || null);
-      request.input("calories", updatedFoodItem.calories || null);
-      request.input("servingSize", updatedFoodItem.servingSize || null);
-      request.input("carbs", updatedFoodItem.carbs || null);
-      request.input("protein", updatedFoodItem.protein || null);
-      request.input("fat", updatedFoodItem.fat || null);
-    
-      const result = await request.query(sqlQuery);
-        const newId = result.recordset[0].id;
-        connection.close();
-
-        res.json({ id: newId });
-    } catch (error) {
-        console.error("Error creating food item:", error);
-        res.status(500).send("Error creating food item");
+      request.input('quantity', sql.Int, quantity);
+      request.input('calories', sql.Float, calories);
+      request.input('carbs', sql.Float, carbs);
+      request.input('protein', sql.Float, protein);
+      request.input('fat', sql.Float, fat);
+      request.input('servingSize', sql.VarChar, servingSize);
+      request.input('id', sql.Int, id);
+  
+      const result = await request.query(query);
+  
+      return result.rowsAffected[0] > 0; // Return true if rows were updated
     }
 
     static async fetchFoodItems() {

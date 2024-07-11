@@ -1,5 +1,7 @@
 const express = require("express");
 const usersController = require("./controllers/usersController");
+const vouchersController = require("./controllers/vouchersController");
+const voucherUsersController = require("./controllers/voucherUsersController");
 const foodItemsController = require("./controllers/foodItemsController");
 const tabNamesController = require('./controllers/tabNamesController');
 const healthReportController = require('./controllers/healthReportController');
@@ -8,6 +10,7 @@ const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
+const validateVoucher = require("./middlewares/validateVoucher");
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require('cors');
 const publicstaticMiddleware = express.static("public"); 
@@ -26,15 +29,25 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get("/users/with-vouchers", usersController.getUsersWithVouchers);
+app.post('/users/login', usersController.getUserByEmailAndPassword);
+app.post('/users/create', validateUser, usersController.createUser);
+app.get("/users/with-vouchers/:id", usersController.getUserWithVouchersById); // GET for the user with the voucher he has
+app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAndVouchers); // PUT for updating users
+app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); // PUT for updating daily calories
+app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories
 
-app.post('/users/login', usersController.getUserByEmailAndPassword)
-app.post('/users/create', validateUser, usersController.createUser)
+app.post("/vouchers/create", validateVoucher, vouchersController.createVoucher);
+app.get("/vouchers/with-users", vouchersController.getVouchersWithUsers);
+app.get("/vouchers/:id", vouchersController.getVoucherById);
+
+app.post("/voucherUsers/create", voucherUsersController.createVoucherUsers);
+app.get("/voucherUsers/:id", voucherUsersController.getVoucherUserById);
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/users", usersController.getAllUsers);
 app.get("/users/:id", usersController.getUserById);
 app.post("/users", validateUser, usersController.createUser); // POST for creating user (can handle JSON data)
-app.put("/users/:id", validateUser, usersController.updateUser); // PUT for updating users
 app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
 
@@ -44,6 +57,7 @@ app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
 app.get('/nutrition', foodItemsController.getNutritionData);
 app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
+app.put('/food/:id', foodItemsController.updateFoodItemQuantity)
 app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); 
 
 app.post('/tabNames', tabNamesController.saveTabName);

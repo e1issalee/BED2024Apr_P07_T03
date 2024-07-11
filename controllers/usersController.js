@@ -49,12 +49,12 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserPointsAndVouchers = async (req, res) => {
+  
   const userId = parseInt(req.params.id);
-  const newUserData = req.body;
-
+  const { points, numberOfVouchers } = req.body;
   try {
-    const updatedUser = await User.updateUser(userId, newUserData);
+    const updatedUser = await User.updateUserPointsAndVouchers(userId, points, numberOfVouchers);
     if (!updatedUser) {
       return res.status(404).send("User not found");
     }
@@ -62,6 +62,47 @@ const updateUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Error updating user");
+  }
+};
+
+const updateUserCalories = async (req, res) => {
+  
+  const userId = parseInt(req.params.id);
+  const { dailyCalories } = req.body;
+  try {
+    const updatedUser = await User.updateUserCalories(userId, dailyCalories);
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating user");
+  }
+};
+
+const resetUserCalories = async (req, res) => {
+  
+  const userId = parseInt(req.params.id);
+  try {
+    const updatedUser = await User.resetUserCalories(userId);
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating user");
+  }
+};
+
+const getUsersWithVouchers = async (req, res) => {
+  try {
+      const users = await User.getUsersWithVouchers();
+      res.json(users);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching users with vouchers" });
   }
 };
 
@@ -79,11 +120,34 @@ const deleteUser = async (req, res) => {
     res.status(500).send("Error deleting user");
   }
 };
+
+const getUserWithVouchersById = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+      const user = await User.getUserWithVouchersById(userId);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching user with vouchers" });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   getUserByEmailAndPassword,
   createUser,
-  updateUser,
+  updateUserPointsAndVouchers,
+  updateUserCalories,
+  resetUserCalories,
+  getUsersWithVouchers,
   deleteUser,
+  getUserWithVouchersById,
 };

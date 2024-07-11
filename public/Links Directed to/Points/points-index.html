@@ -39,5 +39,36 @@
                 </div>
             </div>
         </div>
+
+        <div class="container">
+            <div class="left-section">
+                <div class="calorie-counter">
+                    <h2>Daily Calorie Goal: 2500</h2>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div>
+                        <label for="calorie-input">Add Calories: </label>
+                        <input type="number" id="calorie-input" min="0">
+                        <button onclick="addCalories()">Add</button>
+                    </div>
+                    <div>
+                        <p>Total Calories Consumed Today: <span id="calories-today">0</span></p>
+                    </div>
+                    <button id="claim-button" onclick="claimCalories()" disabled>Claim 10 Points</button>
+                </div>
+                <div class="voucher-section">
+                    <h2> Vouchers </h2>
+                    <section id="voucher-list"></section>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="voucher-redeem">
+                    <h2>Redeem Voucher</h2>
+                    <img src="../../Images/voucher image.png">
+                    <button onclick="redeemVoucher()">Redeem For 50 Points</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

@@ -91,8 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Redirect to a different page if needed
                 window.location.href = 'login.html';
 
-                localStorage.setItem('userID', user.id); // for linking to health report
-
                 console.log('Created User:', createdUser);
             } else {
                 alert('Error creating user');
