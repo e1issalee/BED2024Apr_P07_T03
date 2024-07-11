@@ -402,9 +402,17 @@ async function fetchVouchers(userId) {
                 const voucherItem = document.createElement("div");
                 voucherItem.classList.add("voucher"); // Add a CSS class for styling
 
+                // Format the redemption date
+                const redemptionDate = new Date(voucher.redemptionDate);
+                const formattedDate = redemptionDate.toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
                 // Create elements for voucher data and populate with voucher data
                 const redemptionDateElement = document.createElement("h2");
-                redemptionDateElement.textContent = `Redemption Date: ${voucher.redemptionDate}`;
+                redemptionDateElement.textContent = `Redemption Date: ${formattedDate}`;
 
                 const userElement = document.createElement("p");
                 userElement.textContent = `User: ${data.name}`; // Assuming 'name' is a property of the user object
