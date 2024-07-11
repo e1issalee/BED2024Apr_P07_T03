@@ -37,6 +37,7 @@ app.put("/users/updatePointsAndVouchers/:id", usersController.updateUserPointsAn
 app.put("/users/updateDailyCalories/:id", usersController.updateUserCalories); // PUT for updating daily calories
 app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // PUT for updating daily calories
 
+// [VOUCHERS] =================================================================================
 app.post("/vouchers/create", validateVoucher, vouchersController.createVoucher);
 app.get("/vouchers/with-users", vouchersController.getVouchersWithUsers);
 app.delete("/vouchers/delete/:id", vouchersController.deleteVoucher); // DELETE for deleting vouchers
@@ -46,25 +47,25 @@ app.post("/voucherUsers/create", voucherUsersController.createVoucherUsers);
 app.delete("/voucherUsers/delete/:id", voucherUsersController.deleteVoucherUsers); // DELETE for deleting voucherUsers
 app.get("/voucherUsers/:id", voucherUsersController.getVoucherUserById);
 
-// [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
+// [USERS] =================================================================================
 app.get("/users", usersController.getAllUsers);
 app.get("/users/:id", usersController.getUserById);
 app.post("/users", validateUser, usersController.createUser); // POST for creating user (can handle JSON data)
 app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE for deleting users
 
 
-// [FOOD] ======================================================
-app.post('/food', foodItemsController.createFoodItem);
+// [FOOD] =================================================================================
+app.post('/food', foodItemsController.createFoodItem); // addFoodToTab
 app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
-app.get('/nutrition', foodItemsController.getNutritionData);
-app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); 
-app.put('/food/:id', foodItemsController.updateFoodItemQuantity)
-app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); 
+app.get('/nutrition', foodItemsController.getNutritionData); // GET nutritional data from API + display
+app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); // fetchFoodItems
+app.put('/food/:id', foodItemsController.updateFoodItemQuantity) // updateQuantity
+app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); // removeFoodItem
 
-app.post('/tabNames', tabNamesController.saveTabName);
+app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 
-// [health report] ===================================================================
+// [HEALTH REPORT] =================================================================================
 app.post('/saveUserDetails', healthReportController.saveUserDetails);
 app.get('/healthReport/:reportID', healthReportController.getReportByID);
 
