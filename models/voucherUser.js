@@ -64,6 +64,20 @@ class VoucherUsers {
             }
         }
     }
+
+    static async deleteVoucherUsers(voucher_id) {
+        const connection = await sql.connect(dbConfig);
+    
+        const sqlQuery = `DELETE FROM VoucherUsers WHERE voucher_id = @voucher_id`; // Parameterized query
+    
+        const request = connection.request();
+        request.input("voucher_id", voucher_id);
+        const result = await request.query(sqlQuery);
+    
+        connection.close();
+    
+        return result.rowsAffected > 0; // Indicate success based on affected rows
+    }
 }
 
 module.exports = VoucherUsers;

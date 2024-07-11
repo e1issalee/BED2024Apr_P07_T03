@@ -111,6 +111,20 @@ class Voucher {
             }
         }
     }
+
+    static async deleteVoucher(id) {
+        const connection = await sql.connect(dbConfig);
+    
+        const sqlQuery = `DELETE FROM Vouchers WHERE id = @id`; // Parameterized query
+    
+        const request = connection.request();
+        request.input("id", id);
+        const result = await request.query(sqlQuery);
+    
+        connection.close();
+    
+        return result.rowsAffected > 0; // Indicate success based on affected rows
+    }
 }
 
 module.exports = Voucher;

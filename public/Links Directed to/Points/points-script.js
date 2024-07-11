@@ -385,6 +385,13 @@ function formatDate(date) {
 }
 
 async function fetchVouchers(userId) {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    // Check if user is stored locally
+    if (!user || !user.id) {
+        alert("User not logged in. Please log in to claim calories.");
+        return; // Exit the function if no user is found
+    }
     try {
         const response = await fetch(`http://localhost:3000/users/with-vouchers/${userId}`); // Replace with your API endpoint
         if (!response.ok) {
@@ -417,10 +424,66 @@ async function fetchVouchers(userId) {
                 const userElement = document.createElement("p");
                 userElement.textContent = `User: ${data.name}`; // Assuming 'name' is a property of the user object
 
-                // ... add more elements for other voucher data (optional)
+                const deleteButton = document.createElement("delete-button");
+                deleteButton.textContent = "Delete";
+                deleteButton.addEventListener("click", async () => {
+                    try {
+                         const deleteResponse = await fetch(`http://localhost:3000/voucherUsers/delete/${voucher.id}`, {
+                            method: 'DELETE'
+                        });
+                        if (deleteResponse.ok) {
+                            alert('VoucherUsers deleted successfully!');
+                        } else {
+                            alert('Error deleting voucherUsers');
+                        }
+                        } catch (error) {
+                            console.error('Error deleting voucherUsers:', error);
+                            alert('Error deleting voucherUsers');
+                    }
+
+                    try {
+                         const deleteResponse = await fetch(`http://localhost:3000/vouchers/delete/${voucher.id}`, {
+                            method: 'DELETE'
+                        });
+                        if (deleteResponse.ok) {
+                            voucherItem.remove();
+                            alert('Voucher deleted successfully!');
+                        } else {
+                            alert('Error deleting voucher');
+                        }
+                        } catch (error) {
+                            console.error('Error deleting voucher:', error);
+                            alert('Error deleting voucher');
+                    }
+
+                    try {
+                        // Update points and vouchers in the database
+                        const response = await fetch(`http://localhost:3000/users/updatePointsAndVouchers/${user.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ points: user.points , numberOfVouchers: user.numberOfVouchers - 1 })
+                        });
+                
+                        if (response.ok) {
+                            const updatedUser = await response.json();
+                            user.numberOfVouchers = updatedUser.numberOfVouchers;
+                            localStorage.setItem('user', JSON.stringify(user));
+                
+                            alert("Voucher deleted successfully!");
+                        } else {
+                            alert("Error deleting voucher.");
+                        }
+                    } catch (error) {
+                        console.error("Error deleting voucher", error);
+                        alert("Error deleting voucher.");
+                    }
+                });
 
                 voucherItem.appendChild(redemptionDateElement);
                 voucherItem.appendChild(userElement);
+                voucherItem.appendChild(deleteButton);
                 // ... append other elements
 
                 voucherList.appendChild(voucherItem);
