@@ -35,8 +35,24 @@ const getVouchersWithUsers = async (req, res) => {
   }
 }
 
+const deleteVoucher = async (req, res) => {
+  const voucherId = parseInt(req.params.id);
+
+  try {
+    const success = await Voucher.deleteVoucher(voucherId);
+    if (!success) {
+      return res.status(404).send("Voucher not found");
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting voucher");
+  }
+};
+
 module.exports = {
     getVoucherById,
     createVoucher,
     getVouchersWithUsers,
+    deleteVoucher,
 };

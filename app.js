@@ -39,9 +39,11 @@ app.put("/users/resetDailyCalories/:id", usersController.resetUserCalories); // 
 
 app.post("/vouchers/create", validateVoucher, vouchersController.createVoucher);
 app.get("/vouchers/with-users", vouchersController.getVouchersWithUsers);
+app.delete("/vouchers/delete/:id", vouchersController.deleteVoucher); // DELETE for deleting vouchers
 app.get("/vouchers/:id", vouchersController.getVoucherById);
 
 app.post("/voucherUsers/create", voucherUsersController.createVoucherUsers);
+app.delete("/voucherUsers/delete/:id", voucherUsersController.deleteVoucherUsers); // DELETE for deleting voucherUsers
 app.get("/voucherUsers/:id", voucherUsersController.getVoucherUserById);
 
 // [USERS] Routes for GET requests (replace with appropriate routes for update and delete later)
