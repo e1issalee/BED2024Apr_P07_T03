@@ -80,9 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const user = await response.json();
                 alert('Login successful!');
-                localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('userID', user.id); // for linking to health report
-                document.getElementById('login-dropdown').innerText = user.name;
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('userID', data.user.id); // for linking to health report
+                document.getElementById('login-dropdown').innerText = data.user.name;
 
                 // Redirect to a different page if needed
                 window.location.href = 'index.html';

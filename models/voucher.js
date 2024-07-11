@@ -68,7 +68,7 @@ class Voucher {
             const query = `
                 SELECT v.id AS voucher_id, v.redemptionDate, 
                     u.id AS user_id, u.name, u.email, u.password, 
-                    u.points, u.numberOfVouchers, u.dailyCalories
+                    u.points, u.numberOfVouchers, u.dailyCalories, u.role
                 FROM Vouchers v
                 LEFT JOIN VoucherUsers vu ON vu.voucher_id = v.id
                 LEFT JOIN Users u ON vu.user_id = u.id
