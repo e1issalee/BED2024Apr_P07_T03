@@ -1,3 +1,5 @@
+require('dotenv').config({ path: './secretkey.env' });
+
 const express = require("express");
 const usersController = require("./controllers/usersController");
 const vouchersController = require("./controllers/vouchersController");
@@ -11,6 +13,7 @@ const sql = require("mssql"); // Assuming you've installed mssql
 const dbConfig = require("./dbConfig");
 const validateUser = require("./middlewares/validateUser");
 const validateVoucher = require("./middlewares/validateVoucher");
+const verifyJWT = require("./middlewares/verifyJWT")
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require('cors');
 const publicstaticMiddleware = express.static("public"); 
@@ -18,6 +21,7 @@ const publicstaticMiddleware = express.static("public");
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
 
+app.use('/your-protected-routes', verifyJWT);
 
 // Include body-parser middleware to handle JSON data
 app.use(bodyParser.json());
