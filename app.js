@@ -16,10 +16,16 @@ const validateVoucher = require("./middlewares/validateVoucher");
 const verifyJWT = require("./middlewares/verifyJWT")
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require('cors');
-const publicstaticMiddleware = express.static("public"); 
+const publicstaticMiddleware = express.static("public");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
+
+// Serve the Swagger UI at a specific route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/your-protected-routes', verifyJWT);
 
@@ -72,7 +78,6 @@ app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 // [HEALTH REPORT] =================================================================================
 app.post('/saveUserDetails', healthReportController.saveUserDetails);
 app.get('/healthReport/:reportID', healthReportController.getReportByID);
-
 
 app.listen(port, async () => {
   try {

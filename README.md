@@ -3,4 +3,4 @@
 imports
 
 npm init -y 
-npm install express body-parser joi mssql cors bcryptjs jsonwebtoken dotenv
+npm install express body-parser joi mssql cors bcryptjs jsonwebtoken dotenv swagger-autogen swagger-ui-express
