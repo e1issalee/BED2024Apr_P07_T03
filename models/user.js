@@ -2,7 +2,7 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class User {
-  constructor(id, name, email, password, points, numberOfVouchers, dailyCalories) {
+  constructor(id, name, email, password, points, numberOfVouchers, dailyCalories, role) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -10,6 +10,7 @@ class User {
     this.points = points;
     this.numberOfVouchers = numberOfVouchers;
     this.dailyCalories = dailyCalories;
+    this.role = role;
   }
 
   static async getAllUsers() {
@@ -23,7 +24,7 @@ class User {
     connection.close();
 
     return result.recordset.map(
-      (row) => new User(row.id, row.name, row.email, row.password, row.points, row.numberOfVouchers, row.dailyCalories)
+      (row) => new User(row.id, row.name, row.email, row.password, row.points, row.numberOfVouchers, row.dailyCalories, row.role)
     ); // Convert rows to User objects
   }
 
@@ -47,7 +48,78 @@ class User {
               result.recordset[0].password,
               result.recordset[0].points,
               result.recordset[0].numberOfVouchers,
-              result.recordset[0].dailyCalories
+              result.recordset[0].dailyCalories,
+              result.recordset[0].role
+            )
+          : null; // Handle user not found
+        } catch (error) {
+          console.error('SQL error', error);
+          throw error;
+       } finally {
+          if (connection) {
+              connection.close();
+        }
+      }
+
+  }
+
+  static async getUserByName(name) {
+    let connection;
+    try{
+        const connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `SELECT * FROM Users WHERE name = @name`; // Parameterized query
+
+        const request = connection.request();
+        request.input("name", name);
+        
+        const result = await request.query(sqlQuery);
+
+        return result.recordset[0]
+          ? new User(
+              result.recordset[0].id,
+              result.recordset[0].name,
+              result.recordset[0].email,
+              result.recordset[0].password,
+              result.recordset[0].points,
+              result.recordset[0].numberOfVouchers,
+              result.recordset[0].dailyCalories,
+              result.recordset[0].role
+            )
+          : null; // Handle user not found
+        } catch (error) {
+          console.error('SQL error', error);
+          throw error;
+        } finally {
+          if (connection) {
+              connection.close();
+        }
+      }
+
+  }
+
+  static async getUserByEmail(email) {
+    let connection;
+    try{
+        const connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `SELECT * FROM Users WHERE email = @email`; // Parameterized query
+
+        const request = connection.request();
+        request.input("email", email);
+        
+        const result = await request.query(sqlQuery);
+
+        return result.recordset[0]
+          ? new User(
+              result.recordset[0].id,
+              result.recordset[0].name,
+              result.recordset[0].email,
+              result.recordset[0].password,
+              result.recordset[0].points,
+              result.recordset[0].numberOfVouchers,
+              result.recordset[0].dailyCalories,
+              result.recordset[0].role
             )
           : null; // Handle user not found
         } catch (error) {
@@ -95,7 +167,7 @@ class User {
     try {
           connection = await sql.connect(dbConfig);
 
-          const sqlQuery = `INSERT INTO Users (name, email, password, points, numberOfVouchers, dailyCalories) VALUES (@name, @email, @password, @points, @numberOfVouchers, @dailyCalories); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
+          const sqlQuery = `INSERT INTO Users (name, email, password, points, numberOfVouchers, dailyCalories, role) VALUES (@name, @email, @password, @points, @numberOfVouchers, @dailyCalories, @role); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
 
           const request = connection.request();
           request.input("name", newUserData.name);
@@ -104,6 +176,7 @@ class User {
           request.input("points", newUserData.points || 0)
           request.input("numberOfVouchers", newUserData.numberOfVouchers || 0)
           request.input("dailyCalories", newUserData.dailyCalories || 0)
+          request.input("role", newUserData.role)
 
           const result = await request.query(sqlQuery);
 
@@ -219,7 +292,7 @@ class User {
         connection = await sql.connect(dbConfig);
         const query = `
             SELECT u.id AS user_id, u.name, u.email, u.password, 
-                   u.points, u.numberOfVouchers, u.dailyCalories,
+                   u.points, u.numberOfVouchers, u.dailyCalories, u.role,
                    v.id AS voucher_id, v.redemptionDate
             FROM Users u
             LEFT JOIN VoucherUsers vu ON vu.user_id = u.id
@@ -242,6 +315,7 @@ class User {
                     points: row.points,
                     numberOfVouchers: row.numberOfVouchers,
                     dailyCalories: row.dailyCalories,
+                    role: row.role,
                     vouchers: [],
                 };
             }
@@ -284,7 +358,7 @@ class User {
         connection = await sql.connect(dbConfig);
         const query = `
             SELECT u.id AS user_id, u.name, u.email, u.password, 
-                   u.points, u.numberOfVouchers, u.dailyCalories,
+                   u.points, u.numberOfVouchers, u.dailyCalories, u.role,
                    v.id AS voucher_id, v.redemptionDate
             FROM Users u
             LEFT JOIN VoucherUsers vu ON vu.user_id = u.id
@@ -310,6 +384,7 @@ class User {
             points: result.recordset[0].points,
             numberOfVouchers: result.recordset[0].numberOfVouchers,
             dailyCalories: result.recordset[0].dailyCalories,
+            role: result.recordset[0].role,
             vouchers: result.recordset.filter(row => row.voucher_id).map(row => ({
                 id: row.voucher_id,
                 redemptionDate: row.redemptionDate,

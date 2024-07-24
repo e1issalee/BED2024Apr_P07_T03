@@ -311,8 +311,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Error adding food item');
     }
   }
-
-
   
   // Event listeners for increment and decrement buttons
   document.addEventListener('click', function (event) {

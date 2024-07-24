@@ -68,7 +68,7 @@ class Voucher {
             const query = `
                 SELECT v.id AS voucher_id, v.redemptionDate, 
                     u.id AS user_id, u.name, u.email, u.password, 
-                    u.points, u.numberOfVouchers, u.dailyCalories
+                    u.points, u.numberOfVouchers, u.dailyCalories, u.role
                 FROM Vouchers v
                 LEFT JOIN VoucherUsers vu ON vu.voucher_id = v.id
                 LEFT JOIN Users u ON vu.user_id = u.id
@@ -110,6 +110,20 @@ class Voucher {
                 await connection.close();
             }
         }
+    }
+
+    static async deleteVoucher(id) {
+        const connection = await sql.connect(dbConfig);
+    
+        const sqlQuery = `DELETE FROM Vouchers WHERE id = @id`; // Parameterized query
+    
+        const request = connection.request();
+        request.input("id", id);
+        const result = await request.query(sqlQuery);
+    
+        connection.close();
+    
+        return result.rowsAffected > 0; // Indicate success based on affected rows
     }
 }
 

@@ -1,0 +1,288 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "NutriCooked API",
+      "description": "API for NutriCooked",
+      "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/users/with-vouchers": {
+        "get": {
+          "summary": "Get users with vouchers",
+          "description": "Returns a list of users along with their associated vouchers.",
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "userName": {
+                      "type": "string"
+                    },
+                    "vouchers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "voucherId": {
+                            "type": "string"
+                          },
+                          "voucherName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "summary": "Login a user",
+          "description": "Logs in a user with the provided email and password.",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "User login details",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Login successful",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid email or password"
+            }
+          }
+        }
+      },
+      "/users/create": {
+        "post": {
+          "summary": "Create a new user",
+          "description": "Creates a new user with the provided details.",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "description": "User object containing user details.",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User created successfully"
+            },
+            "400": {
+              "description": "Invalid request body"
+            }
+          }
+        }
+      },
+      "/users/with-vouchers/{id}": {
+        "get": {
+          "summary": "Get user with vouchers by ID",
+          "description": "Returns a user with the specified ID along with their associated vouchers.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the user to fetch.",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "userName": {
+                    "type": "string"
+                  },
+                  "vouchers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "voucherId": {
+                          "type": "string"
+                        },
+                        "voucherName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      },
+      "/users/updatePointsAndVouchers/{id}": {
+        "put": {
+          "summary": "Update user points and vouchers",
+          "description": "Updates the points and vouchers for the user with the specified ID.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the user to update.",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "data",
+              "in": "body",
+              "description": "Object containing the new points and vouchers.",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "points": {
+                    "type": "number"
+                  },
+                  "vouchers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User updated successfully"
+            },
+            "400": {
+              "description": "Invalid request body"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      },
+      "/users/updateDailyCalories/{id}": {
+        "put": {
+          "summary": "Update user daily calories",
+          "description": "Updates the daily calories for the user with the specified ID.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the user to update.",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "data",
+              "in": "body",
+              "description": "Object containing the new daily calories.",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dailyCalories": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User updated successfully"
+            },
+            "400": {
+              "description": "Invalid request body"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      },
+      "/users/resetDailyCalories/{id}": {
+        "put": {
+          "summary": "Reset user daily calories",
+          "description": "Resets the daily calories for the user with the specified ID to 0.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the user to update.",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User daily calories reset successfully"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      }
+    }
+  }

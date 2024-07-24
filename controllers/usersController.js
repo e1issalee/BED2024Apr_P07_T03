@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const getAllUsers = async (req, res) => {
   try {
@@ -38,9 +40,52 @@ const getUserByEmailAndPassword = async (req, res) => {
   }
 };
 
+async function login(req, res) {
+  const { email , password } = req.body;
+
+  try {
+    // Validate user credentials
+    const user = await User.getUserByEmail(email);
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Compare password with hash
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT token
+    const payload = {
+      id: user.id,
+      role: user.role,
+    };
+    const token = jwt.sign(payload, "your_secret_key", { expiresIn: "3600s" }); // Expires in 1 hour
+
+    return res.status(200).json({ token, user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 const createUser = async (req, res) => {
   const newUser = req.body;
+  newUser.role = 'User';
   try {
+
+    // Check for existing username
+    const existingUser = await User.getUserByName(newUser.name);
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    // Hash password
+    const password = newUser.password;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    newUser.password = hashedPassword;
     const createdUser = await User.createUser(newUser);
     res.status(201).json(createdUser);
   } catch (error) {
@@ -143,6 +188,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserByEmailAndPassword,
+  login,
   createUser,
   updateUserPointsAndVouchers,
   updateUserCalories,
