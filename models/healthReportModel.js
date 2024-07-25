@@ -160,6 +160,28 @@ class HealthReport {
       }
     }
   }
-}
+  // Add the delete method
+  static async deleteByUserID(userID) {
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `DELETE FROM userDetails WHERE userId = @userID`; // Parameterized query
 
+      const request = connection.request();
+      request.input("userID", sql.Int, userID); // Ensure the userID is treated as an integer
+
+      const result = await request.query(sqlQuery);
+
+      return {
+        deletedCount: result.rowsAffected[0] // Number of rows affected by the delete operation
+      };
+    } catch (error) {
+      throw error;
+    } finally {
+      if (connection) {
+        await connection.close(); // Ensure the connection is closed
+      }
+    }
+  }
+}
 module.exports = HealthReport;

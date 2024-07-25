@@ -59,9 +59,33 @@ const getReportByUserID = async (req, res) => {
 };
 
 
+// New delete function
+const deleteReportByUserID = async (req, res) => {
+  const userID = parseInt(req.params.userID);
+  
+  // Ensure userID is valid
+  if (isNaN(userID)) {
+    return res.status(400).send("Invalid user ID");
+  }
+
+  console.log('Deleting report for user ID:', userID);
+
+  try {
+    const result = await HealthReport.deleteByUserID(userID);
+
+    if (result.deletedCount > 0) {
+      res.status(200).json({ message: 'Report deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'No report found for this user ID' });
+    }
+  } catch (error) {
+    console.error('Error deleting health report:', error);
+    res.status(500).send("Error deleting health report");
+  }
+};
 
 module.exports = {
   saveUserDetails,
   getReportByUserID,
-  // checkReport,
+  deleteReportByUserID, // Export the delete function
 };

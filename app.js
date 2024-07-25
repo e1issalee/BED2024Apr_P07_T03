@@ -78,7 +78,8 @@ app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 // [HEALTH REPORT] =================================================================================
 app.post('/saveUserDetails', verifyJWT, healthReportController.saveUserDetails);
 app.get('/healthReport/:userID', healthReportController.getReportByUserID);
-// app.get('/checkReport/:userId', healthReportController.checkReport);
+app.delete('/deleteReport/:userID', verifyJWT, healthReportController.deleteReportByUserID);
+
 
 app.listen(port, async () => {
   try {
