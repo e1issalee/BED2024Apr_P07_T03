@@ -76,8 +76,9 @@ app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); // remove
 app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 
 // [HEALTH REPORT] =================================================================================
-app.post('/saveUserDetails', healthReportController.saveUserDetails);
-app.get('/healthReport/:reportID', healthReportController.getReportByID);
+app.post('/saveUserDetails', verifyJWT, healthReportController.saveUserDetails);
+app.get('/healthReport/:userID', healthReportController.getReportByUserID);
+// app.get('/checkReport/:userId', healthReportController.checkReport);
 
 app.listen(port, async () => {
   try {

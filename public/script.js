@@ -135,3 +135,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const healthReportLink = document.querySelector('a[href="Links Directed to/Health Report/healthReport.html"]');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+
+    console.log('DOM fully loaded and parsed');
+    console.log('Health Report Link:', healthReportLink);
+    console.log('User:', user);
+    console.log('Token:', token);
+
+    if (user && token && healthReportLink) {
+        console.log('Adding event listener to health report link');
+        healthReportLink.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent the default link behavior
+            console.log('Health report link clicked');
+
+            try {
+                const response = await fetch(`http://localhost:3000/healthReport/${user.id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Fetch response status:', response.status);
+
+                if (response.ok) {
+                    const healthReports = await response.json();
+                    console.log('Health reports:', healthReports);
+
+                    if (healthReports.length > 0) {
+                        // Redirect to the report.html if reports are found
+                        console.log('Redirecting to report.html');
+                        // window.location.href = `Links Directed to/Health Report/report.html?userID=${user.id}`;
+                        window.location.href = `http://localhost:3000/Links%20Directed%20to/Health%20Report/report.html?userID=${user.id}`;
+                    } else {
+                        // No reports found, redirect to healthReport.html
+                        console.log('No reports found, redirecting to healthReport.html');
+                        window.location.href = healthReportLink.href;
+                    }
+                } else if (response.status === 404) {
+                    // No reports found, redirect to healthReport.html
+                    console.log('No reports found (404), redirecting to healthReport.html');
+                    window.location.href = healthReportLink.href;
+                } else {
+                    throw new Error('Server Error');
+                }
+            } catch (error) {
+                console.error('Error checking report:', error);
+                // Redirect to healthReport.html in case of an error
+                console.log('Redirecting to healthReport.html due to error');
+                window.location.href = healthReportLink.href;
+            }
+        });
+    } else {
+        console.log('User, token, or health report link missing');
+    }
+});

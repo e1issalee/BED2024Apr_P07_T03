@@ -17,6 +17,9 @@
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="reportStyle.css" type="text/css">
 
+    <!-- Link to awesome fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
+
     <!-- Link to the external JS file -->
     <script src="reportScript.js"></script>
 </head>
@@ -40,7 +43,10 @@
         </div>
     </div>
     <div class="report-container">
-      <div id="dataContainer" class="report-details-container">
+        <a href="#" id="deleteReport" onclick="deleteReport()">
+            <i class="fa-solid fa-trash-can" style="font-size:24px;"></i>
+        </a>
+        <div id="dataContainer" class="report-details-container">
           <h2>Here’s your generated report!</h2>
           <p><strong>Age:</strong> <span id="userAge"></span></p>
           <p><strong>Height (in m):</strong> <span id="userHeight"></span></p>
@@ -48,10 +54,10 @@
           <p><strong>Gender:</strong> <span id="userGender"></span></p>
           <p><strong>Activity Level:</strong> <span id="userActivityLevel"></span></p>
           <p><strong>BMI:</strong> <span id="userBMI"></span></p>
-          <p><strong>Daily Caloric Intake:</strong> <span id="userDailyCaloricIntake"></span></p>
+          <p><strong>Suggested Daily Caloric Intake:</strong> <span id="userDailyCaloricIntake"></span></p>
           <p><strong>Body Fat Percentage:</strong> <span id="userBodyFatPercentage"></span></p>
           <p><strong>BMI Range:</strong> <span id="userBMIRange"></span></p>
-          <p><strong>BFP Range:</strong> <span id="userBFPRange"></span></p>
+          <p><strong>Body Fat Percentage Range:</strong> <span id="userBFPRange"></span></p>
       </div>
   </div>
 </body>

@@ -268,12 +268,30 @@ html {
 .container {
     max-width: 100%;
     margin: 120px auto 20px; /* Adjusted margin */
-    padding-top: 70px;
+    padding-top: 20px;
     padding-bottom: 300px;
     background-color: rgba(255, 255, 255, 0.477);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center; /* Center align content */
+}
+
+#deleteReport {
+    position: absolute;
+    top: 30px;
+    right: 30px; 
+    /*top: 72px;  Adjust as needed */
+    /*right: 250px;  Adjust as needed */
+    color: #000; /* Color of the icon */
+    text-decoration: none; /* Remove underline from link */
+}
+
+#deleteReport i {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#deleteReport:hover i {
+    color: red; /* Change color on hover */
 }
 
 h1 {
