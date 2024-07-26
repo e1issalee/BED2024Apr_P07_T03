@@ -68,11 +68,12 @@ class Food {
       const connection = await sql.connect(dbConfig);
     
       const sqlQuery = `
-        INSERT INTO FoodItems (tabname, name, calories, servingSize, carbs, protein, fat, quantity)
-        VALUES (@tabname, @name, @calories, @servingSize, @carbs, @protein, @fat, @quantity);
+        INSERT INTO FoodItems (userId, tabName, name, calories, servingSize, carbs, protein, fat, quantity)
+        VALUES (@userId, @tabName, @name, @calories, @servingSize, @carbs, @protein, @fat, @quantity);
         SELECT SCOPE_IDENTITY() AS id`;
     
       const request = connection.request();
+      request.input("userId", newFoodItem.userId);  // Added userId
       request.input("tabName", newFoodItem.tabName);
       request.input("name", newFoodItem.name);
       request.input("calories", newFoodItem.calories);
@@ -89,7 +90,7 @@ class Food {
       return result.recordset[0].id;
     }
     
-    static async updateFoodItemQuantity(id, quantity, calories, carbs, protein, fat, servingSize) {
+    static async updateFoodItemQuantity(id, userId, quantity, calories, carbs, protein, fat, servingSize) {
       const connection = await sql.connect(dbConfig);
       const query = `
         UPDATE FoodItems
@@ -100,7 +101,7 @@ class Food {
           protein = @protein,
           fat = @fat,
           servingSize = @servingSize
-        WHERE id = @id
+        WHERE id = @id AND userId = @userId
       `;
     
       const request = connection.request();
@@ -111,41 +112,74 @@ class Food {
       request.input('fat', sql.Float, fat);
       request.input('servingSize', sql.VarChar, servingSize);
       request.input('id', sql.Int, id);
-  
+      request.input('userId', sql.Int, userId);
+    
       const result = await request.query(query);
-  
+      connection.close();
+    
       return result.rowsAffected[0] > 0; // Return true if rows were updated
     }
 
-    static async fetchFoodItems() {
-      try {
-        const connection = await sql.connect(dbConfig);
+    // static async fetchFoodItems() {
+    //   try {
+    //     const connection = await sql.connect(dbConfig);
         
-        const sqlQuery = 'SELECT * FROM FoodItems'; // SQL query to fetch all records from FoodItems table
+    //     const sqlQuery = 'SELECT * FROM FoodItems'; // SQL query to fetch all records from FoodItems table
         
-        const result = await connection.query(sqlQuery);
-        connection.close();
+    //     const result = await connection.query(sqlQuery);
+    //     connection.close();
     
-        return result.recordset; // Return the fetched records as an array of objects
-      } catch (error) {
-        console.error('Error fetching food items:', error);
-        throw new Error('Failed to fetch food items');
-      }
-    }
+    //     return result.recordset; // Return the fetched records as an array of objects
+    //   } catch (error) {
+    //     console.error('Error fetching food items:', error);
+    //     throw new Error('Failed to fetch food items');
+    //   }
+    // }
     
-    static async deleteFoodItem(id) {
+    static async deleteFoodItem(id, userId) {
       const connection = await sql.connect(dbConfig);
-    
-      const sqlQuery = `DELETE FROM FoodItems WHERE id = @id`;
-    
+      
+      const sqlQuery = `DELETE FROM FoodItems WHERE id = @id AND userId = @userId`;
+      
       const request = connection.request();
       request.input("id", sql.Int, id);
+      request.input("userId", sql.Int, userId);
       
       const result = await request.query(sqlQuery);
       connection.close();
-    
+      
       return result.rowsAffected > 0;
     }
+
+    static async getFoodItemsByUserIdAndTabName(userId, tabName) {
+      const connection = await sql.connect(dbConfig);
+  
+      const sqlQuery = `
+        SELECT * FROM FoodItems
+        WHERE userId = @userId AND tabName = @tabName
+      `;
+  
+      const request = connection.request();
+      request.input('userId', sql.Int, userId);
+      request.input('tabName', sql.VarChar, tabName);
+  
+      const result = await request.query(sqlQuery);
+      connection.close();
+  
+      return result.recordset.map(
+        (row) => new Food(
+          row.id,
+          row.tabName,
+          row.name,
+          row.calories,
+          row.servingSize,
+          row.carbs,
+          row.protein,
+          row.fat
+        )
+      );
+    }
+    
   }
   
 module.exports = Food;

@@ -57,39 +57,53 @@ async function saveTabData(tabIndex) {
     const totalCaloriesElement = document.getElementById('totalCalories');
     totalCaloriesElement.textContent = totalCalories.toFixed(2);
   }
+  
   async function removeFoodItem(itemId, currentTab) {
-      if (itemId && currentTab) {
-        try {
-            const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+  if (itemId && currentTab) {
+    try {
+      // Retrieve user and token from local storage
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token'); // Assuming the JWT token is stored here
 
-            if (!response.ok) {
-                throw new Error('Failed to delete food item');
-            }
+      if (!user || !token) {
+        alert('User not logged in');
+        return;
+      }
 
-            const foodItem = document.querySelector(`.food-item[data-tab="${currentTab}"][data-item-id="${itemId}"]`);
-            if (foodItem) {
-                foodItem.remove();
-                // Update the total calories
-                updateTotalCalories();
-                alert('Food item deleted successfully!');
-            } else {
-                console.error('Food item not found in UI');
-                alert('Error deleting food item');
-            }
-        } catch (error) {
-            console.error('Error deleting food item:', error);
-            alert('Error deleting food item');
-        }
-    } else {
-        console.error('Cannot delete item: itemId is undefined');
-        alert('Cannot delete item: itemId is undefined');
+      const userId = user.id;
+
+      const response = await fetch(`http://localhost:3000/deleteFoodItem/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the JWT token in the header
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete food item');
+      }
+
+      const foodItem = document.querySelector(`.food-item[data-tab="${currentTab}"][data-item-id="${itemId}"]`);
+      if (foodItem) {
+        foodItem.remove();
+        // Update the total calories
+        updateTotalCalories();
+        alert('Food item deleted successfully!');
+      } else {
+        console.error('Food item not found in UI');
+        alert('Error deleting food item');
+      }
+    } catch (error) {
+      console.error('Error deleting food item:', error);
+      alert('Error deleting food item');
     }
+  } else {
+    console.error('Cannot delete item: itemId is undefined');
+    alert('Cannot delete item: itemId is undefined');
   }
+}
 
 // Function to handle tab navigation
 const handleTabNavigation = (tabBtnClick) => {
@@ -112,11 +126,11 @@ const handleTabNavigation = (tabBtnClick) => {
   // Save tab data to the database
   saveTabData(tabBtnClick);
 
-  // Fetch food items for the current tab
-  const tabName = tabBtns[tabBtnClick].getAttribute('data-tab');
-  fetchFoodItems(tabName).catch(error => {
-      console.error('Error fetching food items:', error);
-  });
+  // // Fetch food items for the current tab
+  // const tabName = tabBtns[tabBtnClick].getAttribute('data-tab');
+  // fetchFoodItems(tabName).catch(error => {
+  //     console.error('Error fetching food items:', error);
+  // });
 }
 
 // Event listener for tab button clicks
@@ -143,17 +157,101 @@ document.addEventListener('click', async (event) => {
   }
 });
 
-async function fetchFoodItems(currentTab) {
+// async function fetchFoodItems(currentTab) {
+//   try {
+//       const response = await fetch(`http://localhost:3000/fetchfoodItems?tab=${currentTab}`);
+//       if (!response.ok) {
+//           throw new Error('Failed to fetch food items');
+//       }
+//   } catch (error) {
+//       console.error('Error fetching food items:', error);
+//       // Handle error, possibly show user-friendly message
+//   }
+// }
+
+// Fetch food items based on userId and tabName
+async function getFoodItemsByUserIdAndTabName(tabName) {
   try {
-      const response = await fetch(`http://localhost:3000/fetchfoodItems?tab=${currentTab}`);
-      if (!response.ok) {
-          throw new Error('Failed to fetch food items');
-      }
+    // Retrieve user and token from localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token'); // Assuming the JWT token is stored here
+
+    if (!user) {
+      alert('User not logged in');
+      return;
+    }
+
+    const userId = user.id;
+
+    // Fetch food items for the current tab
+    const response = await fetch(`http://localhost:3000/food/${userId}/${tabName}`, { 
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Include the JWT token in the header
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch food items');
+    }
+
+    const foodItems = await response.json();
+    // Update UI with fetched food items
+    updateUIWithFoodItems(foodItems, tabName);
   } catch (error) {
-      console.error('Error fetching food items:', error);
-      // Handle error, possibly show user-friendly message
+    console.error('Error fetching food items:', error);
+    alert('Error fetching food items');
   }
 }
+
+// Function to update the UI with food items
+function updateUIWithFoodItems(foodItems, tabName) {
+  // Get the container element for the current tab
+  const container = document.getElementById(tabName);
+  
+  if (!container) {
+    console.error(`Container for tab ${tabName} not found`);
+    return;
+  }
+
+  // Clear previous content
+  container.innerHTML = '';
+
+  // Create and append new food item elements
+  foodItems.forEach(item => {
+    const foodItemElement = document.createElement('div');
+    // foodItemElement.classList.add('food-item');
+    foodItemElement.innerHTML = `
+      <div class="food-item" data-item-id="${item.id}" data-tab="${tabName}" data-calories="${item.calories}" data-carbs="${item.carbs}" data-protein="${item.protein}" data-fat="${item.fat}" data-serving-size="${item.servingSize}">
+        <div class="food-info">
+          <div class="food-name">${item.name}</div>
+          <div class="nutrients">
+            ${item.calories !== 'N/A' ? `<i class="fa-solid fa-fire"></i> <span class="calories">${item.calories}</span> cal` : ''}
+            ${item.servingSize ? `&nbsp; &bull; &nbsp; Serving Size: <span class="serving-size">${item.servingSize}</span>` : ''}
+          </div>
+          <div class="nutrients2">
+            ${item.carbs !== 'N/A' ? `<strong style="color: black;">Carbs:</strong> <span class="carbs">${item.carbs}</span>` : ''}
+            ${item.protein ? `&nbsp; &vert; &nbsp; <strong style="color: black;">Protein:</strong> <span class="protein">${item.protein}</span>` : ''}
+            ${item.fat ? `&nbsp; &vert; &nbsp; <strong style="color: black;">Fat:</strong> <span class="fat">${item.fat}</span>` : ''}
+            <button class="delete-button" data-item-id="${item.id}" data-tab="${tabName}"></button>
+          </div>
+          <div class="counter">
+            <button class="decrement">-</button>
+            <div id="count" data-item-id="${item.id}" data-tab="${tabName}">${item.quantity || 1}</div>
+            <button class="increment">+</button>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(foodItemElement);
+    // Update total calories
+    updateTotalCalories();
+  });
+}
+
+
+
 // ======================= Search Bar  =======================
 document.addEventListener("DOMContentLoaded", () => {
   const tabButtons = document.querySelectorAll('.tab-btn');
@@ -164,6 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const tab_Nav = function(tabBtnClick) {
     const tabName = tabButtons[tabBtnClick].getAttribute('data-tab'); // Get the data-tab attribute value
     saveTabData(tabBtnClick, tabName); // Call function to save tab data
+
+    // Fetch food items for the current tab
+    getFoodItemsByUserIdAndTabName(tabName); // Fetch and display food items
   }
   
   // Handle tab switching
@@ -179,8 +280,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Call tab_Nav function to save tab data to the database
         tab_Nav(index);
 
-        fetchFoodItems(currentTab);
+        // fetchFoodItems(currentTab);
     });
+
+    // Optionally fetch food items for the initially active tab on page load
+    if (currentTab) {
+      getFoodItemsByUserIdAndTabName(currentTab);
+    }
   });
 
   const resultsBox = document.querySelector(".result-box");
@@ -248,13 +354,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function addFoodToTab(item) {
     try {
+      // Retrieve user and token from localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token'); // Assuming the JWT token is stored here
+  
+      if (!user || !token) {
+        alert('User not logged in');
+        return;
+      }
+  
       // Make a POST request to save the food item and get back the generated itemId
       const response = await fetch('http://localhost:3000/food', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the JWT token in the header
         },
         body: JSON.stringify({
+          userId: user.id, // Include userId from local storage
           tabName: currentTab,
           name: item.name,
           calories: item.calories,
@@ -273,6 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const responseData = await response.json();
       const itemId = responseData.id;
   
+      // Create the HTML for the new food item
       const foodHtml = `
         <div class="food-item" data-item-id="${itemId}" data-tab="${currentTab}" data-calories="${item.calories}" data-carbs="${item.carbs}" data-protein="${item.protein}" data-fat="${item.fat}" data-serving-size="${item.servingSize}">
           <div class="food-info">
@@ -296,13 +414,14 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
   
+      // Create a container for the new food item and append it to the UI
       const foodContainer = document.createElement('div');
       foodContainer.innerHTML = foodHtml;
   
       const tabContent = document.getElementById(currentTab);
       tabContent.appendChild(foodContainer);
-
-      // Update total calories
+  
+      // Update total calories (you need to define this function)
       updateTotalCalories();
   
       alert(`Food item added successfully for ${currentTab}!`);
@@ -311,6 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Error adding food item');
     }
   }
+  
   
   // Event listeners for increment and decrement buttons
   document.addEventListener('click', function (event) {
@@ -368,6 +488,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update nutrients in database
   async function updateQuantity(itemId, currentTab, quantity, foodItem) {
     try {
+      // Retrieve user and token from localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token'); // Assuming the JWT token is stored here
+  
+      if (!user || !token) {
+        alert('User not logged in');
+        return;
+      }
+  
+      const userId = user.id;
+  
       const baseCalories = parseFloat(foodItem.getAttribute('data-calories'));
       const baseCarbs = parseFloat(foodItem.getAttribute('data-carbs'));
       const baseProtein = parseFloat(foodItem.getAttribute('data-protein'));
@@ -384,8 +515,10 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the JWT token in the header
         },
         body: JSON.stringify({
+          userId,
           quantity,
           tabName: currentTab,
           calories,
@@ -403,6 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Error updating food item quantity:', error);
     }
   }
+  
 });  
 
 // ======================= Calendar  =======================
