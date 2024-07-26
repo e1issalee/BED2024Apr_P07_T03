@@ -1,9 +1,12 @@
+// module.exports = HealthReport;
+
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
 
 class HealthReport {
-  constructor(reportID, userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange) {
+  constructor(reportID, userID, userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange) {
     this.reportID = reportID;
+    this.userID = userID;
     this.userAge = userAge;
     this.userHeight = userHeight;
     this.userWeight = userWeight;
@@ -17,7 +20,7 @@ class HealthReport {
   }
 
   static async create(userDetails) {
-    const { userAge, userHeight, userWeight, userGender, userActivityLevel } = userDetails;
+    const { userID, userAge, userHeight, userWeight, userGender, userActivityLevel } = userDetails;
 
     // Calculate BMI
     const userBMI = userWeight / (userHeight * userHeight);
@@ -91,10 +94,12 @@ class HealthReport {
         userBFPRange = 'Extremely low body fat, may pose health risks.';
       }
     }
+
     try {
       const pool = await sql.connect(dbConfig);
 
       const result = await pool.request()
+        .input('userID', sql.Int, userID) // Include userID
         .input('userAge', sql.Int, userAge)
         .input('userHeight', sql.Decimal(4, 2), userHeight)
         .input('userWeight', sql.Decimal(5, 2), userWeight)
@@ -104,10 +109,10 @@ class HealthReport {
         .input('userDailyCaloricIntake', sql.Decimal(10, 2), userDailyCaloricIntake)
         .input('userBodyFatPercentage', sql.Decimal(5, 2), userBodyFatPercentage)
         .input('userBMIRange', sql.VarChar(50), userBMIRange)
-        .input('userBFPRange', sql.VarChar(50), userBFPRange)
-        .query(`INSERT INTO userDetails (userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange)
+        .input('userBFPRange', sql.VarChar(100), userBFPRange) // Increased size to accommodate longer text
+        .query(`INSERT INTO userDetails (userID, userAge, userHeight, userWeight, userGender, userActivityLevel, userBMI, userDailyCaloricIntake, userBodyFatPercentage, userBMIRange, userBFPRange)
                 OUTPUT INSERTED.reportID
-                VALUES (@userAge, @userHeight, @userWeight, @userGender, @userActivityLevel, @userBMI, @userDailyCaloricIntake, @userBodyFatPercentage, @userBMIRange, @userBFPRange)`);
+                VALUES (@userID, @userAge, @userHeight, @userWeight, @userGender, @userActivityLevel, @userBMI, @userDailyCaloricIntake, @userBodyFatPercentage, @userBMIRange, @userBFPRange)`);
 
       return result.recordset[0]; // Return the inserted record with the reportID
     } catch (error) {
@@ -117,24 +122,25 @@ class HealthReport {
     }
   }
 
-  static async getReportByID(reportID) {
+  // Add this method
+  static async findByUserID(userID) {
     let connection;
     try {
       connection = await sql.connect(dbConfig);
-      const sqlQuery = `SELECT * FROM userDetails WHERE reportID = @reportID`; // Parameterized query
+      const sqlQuery = `SELECT * FROM userDetails WHERE userID = @userID`; // Parameterized query
 
       const request = connection.request();
-      request.input("reportID", sql.Int, reportID); // Ensure the reportID is treated as an integer
+      request.input("userID", sql.Int, userID); // Ensure the userID is treated as an integer
 
       const result = await request.query(sqlQuery);
 
       if (result.recordset.length === 0) {
-        throw new Error(`Report with ID ${reportID} not found`);
+        throw new Error(`No reports found for user ID ${userID}`);
       }
 
-      const report = result.recordset[0];
-      return new HealthReport(
-        reportID,
+      return result.recordset.map(report => new HealthReport(
+        report.reportID,
+        report.userID,
         report.userAge,
         report.userHeight,
         report.userWeight,
@@ -145,7 +151,7 @@ class HealthReport {
         report.userBodyFatPercentage,
         report.userBMIRange,
         report.userBFPRange
-      );
+      ));
     } catch (error) {
       throw error;
     } finally {
@@ -154,9 +160,28 @@ class HealthReport {
       }
     }
   }
+  // Add the delete method
+  static async deleteByUserID(userID) {
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `DELETE FROM userDetails WHERE userId = @userID`; // Parameterized query
+
+      const request = connection.request();
+      request.input("userID", sql.Int, userID); // Ensure the userID is treated as an integer
+
+      const result = await request.query(sqlQuery);
+
+      return {
+        deletedCount: result.rowsAffected[0] // Number of rows affected by the delete operation
+      };
+    } catch (error) {
+      throw error;
+    } finally {
+      if (connection) {
+        await connection.close(); // Ensure the connection is closed
+      }
+    }
+  }
 }
-
-
-
-
 module.exports = HealthReport;

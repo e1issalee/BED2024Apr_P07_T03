@@ -7,6 +7,8 @@ const voucherUsersController = require("./controllers/voucherUsersController");
 const foodItemsController = require("./controllers/foodItemsController");
 const tabNamesController = require('./controllers/tabNamesController');
 const healthReportController = require('./controllers/healthReportController');
+const feedbackController = require('./controllers/feedbackController');
+const forumController = require('./controllers/forumController');
 
 const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
@@ -76,12 +78,21 @@ app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); // remove
 app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 
 // [HEALTH REPORT] =================================================================================
-app.post('/saveUserDetails', healthReportController.saveUserDetails);
-app.get('/healthReport/:reportID', healthReportController.getReportByID);
+app.post('/saveUserDetails', verifyJWT, healthReportController.saveUserDetails);
+app.get('/healthReport/:userID', healthReportController.getReportByUserID);
+app.delete('/deleteReport/:userID', verifyJWT, healthReportController.deleteReportByUserID);
+
+// [FEEDBACK]
+app.post('/userFeedback/createFeedback', feedbackController.createFeedback);
+
+// [FORUM]
+app.post('/forum/createPost', forumController.createPost);
+app.get('/forum/getAllPosts', forumController.getAllPosts);
+
 
 app.listen(port, async () => {
   try {
-    // Connect to the datsabase
+    // Connect to the database
     await sql.connect(dbConfig);
     console.log("Database connection established successfully");
     console.log(`Server is running on http://localhost:${port}`);

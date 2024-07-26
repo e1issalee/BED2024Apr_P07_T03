@@ -135,3 +135,130 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const healthReportLink = document.querySelector('a[href="Links Directed to/Health Report/healthReport.html"]');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+
+    console.log('DOM fully loaded and parsed');
+    console.log('Health Report Link:', healthReportLink);
+    console.log('User:', user);
+    console.log('Token:', token);
+
+    if (user && token && healthReportLink) {
+        console.log('Adding event listener to health report link');
+        healthReportLink.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent the default link behavior
+            console.log('Health report link clicked');
+
+            try {
+                const response = await fetch(`http://localhost:3000/healthReport/${user.id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Fetch response status:', response.status);
+
+                if (response.ok) {
+                    const healthReports = await response.json();
+                    console.log('Health reports:', healthReports);
+
+                    if (healthReports.length > 0) {
+                        // Redirect to the report.html if reports are found
+                        console.log('Redirecting to report.html');
+                        // window.location.href = `Links Directed to/Health Report/report.html?userID=${user.id}`;
+                        window.location.href = `http://localhost:3000/Links%20Directed%20to/Health%20Report/report.html?userID=${user.id}`;
+                    } else {
+                        // No reports found, redirect to healthReport.html
+                        console.log('No reports found, redirecting to healthReport.html');
+                        window.location.href = healthReportLink.href;
+                    }
+                } else if (response.status === 404) {
+                    // No reports found, redirect to healthReport.html
+                    console.log('No reports found (404), redirecting to healthReport.html');
+                    window.location.href = healthReportLink.href;
+                } else {
+                    throw new Error('Server Error');
+                }
+            } catch (error) {
+                console.error('Error checking report:', error);
+                // Redirect to healthReport.html in case of an error
+                console.log('Redirecting to healthReport.html due to error');
+                window.location.href = healthReportLink.href;
+            }
+        });
+    } else {
+        console.log('User, token, or health report link missing');
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const feedbackForm = document.querySelector('.feedback-form');
+  
+    // Handle form submission
+    feedbackForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+  
+      const issueInput = document.getElementById('issue');
+      const comments = issueInput.value.trim();
+  
+      // Validate input
+      if (!comments) {
+        alert('Please enter a description of the issue.');
+        return;
+      }
+  
+      // Retrieve the user and token from local storage
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token');
+  
+      if (!user || !token) {
+        alert('You need to be logged in to submit feedback.');
+        return;
+      }
+  
+      const userID = user.id; // Extract userID from the user object
+  
+      const feedbackDetails = {
+        userID,
+        comments
+      };
+  
+      try {
+        // Send a POST request to the server to create feedback
+        const response = await fetch('/userFeedback/createFeedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+          },
+          body: JSON.stringify(feedbackDetails)
+        });
+  
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Feedback submitted successfully:', result);
+  
+          // Clear the input field
+          issueInput.value = '';
+  
+          // Optionally, display a success message to the user
+          alert('Thank you for your feedback!');
+        } else {
+          // Handle errors
+          const error = await response.json();
+          console.error('Error submitting feedback:', error);
+          alert('Error submitting feedback. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    });
+  });
+  
