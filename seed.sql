@@ -40,6 +40,23 @@ CREATE TABLE Users (
   role VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE userFeedback (
+    feedbackID INT IDENTITY(1,1) PRIMARY KEY,
+    userID INT NOT NULL,
+    comments NVARCHAR(MAX) NOT NULL,
+    createdAt DATETIME DEFAULT GETDATE()
+);
+
+
+CREATE TABLE forumPosts (
+    postID NVARCHAR(36) PRIMARY KEY, -- UUIDs are 36 characters long
+    userID INT NOT NULL,
+    userName NVARCHAR(255) NOT NULL,
+    postContent NVARCHAR(MAX) NOT NULL,
+    createdAt DATETIME NOT NULL,
+    FOREIGN KEY (userID) REFERENCES users(ID) -- Assuming you have a 'users' table with 'userID' as the primary key
+);
+
 
 -- dummy data
 

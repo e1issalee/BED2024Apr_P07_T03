@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Page</title>
+    <link rel="stylesheet" href="forumStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <div class="navbar">
+        <a class="index-logo" href="../../index.html" onclick="scrollToTop()"><img src="../../Images/NutriCooked Logo.png" alt="Logo"></a>
+        <a href="../../index.html#home" onclick="toggleActive(this); scrollToTop()">HOME</a>
+        <a href="../../index.html#aboutUs" onclick="toggleActive(this); scrollToSection('aboutUs')">ABOUT US</a>
+        <a href="../Recipes/recipes-index.html" onclick="toggleActive(this)">RECIPES</a>
+        <a href="../../index.html#contact" onclick="toggleActive(this); scrollToSection('contact')">CONTACT</a>
+        <div class="dropdown">
+            <a href="#signUp-Login" class="dropbtn" onclick="toggleDropdown()">SIGN UP / LOGIN</a>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="../Health Report/healthReport.html">Health Report</a>
+                <a href="../Food Diary/food-diary-index.html">Food Diary</a>
+                <a href="../Points/points-index.html">Points</a>
+                <a href="../../login.html" id="login-link">Login</a>
+                <button id="logout-button">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="intro-text">
+            <h1>Welcome to the Forum Page!</h1>
+        </div>
+        <form id="create-post-form">
+            <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+            <button type="submit">Post</button>
+        </form>
+        <div id="posts-container">
+            <!-- Posts will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script src="forumScript.js"></script>
+</body>
+</html>

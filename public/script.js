@@ -195,3 +195,70 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('User, token, or health report link missing');
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const feedbackForm = document.querySelector('.feedback-form');
+  
+    // Handle form submission
+    feedbackForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+  
+      const issueInput = document.getElementById('issue');
+      const comments = issueInput.value.trim();
+  
+      // Validate input
+      if (!comments) {
+        alert('Please enter a description of the issue.');
+        return;
+      }
+  
+      // Retrieve the user and token from local storage
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token');
+  
+      if (!user || !token) {
+        alert('You need to be logged in to submit feedback.');
+        return;
+      }
+  
+      const userID = user.id; // Extract userID from the user object
+  
+      const feedbackDetails = {
+        userID,
+        comments
+      };
+  
+      try {
+        // Send a POST request to the server to create feedback
+        const response = await fetch('/userFeedback/createFeedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+          },
+          body: JSON.stringify(feedbackDetails)
+        });
+  
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Feedback submitted successfully:', result);
+  
+          // Clear the input field
+          issueInput.value = '';
+  
+          // Optionally, display a success message to the user
+          alert('Thank you for your feedback!');
+        } else {
+          // Handle errors
+          const error = await response.json();
+          console.error('Error submitting feedback:', error);
+          alert('Error submitting feedback. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    });
+  });
+  
