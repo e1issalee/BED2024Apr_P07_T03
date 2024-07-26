@@ -34,6 +34,8 @@ const verifyJWT = (req, res, next) => {
         "/healthReport/[0-9]+": ["User", "Admin"],
         "/deleteReport/[0-9]+": ["User", "Admin"],
         '/userFeedback/createFeedback': ["User", "Admin"],
+        "/forum/createPost": ["User", "Admin"], 
+        "/forum/getAllPosts": ["User", "Admin"], 
       };
   
       const requestedEndpoint = req.url.split("?")[0];

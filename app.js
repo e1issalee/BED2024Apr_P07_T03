@@ -84,7 +84,10 @@ app.delete('/deleteReport/:userID', verifyJWT, healthReportController.deleteRepo
 
 // [FEEDBACK]
 app.post('/userFeedback/createFeedback', feedbackController.createFeedback);
+
+// [FORUM]
 app.post('/forum/createPost', forumController.createPost);
+app.get('/forum/getAllPosts', forumController.getAllPosts);
 
 
 app.listen(port, async () => {

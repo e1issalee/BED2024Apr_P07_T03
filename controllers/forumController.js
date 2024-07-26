@@ -23,6 +23,18 @@ const createPost = async (req, res) => {
   }
 };
 
+// Function to get all posts
+const getAllPosts = async (req, res) => {
+    try {
+      const posts = await ForumModel.getAllPosts();
+      res.status(200).json(posts);
+    } catch (error) {
+      console.error('Error retrieving posts:', error.message);
+      res.status(500).json({ error: 'Failed to retrieve posts' });
+    }
+  };
+
 module.exports = {
   createPost,
+  getAllPosts
 };
