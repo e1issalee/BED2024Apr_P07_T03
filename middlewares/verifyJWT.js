@@ -30,6 +30,11 @@ const verifyJWT = (req, res, next) => {
         "/voucherUsers/create/": ["User", "Admin"],
         "/voucherUsers/delete/[0-9]+": ["User", "Admin"],
         "/voucherUsers/[0-9]+": ["User", "Admin"],
+
+        // "/food/[0-9]+/[a-zA-Z]+": ["User", "Admin"],
+        "/food": ["User", "Admin"], 
+        "/food/[0-9]+": ["User", "Admin"], 
+        "/deleteFoodItem/[0-9]+": ["User", "Admin"],
       };
   
       const requestedEndpoint = req.url.split("?")[0];
