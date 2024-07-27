@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Login successful!');
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('isClaimed', false);
                 localStorage.setItem('userID', data.user.id); // for linking to health report
                 document.getElementById('login-dropdown').innerText = data.user.name;
 
