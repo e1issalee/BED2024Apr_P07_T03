@@ -422,7 +422,7 @@ async function fetchVouchers(userId) {
                 redemptionDateElement.textContent = `Redemption Date: ${formattedDate}`;
 
                 const userElement = document.createElement("p");
-                userElement.textContent = `User: ${data.name}`; // Assuming 'name' is a property of the user object
+                userElement.textContent = `Voucher ID: ${voucher.id}`;
 
                 const deleteButton = document.createElement("delete-button");
                 deleteButton.textContent = "Delete";
