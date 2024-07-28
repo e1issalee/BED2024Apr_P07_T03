@@ -1,5 +1,6 @@
 CREATE TABLE FoodItems (
     id INT IDENTITY(1,1) PRIMARY KEY,
+    userId INT NOT NULL,
     tabName NVARCHAR(100) NOT NULL,
     name NVARCHAR(100) NOT NULL,
     calories DECIMAL(10, 2) NULL,
@@ -7,8 +8,9 @@ CREATE TABLE FoodItems (
     carbs NVARCHAR(50) NULL,
     protein NVARCHAR(50) NULL,
     fat NVARCHAR(50) NULL,
-	  quantity INT DEFAULT 1,
-    createdAt DATETIME DEFAULT GETDATE()
+    quantity INT DEFAULT 1,
+    createdAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_User_FoodItem FOREIGN KEY (userId) REFERENCES Users(id)
 );
 
 

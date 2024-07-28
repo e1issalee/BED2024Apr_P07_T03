@@ -67,13 +67,14 @@ app.delete("/users/:id", validateUser, usersController.deleteUser); // DELETE fo
 
 
 // [FOOD] =================================================================================
-app.post('/food', foodItemsController.createFoodItem); // addFoodToTab
+app.get('/food/:userId/:tabName', verifyJWT, foodItemsController.getFoodItemsByUserIdAndTabName);
+app.post('/food', verifyJWT, foodItemsController.createFoodItem);  // addFoodToTab
 app.get('/food', foodItemsController.getAllFoodItems);
 app.get('/food/:id', foodItemsController.getFoodItemById);
 app.get('/nutrition', foodItemsController.getNutritionData); // GET nutritional data from API + display
-app.get('/fetchFoodItems', foodItemsController.fetchFoodItems); // fetchFoodItems
-app.put('/food/:id', foodItemsController.updateFoodItemQuantity) // updateQuantity
-app.delete('/deleteFoodItem/:id', foodItemsController.deleteFoodItem); // removeFoodItem
+app.put('/food/:id', verifyJWT, foodItemsController.updateFoodItemQuantity); // updateQuantity
+app.delete('/deleteFoodItem/:id', verifyJWT, foodItemsController.deleteFoodItem);  // removeFoodItem
+
 
 app.post('/tabNames', tabNamesController.saveTabName); // saveTabData
 

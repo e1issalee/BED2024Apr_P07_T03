@@ -283,6 +283,233 @@
             }
           }
         }
+      },
+
+      "/food/{userId}/{tabName}": {
+      "get": {
+        "summary": "Get food items by userId and tabName",
+        "description": "Retrieve food items for a specific user and tab",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "tabName",
+            "in": "path",
+            "description": "Name of the tab",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with food items"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User or tab not found"
+          }
+        }
+      }
+    },
+    "/food": {
+      "post": {
+        "summary": "Add food item to tab",
+        "description": "Create a new food item for a specific tab",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Food item to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FoodItem"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Food item created successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all food items",
+        "description": "Retrieve all food items",
+        "responses": {
+          "200": {
+            "description": "Successful response with all food items"
+          }
+        }
+      }
+    },
+    "/food/{id}": {
+      "get": {
+        "summary": "Get food item by ID",
+        "description": "Retrieve a specific food item by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the food item",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with food item"
+          },
+          "404": {
+            "description": "Food item not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update food item quantity",
+        "description": "Update the quantity of a specific food item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the food item",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New quantity of the food item",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateQuantity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food item quantity updated successfully"
+          },
+          "404": {
+            "description": "Food item not found"
+          }
+        }
+      }
+    },
+    "/nutrition": {
+      "get": {
+        "summary": "Get nutritional data",
+        "description": "Fetch and display nutritional data from an external API",
+        "responses": {
+          "200": {
+            "description": "Successful response with nutritional data"
+          }
+        }
+      }
+    },
+    "/deleteFoodItem/{id}": {
+      "delete": {
+        "summary": "Delete food item",
+        "description": "Remove a specific food item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the food item",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food item deleted successfully"
+          },
+          "404": {
+            "description": "Food item not found"
+          }
+        }
+      }
+    },
+    "/tabNames": {
+      "post": {
+        "summary": "Save tab name",
+        "description": "Save a new tab name",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Tab name to save",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TabName"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Tab name saved successfully"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "FoodItem": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "tabName": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "servingSize": {
+          "type": "string"
+        },
+        "carbs": {
+          "type": "string"
+        },
+        "protein": {
+          "type": "string"
+        },
+        "fat": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "UpdateQuantity": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "TabName": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
       }
     }
   }
+}
