@@ -4,7 +4,7 @@ const Food = require("../models/foodItems");
 
 const https = require('https');
 
-const apiKey = 'ePEMsKNNWSSbdHOumQha5A==hqJvNcEX4hiyXdjS';
+const apiKey = 'ePEMsKNNWSSbdHOumQha5A==F4RQ9k6LtbJmM1Vg';
 
 const getNutritionData = (req, res) => {
   const query = req.query.query || '';
