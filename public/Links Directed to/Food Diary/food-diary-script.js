@@ -33,7 +33,6 @@ async function saveTabData(tabIndex) {
           },
           body: JSON.stringify({
               tabName: tabName,
-              // Include any other relevant data you need to save
           }),
       });
       console.log('Tab data saved successfully!');
@@ -63,7 +62,7 @@ async function saveTabData(tabIndex) {
     try {
       // Retrieve user and token from local storage
       const user = JSON.parse(localStorage.getItem('user'));
-      const token = localStorage.getItem('token'); // Assuming the JWT token is stored here
+      const token = localStorage.getItem('token'); 
 
       if (!user || !token) {
         alert('User not logged in');
@@ -76,7 +75,7 @@ async function saveTabData(tabIndex) {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Include the JWT token in the header
+          'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({ userId }),
       });
@@ -125,12 +124,6 @@ const handleTabNavigation = (tabBtnClick) => {
 
   // Save tab data to the database
   saveTabData(tabBtnClick);
-
-  // // Fetch food items for the current tab
-  // const tabName = tabBtns[tabBtnClick].getAttribute('data-tab');
-  // fetchFoodItems(tabName).catch(error => {
-  //     console.error('Error fetching food items:', error);
-  // });
 }
 
 // Event listener for tab button clicks
@@ -157,17 +150,6 @@ document.addEventListener('click', async (event) => {
   }
 });
 
-// async function fetchFoodItems(currentTab) {
-//   try {
-//       const response = await fetch(`http://localhost:3000/fetchfoodItems?tab=${currentTab}`);
-//       if (!response.ok) {
-//           throw new Error('Failed to fetch food items');
-//       }
-//   } catch (error) {
-//       console.error('Error fetching food items:', error);
-//       // Handle error, possibly show user-friendly message
-//   }
-// }
 
 // Fetch food items based on userId and tabName
 async function getFoodItemsByUserIdAndTabName(tabName) {
