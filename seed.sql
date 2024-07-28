@@ -59,13 +59,6 @@ CREATE TABLE forumPosts (
     FOREIGN KEY (userID) REFERENCES users(ID) -- Assuming you have a 'users' table with 'userID' as the primary key
 );
 
-
--- dummy data
-
-INSERT INTO Users
-VALUES
-  ('Jack Hardy', 'jackhardy123@gmail.com', 'password', 0, 0, 0, 'User');
-
 CREATE TABLE Vouchers (
   id INT IDENTITY(1,1) PRIMARY KEY,
   redemptionDate Date NOT NULL
