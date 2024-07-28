@@ -16,7 +16,7 @@ const verifyJWT = (req, res, next) => {
   
       // Check user role for authorization (replace with your logic)
       const authorizedRoles = {
-        "/users/with-vouchers": ["User", "Admin"],
+        "/users/with-vouchers": ["Admin"],
         "/users/login": ["User", "Admin"],
         "/users/create": ["User", "Admin"],
         "/users/with-vouchers/[0-9]+": ["User", "Admin"],
