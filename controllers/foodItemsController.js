@@ -108,18 +108,6 @@ const getAllFoodItems = async (req, res) => {
       res.status(500).send("Error updating quantity");
     }
   };
-  
-
-  // const fetchFoodItems = async (req, res) => {
-  //   const tab = req.query.tab; // Extract the 'tab' query parameter from the URL
-  //   try {
-  //     const result = await Food.fetchFoodItems('SELECT * FROM food_items WHERE tabName = $1', [tab]); // Use the tab value to filter results
-  //     res.json(result.rows); // Send the results back to the client
-  //   } catch (error) {
-  //     console.error('Error fetching food items:', error);
-  //     res.status(500).send('Internal Server Error');
-  //   }
-  // };
 
   const deleteFoodItem = async (req, res) => {
     const foodId = parseInt(req.params.id);
@@ -160,7 +148,6 @@ const getAllFoodItems = async (req, res) => {
   
 
 module.exports = {
-  // fetchFoodItems,
   getAllFoodItems,
   getFoodItemById,
   createFoodItem,
