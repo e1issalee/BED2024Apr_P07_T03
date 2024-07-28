@@ -37,6 +37,7 @@ const verifyJWT = (req, res, next) => {
         '/userFeedback/createFeedback': ["User", "Admin"],
         "/forum/createPost": ["User", "Admin"], 
         "/forum/getAllPosts": ["User", "Admin"], 
+        "/forum/editPost" : ["User", "Admin"],
           
         "/food/[0-9]+/[a-zA-Z]+": ["User", "Admin"],
         "/food": ["User", "Admin"], 

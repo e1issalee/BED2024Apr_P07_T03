@@ -34,7 +34,52 @@ const getAllPosts = async (req, res) => {
     }
   };
 
+  // Function to get post ID by content
+const getPostIdByContent = async (req, res) => {
+  const { postContent } = req.body;
+
+  if (!postContent) {
+    return res.status(400).json({ error: 'Post content is required to find the post ID.' });
+  }
+
+  try {
+    const postID = await ForumModel.getPostIdByContent(postContent);
+    res.status(200).json({ postID });
+  } catch (error) {
+    console.error('Error getting post ID:', error.message);
+    res.status(500).json({ error: 'Failed to get post ID' });
+  }
+};
+
+const updatePostContent = async (req, res) => {
+  // Extract postID from URL parameters and userID, newPostContent from request body
+  const { postID } = req.params;
+  const { userID, postContent } = req.body;
+
+  console.log('Received update request:', { postID, userID, postContent });
+
+  // Validate parameters
+  if (!postID || !userID || !postContent) {
+      return res.status(400).json({ error: 'Invalid request data' });
+  }
+
+  try {
+      // Update post content in the database
+      await ForumModel.updatePostContent(postID, userID, postContent);
+
+      // Respond with success message
+      res.json({ message: 'Post updated successfully', postID });
+  } catch (err) {
+      console.error('Error updating post:', err);
+
+      // Respond with error message
+      res.status(500).json({ error: 'Failed to update post content' });
+  }
+};
+
 module.exports = {
   createPost,
-  getAllPosts
+  getAllPosts,
+  getPostIdByContent,
+  updatePostContent
 };
