@@ -89,6 +89,8 @@ app.post('/userFeedback/createFeedback', feedbackController.createFeedback);
 // [FORUM]
 app.post('/forum/createPost', forumController.createPost);
 app.get('/forum/getAllPosts', forumController.getAllPosts);
+app.post('/forum/getPostIdByContent', forumController.getPostIdByContent);
+app.put('/forum/editPost/:postID', forumController.updatePostContent);
 
 
 app.listen(port, async () => {

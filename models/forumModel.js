@@ -68,6 +68,53 @@ class ForumModel {
       sql.close(); // Ensure the connection is closed
     }
   }
+
+  // Method to get post ID by content
+  static async getPostIdByContent(postContent) {
+    try {
+      const pool = await sql.connect(dbConfig);
+
+      const result = await pool.request()
+        .input('postContent', sql.NVarChar, postContent)
+        .query(`
+          SELECT postID
+          FROM forumPosts
+          WHERE postContent = @postContent
+        `);
+
+      if (result.recordset.length > 0) {
+        return result.recordset[0].postID;
+      } else {
+        throw new Error('Post not found');
+      }
+    } catch (error) {
+      console.error('Database query error:', error.message);
+      throw new Error('Failed to retrieve post ID');
+    } finally {
+      sql.close(); // Ensure the connection is closed
+    }
+  }
+  
+  static async updatePostContent(postID, userID, newPostContent) {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const result = await pool.request()
+            .input('postID', sql.Int, postID)
+            .input('userID', sql.Int, userID)
+            .input('newPostContent', sql.NVarChar, newPostContent)
+            .query(`
+                UPDATE forumPosts
+                SET postContent = @newPostContent
+                WHERE postID = @postID AND userID = @userID;
+            `);
+
+        console.log('Post updated successfully:', result);
+        return result;
+    } catch (err) {
+        console.error('Error updating post:', err);
+        throw err;
+    }
+  }
 }
 
 module.exports = ForumModel;
