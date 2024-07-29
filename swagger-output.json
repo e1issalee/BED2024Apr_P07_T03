@@ -571,5 +571,22 @@
           }
         }
       }
+    },
+    "Recipe": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instructions": {
+          "type": "string"
+        }
+      }
     }
   }

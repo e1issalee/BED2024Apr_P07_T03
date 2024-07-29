@@ -9,6 +9,7 @@ const tabNamesController = require('./controllers/tabNamesController');
 const healthReportController = require('./controllers/healthReportController');
 const feedbackController = require('./controllers/feedbackController');
 const forumController = require('./controllers/forumController');
+const recipeController = require('./controllers/recipeController'); 
 
 const path = require('path');
 const sql = require("mssql"); // Assuming you've installed mssql
@@ -92,6 +93,10 @@ app.get('/forum/getAllPosts', forumController.getAllPosts);
 app.post('/forum/getPostIdByContent', forumController.getPostIdByContent);
 app.put('/forum/editPost/:postID', forumController.updatePostContent);
 
+// [RECIPE]
+app.post('/save-recipe', recipeController.saveRecipe); // Save Recipe
+app.delete('/delete-recipe', recipeController.deleteRecipe); // Delete Recipe
+app.get('/get-saved-recipes', recipeController.getSavedRecipes);
 
 app.listen(port, async () => {
   try {

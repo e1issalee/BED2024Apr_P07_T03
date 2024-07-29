@@ -3,17 +3,14 @@ let lastScrollTop = 0;
 const navbar = document.querySelector('.navbar');
 
 if (navbar) {
-    // Add a transition effect for smooth appearance/disappearance
     navbar.style.transition = 'top 0.6s';
 
     window.addEventListener('scroll', function() {
         let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > lastScrollTop) {
-            // Downscroll
             navbar.style.top = '-200px'; // Hide the navbar by moving it up
         } else {
-            // Upscroll
             navbar.style.top = '0'; // Show the navbar
         }
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For mobile or negative scrolling
@@ -42,33 +39,37 @@ window.addEventListener('scroll', debounce(function() {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
     if (scrollTop > lastScrollTop) {
-        // Downscroll
         navbar.style.top = '-200px'; // Hide the navbar by moving it up
     } else {
-        // Upscroll
         navbar.style.top = '0'; // Show the navbar
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For mobile or negative scrolling
 }));
 
-
 // ======================= Recipe Homepage  ========================
 const searchBtn = document.getElementById('search-btn');
 const recipeList = document.getElementById('recipe');
-const recipeDetailsContent = document.querySelector('.recipe-details-content');
+// const recipeDetailsContent = document.querySelector('.recipe-details-content');
+const mealDetailsContent = document.querySelector('.meal-details-content');
 const recipeCloseBtn = document.getElementById('recipe-close-btn');
 
-//event listeners
-searchBtn.addEventListener('click', getRecipeList);
-recipeCloseBtn.addEventListener('click', closeRecipeDetails);
+// Event listeners
+if (searchBtn) {
+    searchBtn.addEventListener('click', getRecipeList);
+}
+if (recipeCloseBtn) {
+    recipeCloseBtn.addEventListener('click', () => {
+        mealDetailsContent.parentElement.classList.remove('showRecipe');
+    });
+}
 
-//get recipe list that matches name
-function getRecipeList(){
+// Get recipe list that matches name
+function getRecipeList() {
     let searchInputTxt = document.getElementById('search-input').value.trim();
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`)
         .then(response => response.json())
         .then(data => {
-            let html = "";
+            let html = '';
             if (data.meals) {
                 data.meals.forEach(meal => {
                     html += `
@@ -96,72 +97,103 @@ function getRecipeList(){
 function addRecipeEventListeners() {
     const recipeItems = document.querySelectorAll('.recipe-item');
     recipeItems.forEach(item => {
-        item.addEventListener('click', getRecipeDetails);
+        item.querySelector('.recipe-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            getMealRecipe(item.dataset.id);
+        });
     });
 }
 
-function getRecipeDetails(event) {
-    const mealId = event.currentTarget.getAttribute('data-id');
+// Get recipe of the meal
+function getMealRecipe(mealId) {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
         .then(response => response.json())
-        .then(data => {
-            const meal = data.meals[0];
-            const html = `
-                <h2 class="recipe-title">${meal.strMeal}</h2>
-                <p class="recipe-category">${meal.strCategory}</p>
-                <div class="recipe-instruct">
-                    <h3>Instructions:</h3>
-                    <p>${meal.strInstructions}</p>
-                </div>
-                <div class="recipe-meal-img">
-                    <img src="${meal.strMealThumb}" alt="Image of recipe" />
-                </div>
-                <div class="recipe-link">
-                    <a href="${meal.strYoutube}" target="_blank">Watch Video</a>
-                </div>
-            `;
-            recipeDetailsContent.innerHTML = html;
-            document.querySelector('.recipe-details').classList.add('showRecipe');
-        });
+        .then(data => mealRecipeModal(data.meals[0]));
 }
 
-function closeRecipeDetails() {
-    document.querySelector('.recipe-details').classList.remove('showRecipe');
+// Create a modal
+// Modify the mealRecipeModal function to use handleSaveRecipe
+function mealRecipeModal(meal) {
+    let html = `
+        <h2 class="recipe-title">${meal.strMeal}</h2>
+        <p class="recipe-category">${meal.strCategory}</p>
+        <div class="recipe-instruct">
+            <h3>Instructions:</h3>
+            <p>${meal.strInstructions}</p>
+        </div>
+        <div class="recipe-meal-img">
+            <img src="${meal.strMealThumb}" alt="">
+        </div>
+        <div class="recipe-link">
+            <a href="${meal.strYoutube}" target="_blank">Watch Video</a>
+        </div>
+        <div class="save-btn-container">
+            <button id="save-recipe" onclick="handleSaveRecipe(${meal.idMeal})">Save Recipe</button>
+        </div>
+    `;
+    mealDetailsContent.innerHTML = html;
+    mealDetailsContent.parentElement.classList.add('showRecipe');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const user = JSON.parse(localStorage.getItem('user'));
+// Check if the user is logged in
+function isUserLoggedIn() {
+    return !!sessionStorage.getItem('userId');
+}
 
-    if (user) {
-        // Change the SIGN UP/LOGIN text to the user's name
-        const dropbtn = document.querySelector('.dropbtn');
-        dropbtn.textContent = user.name;
-
-        // Hide Login button
-        const loginLink = document.getElementById('login-link')
-        // Show logout button
-        const logoutButton = document.getElementById('logout-button');
-        if (loginLink && logoutButton) {
-            loginLink.style.display = 'none'
-            logoutButton.style.display = 'block';
-        }
+// Function to handle the save recipe button click
+function handleSaveRecipe(recipeId) {
+    if (isUserLoggedIn()) {
+        saveRecipe(recipeId);
     } else {
-        // Hide logout button if user is not logged in and show login link when logged out
-        const loginLink = document.getElementById('login-link')
-        const logoutButton = document.getElementById('logout-button');
-        if (loginLink && logoutButton) {
-            loginLink.style.display = 'block'
-            logoutButton.style.display = 'none';
-        }
+        alert('You need to be logged in to save recipes.');
+        // Redirect to login page
+        window.location.href = '../../login.html'; // Change this to your actual login page route
     }
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton){
-        logoutButton.addEventListener('click', function() {
-            // Clear user data from localStorage
-            localStorage.removeItem('user');
+}
 
-            // Redirect to the login page
-            window.location.href = '../../login.html';
-        });
-    }
-});
+function saveRecipe(recipeId) {
+    const userId = getUserIdFromSession();
+
+    fetch('http://localhost:3000/save-recipe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, recipeId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Response status:', response.status);
+            console.error('Response status text:', response.statusText);
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Recipe saved successfully!');
+        } else {
+            alert('Failed to save recipe.');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving recipe:', error);
+    });
+}
+
+function getUserIdFromSession() {
+    return sessionStorage.getItem('userId');
+}
+
+const seeAllRecipesBtn = document.getElementById('see-all-recipes');
+
+if (seeAllRecipesBtn) {
+    seeAllRecipesBtn.addEventListener('click', () => {
+        if (isUserLoggedIn()) {
+            window.location.href = 'saved-recipes.html'; // Change this to your actual saved recipes page route
+        } else {
+            alert('You need to be logged in to see saved recipes.');
+            window.location.href = '../../login.html'; // Change this to your actual login page route
+        }
+    });
+}

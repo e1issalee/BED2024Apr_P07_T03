@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -11,140 +10,120 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lobster&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="recipes-style.css" />
     <title>NutriCooked</title>
   </head>
-  <body>
+  <body class="recipe-page">
     <div class="navbar">
       <a class="index-logo" href="../../index.html" onclick="scrollToTop()"
         ><img src="../../Images/NutriCooked Logo.png" alt="Logo"
       /></a>
-      <a
-        href="Links Directed to/../../../index.html"
-        onclick="toggleActive(this); scrollToTop()"
+      <a href="../../index.html" onclick="toggleActive(this); scrollToTop()"
         >HOME</a
       >
       <a
-        href="Links Directed to/../../../index.html"
+        href="../../index.html"
         onclick="toggleActive(this); scrollToSection('aboutUs')"
         >ABOUT US</a
       >
-      <a
-        href="Links Directed to/Recipes/recipes-index.html"
-        onclick="toggleActive(this)"
+      <a href="../Recipes/recipes-index.html" onclick="toggleActive(this)"
         >RECIPES</a
       >
       <a
-        href="Links Directed to/../../../index.html"
+        href="../../index.html"
         onclick="toggleActive(this); scrollToSection('contact')"
         >CONTACT</a
       >
-      <!-- <a href="#credit" onclick="toggleActive(this)">CREDIT</a> -->
       <div class="dropdown">
         <a href="#signup-Login" class="dropbtn" onclick="toggleDropdown()"
           >SIGN UP / LOGIN</a
         >
         <div class="dropdown-content" id="dropdownContent">
-          <a href="../Health Report/healthReport.html">Health Report</a>
+          <a
+            href="Links Directed to/Health Report/healthReport.html"
+            id="health-report-link"
+            >Health Report</a
+          >
           <a href="Links Directed to/Food Diary/food-diary-index.html"
             >Food Diary</a
           >
           <a href="Links Directed to/Points/points-index.html">Points</a>
-          <a href="login.html" id="login-link">Login</a>
+          <a href="Links Directed to/Forum/forum.html">Forum</a>
+          <a href="../../login.html" id="login-link">Login</a>
           <button id="logout-button">Logout</button>
         </div>
       </div>
     </div>
 
-    <!-- ---------Recipe Homepage section--------- -->
+    <section class="hero" aria-label="banner">
+      <div class="banner-card">
+        <h1 class="text-display">Your desired dish?</h1>
+        <div class="search-wrapper">
+          <span
+            class="fa-solid fa-utensils leading-icon"
+            aria-hidden="true"
+          ></span>
+          <input
+            type="search"
+            name="search"
+            id="search-input"
+            aria-label="Search recipes"
+            placeholder="Search recipes ..."
+            class="search-field"
+          />
+          <button id="search-btn" class="search-submit" aria-label="Submit">
+            <span
+              class="fa-solid fa-magnifying-glass"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </div>
+        <p>Search any recipe e.g burger, pizza, pasta</p>
+      </div>
+    </section>
+
     <div class="recipes-container">
       <div class="recipe-wrapper">
-        <div class="recipe-search">
-          <h2 class="title">Find curated recipes to fit your diet</h2>
-          <blockquote>
-            Live Laugh Love.<br /><cite>- Someone's Mother</cite>
-          </blockquote>
-
-          <div class="recipe-search-box">
-            <input
-              type="text"
-              class="search-control"
-              placeholder="Enter a recipe"
-              id="search-input"
-            />
-            <button type="submit" class="search-btn btn" id="search-btn">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-
         <div class="recipe-result">
           <h2 class="title">Your Search Results:</h2>
           <div id="recipe">
-            <!-- recipe item -->
-            <!-- <div class="recipe-item">
-              <div class="recipe-img">
-                <img
-                  src="../../Images/recipe-img(chickenrice).jpg"
-                  alt="Image of recipe"
-                />
-              </div>
-              <div class="recipe-name">
-                <h3>Chicken Rice</h3>
-                <a href="#" class="recipe-btn">Click to view</a>
-              </div>
-            </div> -->
-            <!-- end of recipe item -->
-          </div>
-        </div>
-
-        <div class="recipe-details">
-          <!-- recipe close button -->
-          <button
-            type="button"
-            class="btn recipe-close-btn"
-            id="recipe-close-btn"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-
-          <!-- recipe content -->
-          <div class="recipe-details-content">
-            <h2 class="recipe-title">Recipes Name Here</h2>
-            <p class="recipe-category">Category Name</p>
-            <div class="recipe-instruct">
-              <h3>Instructions:</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Et,
-                perspiciatis eligendi. Perspiciatis voluptatibus similique rem
-                officiis delectus. Harum consequatur sapiente distinctio
-                doloribus vel minima quibusdam, eum nisi ratione, assumenda
-                voluptates.
-              </p>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Deleniti minima quidem ex sapiente repellendus amet ad corrupti
-                beatae consectetur iusto?
-              </p>
-            </div>
-            <div class="recipe-meal-img">
-              <img src="../../Images/recipe-img(chickenrice).jpg" alt="" />
-            </div>
-            <div class="recipe-link">
-              <a href="#" target="_blank">Watch Video</a>
-            </div>
+            <!-- Recipe items will be injected here -->
           </div>
         </div>
       </div>
     </div>
+
+    <div class="meal-details">
+      <!-- recipe close btn -->
+      <button type="button" class="btn recipe-close-btn" id="recipe-close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- meal content -->
+      <div class="meal-details-content">
+        <!-- <h2 class = "recipe-title">Meals Name Here</h2>
+        <p class = "recipe-category">Category Name</p>
+        <div class = "recipe-instruct">
+          <h3>Instructions:</h3>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo blanditiis quis accusantium natus! Porro, reiciendis maiores molestiae distinctio veniam ratione ex provident ipsa, soluta suscipit quam eos velit autem iste!</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet aliquam voluptatibus ad obcaecati magnam, esse numquam nisi ut adipisci in?</p>
+        </div>
+        <div class = "recipe-meal-img">
+          <img src = "food.jpg" alt = "">
+        </div>
+        <div class = "recipe-link">
+          <a href = "#" target = "_blank">Watch Video</a>
+        </div> -->
+      </div>
+    </div>
+
+    <button id="see-all-recipes">See All Saved Recipes</button>
 
     <script src="recipes-script.js"></script>
   </body>
